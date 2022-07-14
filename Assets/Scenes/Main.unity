@@ -10266,7 +10266,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 2.910959, y: 1}
+    m_SensorSize: {x: 3.021327, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -10407,6 +10407,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 205960208}
+  - {fileID: 1723459762}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -10425,11 +10426,21 @@ MonoBehaviour:
   moveSpeed: 10
   jumpForce: 16
   groundCheckRadius: 0.3
+  wallCheckDistance: 0.4
   amountOfJumps: 2
+  wallSlideSpeed: 2
+  moveForceInAir: 50
+  airDragMultiplier: 0.95
+  variableJumpHeightMultiplier: 0.5
+  wallHopForce: 10
+  wallJumpForce: 20
   groundChecker: {fileID: 205960208}
+  wallChecker: {fileID: 1723459762}
   whatIsGround:
     serializedVersion: 2
     m_Bits: 64
+  wallHopDir: {x: 1, y: 0.5}
+  wallJumpDir: {x: 1, y: 2}
 --- !u!95 &685171905
 Animator:
   serializedVersion: 3
@@ -40014,6 +40025,36 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!1 &1723459761
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1723459762}
+  m_Layer: 0
+  m_Name: WallChecker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1723459762
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1723459761}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 685171903}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1779431583
 GameObject:
   m_ObjectHideFlags: 0
