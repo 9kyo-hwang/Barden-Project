@@ -10199,7 +10199,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.3908849, y: 13.393911, z: -10}
+  m_LocalPosition: {x: -3.3908849, y: 14.1, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1779431584}
@@ -10230,7 +10230,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 665130041}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.3908849, y: 13.393911, z: -10}
+  m_LocalPosition: {x: -3.3908849, y: 14.1, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 940709762}
@@ -10291,7 +10291,7 @@ GameObject:
   - component: {fileID: 685171905}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -10337,11 +10337,11 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 4
+  m_GravityScale: 6
   m_Material: {fileID: 6200000, guid: 031cda52509d6554bb3baedb6de8f874, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!212 &685171902
 SpriteRenderer:
@@ -10403,7 +10403,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 685171899}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.3908849, y: 13.393911, z: 0}
+  m_LocalPosition: {x: -3.3908849, y: 14.1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 205960208}
@@ -10423,23 +10423,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: adf83104b1202154188059d399a9d584, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 10
-  jumpForce: 16
-  groundCheckRadius: 0.3
-  wallCheckDistance: 0.4
+  moveSpeed: 9
+  jumpForce: 20
+  jumpTimerSet: 0.15
+  wallJumpForce: 30
   amountOfJumps: 2
-  wallSlideSpeed: 2
-  moveForceInAir: 50
   airDragMultiplier: 0.95
   variableJumpHeightMultiplier: 0.5
-  wallHopForce: 10
-  wallJumpForce: 20
+  groundCheckRadius: 0.3
+  wallCheckDistance: 0.4
+  wallSlideSpeed: 1
+  turnTimerSet: 0.1
+  wallJumpTimerSet: 0.5
   groundChecker: {fileID: 205960208}
   wallChecker: {fileID: 1723459762}
   whatIsGround:
     serializedVersion: 2
     m_Bits: 64
-  wallHopDir: {x: 1, y: 0.5}
   wallJumpDir: {x: 1, y: 2}
 --- !u!95 &685171905
 Animator:
