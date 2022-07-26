@@ -8,6 +8,8 @@ public class PlayerState
     protected Player player; // 참조용 플레이어
     protected PlayerStateMachine stateMachine; // 참조용 플레이어 상태 머신
     protected PlayerData playerData; // 참조용 플레이어 데이터
+
+    protected bool isAnimationFinished; // 애니메이션이 끝났는 지 판단하는 변수
     
     protected float startTime; // 상태 진입 시작 시간. 항상 참조됨
     
@@ -28,33 +30,45 @@ public class PlayerState
     public virtual void Enter()
     {
         DoCheck();
-        player.anim.SetBool(animBoolName, true);
+        player.animator.SetBool(animBoolName, true);
         startTime = Time.time;
         Debug.Log(animBoolName);
+        isAnimationFinished = false;
     }
 
     // 특정 상태에서 탈출했을 때 호출
     public virtual void Exit()
     {
-        player.anim.SetBool(animBoolName, false);
+        player.animator.SetBool(animBoolName, false);
     }
     
-    // 매 프레임마다 호출(기존의 Update() 함수 역할)
+    // 매 프레임마다 호출(Update()에서 수행)
     public virtual void FrameUpdate()
     {
         
     }
 
-    // 매 Timestep마다 호출(기존의 FixedUpdate() 함수 역할)
+    // 매 Timestep마다 호출(FixedUpdate()에서 수행)
     public virtual void TimeUpdate()
     {
         DoCheck();
     }
 
-    // PhysicsUpdate랑 Enter에서 호출될 함수
+    // TimeUpdate랑 Enter에서 호출될 함수
     // 땅에 있는 지, 또는 벽에 있는 지 등등을 확인하는 용도
     public virtual void DoCheck()
     {
         
+    }
+
+    // 애니메이션 컨트롤용 함수
+    public virtual void AnimationTrigger()
+    {
+        
+    }
+
+    public virtual void AnimationFinishTrigger()
+    {
+        isAnimationFinished = true;
     }
 }

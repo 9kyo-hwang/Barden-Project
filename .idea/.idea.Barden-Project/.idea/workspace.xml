@@ -12,8 +12,10 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Player/Player Finite State Machine/Player.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Player/PlayerStates/SubStates/PlayerIdleState.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Player/PlayerStates/SubStates/GroundedState/PlayerLandState.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Player/PlayerStates/SubStates/PlayerInAirState.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Player/PlayerStates/SuperStates/PlayerGroundedStates.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Player/PlayerStates/SuperStates/PlayerTouchingWallState.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -81,7 +83,8 @@
       <workItem from="1657979996399" duration="680000" />
       <workItem from="1658215398613" duration="234000" />
       <workItem from="1658215814004" duration="1212000" />
-      <workItem from="1658735941603" duration="10490000" />
+      <workItem from="1658735941603" duration="11359000" />
+      <workItem from="1658814892792" duration="15524000" />
     </task>
     <servers />
   </component>

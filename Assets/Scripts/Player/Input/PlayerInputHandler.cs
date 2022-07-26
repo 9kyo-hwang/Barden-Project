@@ -9,35 +9,93 @@ public class PlayerInputHandler : MonoBehaviour
     public Vector2 movementInputRaw { get; private set; }
     public int normalizedInputX { get; private set; }
     public int normalizedInputY { get; private set; }
+    public bool isJumpInputStarted { get; private set; }
+    public bool isJumpInputCanceled { get; private set; }
+    public bool isGrabInputStarted { get; private set; }
+
+    // input true 유지 시간(짧은 간격으로 키 입력 반복 오류를 막기 위한 변수)
+    [SerializeField]
+    private float inputHoldTime = 0.2f;
+    
+    private float jumpInputStartTime;
+
+    private void Update()
+    {
+        CheckJumpInputHoldTime();
+    }
 
     // InputAction에 지정된 키 context를 읽어 거기에 지정된 value 값을 넣음
     // 입력키: WASD, 방향키
     public void OnMoveInput(InputAction.CallbackContext context)
     {
-        movementInputRaw = context.ReadValue<Vector2>();
+        movementInputRaw = context.ReadValue<Vector2>(); // 키다운 한 버튼의 Vector2 값 대입
 
         // 값 정규화(-1, 0, 1)
-        normalizedInputX = (int)(movementInputRaw * Vector2.right).normalized.x;
-        normalizedInputY = (int)(movementInputRaw * Vector2.up).normalized.y;
+        if (Mathf.Abs(movementInputRaw.x) > 0.5f)
+        {
+            normalizedInputX = (int)(movementInputRaw * Vector2.right).normalized.x;
+        }
+        else
+        {
+            normalizedInputX = 0;
+        }
+
+        if (Mathf.Abs(movementInputRaw.y) > 0.5f)
+        {
+            normalizedInputY = (int)(movementInputRaw * Vector2.up).normalized.y;
+        }
+        else
+        {
+            normalizedInputY = 0;
+        }
+
+
     }
     
-    // 점프키로 지정한 키가 입력될 경우 수행하게 되는 함수
-    // 점프키: Space
+    // 점프 버튼으로 지정한 키가 입력될 경우 수행하게 되는 함수
+    // 점프 키: Space
     public void OnJumpInput(InputAction.CallbackContext context)
+    {
+        // jump 키다운 시
+        if (context.started)
+        {
+            isJumpInputStarted = true;
+            isJumpInputCanceled = false;
+            jumpInputStartTime = Time.time;
+        }
+
+        // jump 키업 시
+        if (context.canceled)
+        {
+            isJumpInputCanceled = true;
+        }
+    }
+
+    public void OnGrabInput(InputAction.CallbackContext context)
     {
         if (context.started)
         {
-            Debug.Log("Jump button pushed down now");
-        }
-
-        if (context.performed)
-        {
-            Debug.Log("Jump button is being held down");
+            isGrabInputStarted = true;
         }
 
         if (context.canceled)
         {
-            Debug.Log("Jump button has been released");
+            isGrabInputStarted = false;
+        }
+    }
+
+    // 점프 키 입력 참 판정 체크를 한 번만 하기 위해
+    // true로 사용된 후 즉시 false로 해제시키는 용도의 함수
+    public void UsedJumpInput()
+    {
+        isJumpInputStarted = false;
+    }
+
+    private void CheckJumpInputHoldTime()
+    {
+        if (Time.time >= jumpInputStartTime + inputHoldTime)
+        {
+            isJumpInputStarted = false;
         }
     }
 }
