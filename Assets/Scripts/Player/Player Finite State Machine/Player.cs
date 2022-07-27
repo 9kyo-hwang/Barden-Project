@@ -16,6 +16,8 @@ public class Player : MonoBehaviour
     public PlayerWallSlideState wallSlideState { get; private set; }
     public PlayerWallClimbState wallClimbState { get; private set; }
     public PlayerWallGrabState wallGrabState { get; private set; }
+    public PlayerWallJumpState wallJumpState { get; private set; }
+    public PlayerLedgeClimbState ledgeClimbState { get; private set; }
     
     [SerializeField]
     private PlayerData playerData;
@@ -33,6 +35,8 @@ public class Player : MonoBehaviour
     private Transform groundChecker;
     [SerializeField] 
     private Transform wallChecker;
+    [SerializeField] 
+    private Transform ledgeChecker;
     
     #endregion
     
@@ -50,12 +54,14 @@ public class Player : MonoBehaviour
 
         idleState = new PlayerIdleState(this, stateMachine, playerData, "idle");
         moveState = new PlayerMoveState(this, stateMachine, playerData, "move");
-        jumpState = new PlayerJumpState(this, stateMachine, playerData, "inAir"); // 점프 시 공중에 뜨게 되므로 자동적으로 inAir
+        jumpState = new PlayerJumpState(this, stateMachine, playerData, "inAir"); // 점프 시 자동적으로 inAir 상태 돌입
         inAirState = new PlayerInAirState(this, stateMachine, playerData, "inAir");
         landState = new PlayerLandState(this, stateMachine, playerData, "land");
         wallSlideState = new PlayerWallSlideState(this, stateMachine, playerData, "wallSlide");
         wallClimbState = new PlayerWallClimbState(this, stateMachine, playerData, "wallClimb");
         wallGrabState = new PlayerWallGrabState(this, stateMachine, playerData, "wallGrab");
+        wallJumpState = new PlayerWallJumpState(this, stateMachine, playerData, "inAir"); // 벽점프 시 자동적으로 inAir 상태 돌입
+        ledgeClimbState = new PlayerLedgeClimbState(this, stateMachine, playerData, "ledgeClimbState");
     }
 
     private void Start()
@@ -73,12 +79,12 @@ public class Player : MonoBehaviour
     private void Update()
     {
         currentVelocity = rb2d.velocity; // 현재 벨로서티 지속 갱신
-        stateMachine.currentState.FrameUpdate(); // 현재 상태에 대한 FrameUpdate() 수행
+        stateMachine.currentState.LogicUpdate(); // 현재 상태에 대한 FrameUpdate() 수행
     }
 
     private void FixedUpdate()
     {
-        stateMachine.currentState.TimeUpdate(); // 현재 상태에 대한 TimeUpdate() 수행
+        stateMachine.currentState.PhysicsUpdate(); // 현재 상태에 대한 TimeUpdate() 수행
     }
     #endregion
     
@@ -93,8 +99,20 @@ public class Player : MonoBehaviour
     public void SetVelocityY(float velocity)
     {
         workspace.Set(currentVelocity.x, velocity);
-        rb2d.velocity = workspace;
-        currentVelocity = workspace;
+        rb2d.velocity = currentVelocity = workspace;
+    }
+
+    // 속력뿐만 아니라 방향까지 정하는 함수
+    public void SetVelocity(float velocity, Vector2 angle, int direction)
+    {
+        angle.Normalize(); // 벡터 정규화 필요
+        workspace.Set(angle.x * velocity * direction, angle.y * velocity);
+        rb2d.velocity = currentVelocity = workspace;
+    }
+
+    public void SetVelocityZero()
+    {
+        rb2d.velocity = currentVelocity = Vector2.zero;
     }
     #endregion
 
@@ -110,6 +128,18 @@ public class Player : MonoBehaviour
         return Physics2D.Raycast(wallChecker.position, Vector2.right * facingDirection, playerData.wallCheckDistance,
             playerData.whatIsGround);
     }
+
+    public bool CheckWallBack()
+    {
+        return Physics2D.Raycast(wallChecker.position, Vector2.right * -facingDirection, playerData.wallCheckDistance,
+            playerData.whatIsGround);
+    }
+
+    public bool CheckLedge()
+    {
+        return Physics2D.Raycast(ledgeChecker.position, Vector2.right * facingDirection, playerData.wallCheckDistance,
+            playerData.whatIsGround);
+    }
     
     public void CheckFlip(int xInput)
     {
@@ -119,6 +149,25 @@ public class Player : MonoBehaviour
     #endregion
 
     #region Other Functions
+
+    // 난간 오르기 수행 시 꼭짓점 위치(도착 지점)를 잡아주는 함수
+    // xDistance: 벽 체커 위치에서 Raycast 발사한 거리
+    // yDistance: 난간 체커 위치에서 xDistance만큼 떨어진 거리에서 아랫 방향으로 난간 체커 - 벽 체커 길이만큼 Raycast 발사한 거리
+    // 최종적으로 (벽 체커 위치 + xDistance, 난간 체커 위치 - yDistance) 위치 설정
+    public Vector2 DetermineCornerPosition()
+    {
+        RaycastHit2D xHit = Physics2D.Raycast(wallChecker.position, Vector2.right * facingDirection,
+            playerData.wallCheckDistance, playerData.whatIsGround);
+        float xDistance = xHit.distance;
+        workspace.Set(xDistance * facingDirection, 0f);
+
+        RaycastHit2D yHit = Physics2D.Raycast(ledgeChecker.position + (Vector3)(workspace), Vector2.down,
+            ledgeChecker.position.y - wallChecker.position.y, playerData.whatIsGround);
+        float yDistance = yHit.distance;
+        workspace.Set(wallChecker.position.x + (xDistance * facingDirection), ledgeChecker.position.y - yDistance);
+
+        return workspace;
+    }
 
     // PlayerState에 있는 AnimationTrigger 함수 수행
     private void AnimationTrigger()

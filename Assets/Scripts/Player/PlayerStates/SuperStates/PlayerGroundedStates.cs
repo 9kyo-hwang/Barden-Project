@@ -10,6 +10,7 @@ public class PlayerGroundedStates : PlayerState
     private bool isGrabInputted;
     private bool isGrounded;
     private bool isTouchingWall;
+    private bool isTouchingLedge;
     
     public PlayerGroundedStates(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animBoolName) : base(player, stateMachine, playerData, animBoolName)
     {
@@ -29,9 +30,9 @@ public class PlayerGroundedStates : PlayerState
         base.Exit();
     }
 
-    public override void FrameUpdate()
+    public override void LogicUpdate()
     {
-        base.FrameUpdate();
+        base.LogicUpdate();
         
         xInput = player.inputHandler.normalizedInputX;
         isJumpInputted = player.inputHandler.isJumpInputStarted;
@@ -43,7 +44,6 @@ public class PlayerGroundedStates : PlayerState
         // 단 남은 점프 횟수가 0보다 클 경우(CanJump() return 조건)
         if (isJumpInputted && player.jumpState.CanJump())
         {
-            player.inputHandler.UsedJumpInput(); // 점프 인풋 false로 변경
             stateMachine.ChangeState(player.jumpState);
         }
         // grounded 상태에서, 지면에서 벗어나게 될 경우
@@ -53,16 +53,17 @@ public class PlayerGroundedStates : PlayerState
             player.inAirState.StartCoyoteTime();
             stateMachine.ChangeState(player.inAirState);
         }
-        // 벽에 닿았으면서 그랩 키를 눌렀을 경우 wall Grab 상태로
-        else if (isTouchingWall && isGrabInputted)
+        // 벽과 난간에 닿은 상태로 grab 키를 눌렀을 경우 wall Grab 상태로
+        // 낮은 턱에서 grab 키를 누르면 난간에 매달리는 모션을 취하기 때문
+        else if (isTouchingWall && isGrabInputted && isTouchingLedge)
         {
             stateMachine.ChangeState(player.wallGrabState);
         }
     }
 
-    public override void TimeUpdate()
+    public override void PhysicsUpdate()
     {
-        base.TimeUpdate();
+        base.PhysicsUpdate();
     }
 
     public override void DoCheck()
@@ -71,5 +72,6 @@ public class PlayerGroundedStates : PlayerState
 
         isGrounded = player.CheckGround();
         isTouchingWall = player.CheckWall();
+        isTouchingLedge = player.CheckLedge();
     }
 }

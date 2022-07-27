@@ -10,6 +10,7 @@ public class PlayerState
     protected PlayerData playerData; // 참조용 플레이어 데이터
 
     protected bool isAnimationFinished; // 애니메이션이 끝났는 지 판단하는 변수
+    protected bool isExitingState; // 상태를 벗어났는 지 나타내는 변수
     
     protected float startTime; // 상태 진입 시작 시간. 항상 참조됨
     
@@ -34,22 +35,24 @@ public class PlayerState
         startTime = Time.time;
         Debug.Log(animBoolName);
         isAnimationFinished = false;
+        isExitingState = false;
     }
 
     // 특정 상태에서 탈출했을 때 호출
     public virtual void Exit()
     {
         player.animator.SetBool(animBoolName, false);
+        isExitingState = true;
     }
     
     // 매 프레임마다 호출(Update()에서 수행)
-    public virtual void FrameUpdate()
+    public virtual void LogicUpdate()
     {
         
     }
 
     // 매 Timestep마다 호출(FixedUpdate()에서 수행)
-    public virtual void TimeUpdate()
+    public virtual void PhysicsUpdate()
     {
         DoCheck();
     }

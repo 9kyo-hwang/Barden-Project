@@ -19,18 +19,18 @@ public class PlayerIdleState : PlayerGroundedStates
         base.Exit();
     }
 
-    public override void FrameUpdate()
+    public override void LogicUpdate()
     {
-        base.FrameUpdate();
-        if (xInput != 0)
+        base.LogicUpdate();
+        if (xInput != 0 && !isExitingState)
         {
             stateMachine.ChangeState(player.moveState);
         }
     }
 
-    public override void TimeUpdate()
+    public override void PhysicsUpdate()
     {
-        base.TimeUpdate();
+        base.PhysicsUpdate();
     }
 
     public override void DoCheck()

@@ -9,19 +9,22 @@ public class PlayerLandState : PlayerGroundedStates
         
     }
 
-    public override void FrameUpdate()
+    public override void LogicUpdate()
     {
-        base.FrameUpdate();
+        base.LogicUpdate();
 
-        // 땅에 착지했을 때 x축 입력이 있다면 move 상태로
-        if (xInput != 0)
+        if (!isExitingState)
         {
-            stateMachine.ChangeState(player.moveState);
-        }
-        // 착지 애니메이션이 끝까지 수행되었다면 idle 상태로
-        else if(isAnimationFinished)
-        {
-            stateMachine.ChangeState(player.idleState);
+            // 땅에 착지했을 때 x축 입력이 있다면 move 상태로
+            if (xInput != 0)
+            {
+                stateMachine.ChangeState(player.moveState);
+            }
+            // 착지 애니메이션이 끝까지 수행되었다면 idle 상태로
+            else if(isAnimationFinished)
+            {
+                stateMachine.ChangeState(player.idleState);
+            }
         }
     }
 }

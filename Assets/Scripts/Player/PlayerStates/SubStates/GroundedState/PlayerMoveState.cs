@@ -19,22 +19,22 @@ public class PlayerMoveState : PlayerGroundedStates
         base.Exit();
     }
 
-    public override void FrameUpdate()
+    public override void LogicUpdate()
     {
-        base.FrameUpdate();
+        base.LogicUpdate();
         
         player.CheckFlip(xInput);
         player.SetVelocityX(playerData.moveVelocity * xInput);
         
-        if (xInput == 0)
+        if (xInput == 0 && !isExitingState)
         {
             stateMachine.ChangeState(player.idleState);
         }
     }
 
-    public override void TimeUpdate()
+    public override void PhysicsUpdate()
     {
-        base.TimeUpdate();
+        base.PhysicsUpdate();
     }
 
     public override void DoCheck()

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 
 // 플레이어에 사용될 각종 변수 및 값을 저장하는 클래스
@@ -23,6 +24,15 @@ public class PlayerData : ScriptableObject
 
     [Header("Wall Climb State")] 
     public float wallClimbVelocity = 1.5f;
+
+    [Header("Wall Jump State")] 
+    public float wallJumpVelocity = 20f;
+    public float wallJumpTime = 0.4f; // 벽 점프 상태를 짧게 유지하는 용도의 변수
+    public Vector2 wallJumpAngle = new Vector2(1, 2); // 벽 점프 각도
+
+    [Header("Ledge Climb State")] 
+    public Vector2 startOffset;
+    public Vector2 stopOffset;
 
     [Header("Check Variables")] 
     public float groundCheckRadius = 0.3f;

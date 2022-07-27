@@ -6,10 +6,12 @@ public class PlayerTouchingWallState : PlayerState
 {
     protected bool isGrounded;
     protected bool isTouchingWall;
+    protected bool isTouchingLedge;
     protected bool isGrabInputted;
+    protected bool isJumpInputted;
     protected int xInput;
     protected int yInput;
-    
+
     public PlayerTouchingWallState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animBoolName) : base(player, stateMachine, playerData, animBoolName)
     {
     }
@@ -24,18 +26,26 @@ public class PlayerTouchingWallState : PlayerState
         base.Exit();
     }
 
-    public override void FrameUpdate()
+    public override void LogicUpdate()
     {
-        base.FrameUpdate();
+        base.LogicUpdate();
 
         xInput = player.inputHandler.normalizedInputX;
         yInput = player.inputHandler.normalizedInputY;
         isGrabInputted = player.inputHandler.isGrabInputStarted;
+        isJumpInputted = player.inputHandler.isJumpInputStarted;
 
         // touching Wall 상태에서 벗어나는 조건들
-        
+
+        // TouchingWall 상태에 속하는 모든 sub state 상태에서
+        // wall jump가 수행될 수 있음
+        if (isJumpInputted)
+        {
+            player.wallJumpState.DetermineWallJumpDirection(isTouchingWall);
+            stateMachine.ChangeState(player.wallJumpState);
+        }
         // 땅에 닿았으면서 !grab input인 경우 idle 상태로
-        if (isGrounded && !isGrabInputted)
+        else if (isGrounded && !isGrabInputted)
         {
             stateMachine.ChangeState(player.idleState);
         }
@@ -45,11 +55,16 @@ public class PlayerTouchingWallState : PlayerState
         {
             stateMachine.ChangeState(player.inAirState);
         }
+        // 벽에 닿았으면서 난간에 닿지 않았다면 ledgeClimb 상태로
+        else if (isTouchingWall && !isTouchingLedge)
+        {
+            stateMachine.ChangeState(player.ledgeClimbState);
+        }
     }
 
-    public override void TimeUpdate()
+    public override void PhysicsUpdate()
     {
-        base.TimeUpdate();
+        base.PhysicsUpdate();
     }
 
     public override void DoCheck()
@@ -58,6 +73,12 @@ public class PlayerTouchingWallState : PlayerState
 
         isGrounded = player.CheckGround();
         isTouchingWall = player.CheckWall();
+        isTouchingLedge = player.CheckLedge();
+
+        if (isTouchingWall && !isTouchingLedge)
+        {
+            player.ledgeClimbState.SetDetectedPosition(player.transform.position);
+        }
     }
 
     public override void AnimationTrigger()

@@ -24,23 +24,26 @@ public class PlayerWallGrabState : PlayerTouchingWallState
         base.Exit();
     }
 
-    public override void FrameUpdate()
+    public override void LogicUpdate()
     {
-        base.FrameUpdate();
-        
-        HoldPosition();
-        
-        // wall Grab 상태를 벗어나는 조건들
-        
-        // y Input이 0보다 크다면 wall Climb 상태로
-        if (yInput > 0)
+        base.LogicUpdate();
+
+        if(!isExitingState) // 상태를 벗어나지 않았을 경우 수행
         {
-            stateMachine.ChangeState(player.wallClimbState);
-        }
-        // y Input이 0보다 작거나 grab 버튼 키를 안눌렀을 경우
-        else if (yInput < 0 || !isGrabInputted)
-        {
-            stateMachine.ChangeState(player.wallSlideState);
+            HoldPosition();
+            
+            // wall Grab 상태를 벗어나는 조건들
+            
+            // y Input이 0보다 크다면 wall Climb 상태로
+            if (yInput > 0)
+            {
+                stateMachine.ChangeState(player.wallClimbState);
+            }
+            // y Input이 0보다 작거나 grab 버튼 키를 안눌렀을 경우
+            else if (yInput < 0 || !isGrabInputted)
+            {
+                stateMachine.ChangeState(player.wallSlideState);
+            }   
         }
     }
 
@@ -54,9 +57,9 @@ public class PlayerWallGrabState : PlayerTouchingWallState
         player.SetVelocityY(0f);
     }
 
-    public override void TimeUpdate()
+    public override void PhysicsUpdate()
     {
-        base.TimeUpdate();
+        base.PhysicsUpdate();
     }
 
     public override void DoCheck()

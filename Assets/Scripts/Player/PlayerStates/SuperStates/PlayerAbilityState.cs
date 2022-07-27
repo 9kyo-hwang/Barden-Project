@@ -22,9 +22,9 @@ public class PlayerAbilityState : PlayerState
         base.Exit();
     }
 
-    public override void FrameUpdate()
+    public override void LogicUpdate()
     {
-        base.FrameUpdate();
+        base.LogicUpdate();
         
         // ability 상태가 끝났을 경우 변경될 수 있는 상태는 지상 or 공중
         // isGrounded에 따라 상태 변경
@@ -42,9 +42,9 @@ public class PlayerAbilityState : PlayerState
         }
     }
 
-    public override void TimeUpdate()
+    public override void PhysicsUpdate()
     {
-        base.TimeUpdate();
+        base.PhysicsUpdate();
     }
 
     public override void DoCheck()
