@@ -31,7 +31,7 @@ public class PlayerState
     public virtual void Enter()
     {
         DoCheck();
-        player.animator.SetBool(animBoolName, true);
+        player.anim.SetBool(animBoolName, true);
         startTime = Time.time;
         Debug.Log(animBoolName);
         isAnimationFinished = false;
@@ -41,7 +41,7 @@ public class PlayerState
     // 특정 상태에서 탈출했을 때 호출
     public virtual void Exit()
     {
-        player.animator.SetBool(animBoolName, false);
+        player.anim.SetBool(animBoolName, false);
         isExitingState = true;
     }
     

@@ -51,7 +51,7 @@ public class PlayerTouchingWallState : PlayerState
         }
         // 벽에서 떨어졌거나, x축 입력이 바라보는 방향과 다르거나 없는 경우
         // 또는 !grabInput이면서 땅에 닿지 않았으면 inAir 상태로
-        else if (!isTouchingWall || (xInput != player.facingDirection && !isGrabInputted))
+        else if (!isTouchingWall || (xInput != player.facingDir && !isGrabInputted))
         {
             stateMachine.ChangeState(player.inAirState);
         }

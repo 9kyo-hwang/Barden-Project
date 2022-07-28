@@ -13,6 +13,7 @@ public class PlayerLedgeClimbState : PlayerState
     private bool isHanging;
     private bool isClimbing;
     private bool isJumpInputted;
+    private bool isTouchingCeiling;
 
     private int xInput;
     private int yInput;
@@ -36,9 +37,9 @@ public class PlayerLedgeClimbState : PlayerState
         player.transform.position = detectedPosition;
         cornerPosition = player.DetermineCornerPosition();
 
-        startPosition.Set(cornerPosition.x - (player.facingDirection * playerData.startOffset.x),
+        startPosition.Set(cornerPosition.x - (player.facingDir * playerData.startOffset.x),
             cornerPosition.y - playerData.startOffset.y);
-        stopPosition.Set(cornerPosition.x + (player.facingDirection * playerData.stopOffset.x),
+        stopPosition.Set(cornerPosition.x + (player.facingDir * playerData.stopOffset.x),
             cornerPosition.y + playerData.stopOffset.y);
 
         player.transform.position = startPosition;
@@ -66,7 +67,16 @@ public class PlayerLedgeClimbState : PlayerState
         // 애니메이션 종료: 난간 다 오름 -> Idle 상태
         if (isAnimationFinished)
         {
-            stateMachine.ChangeState(player.idleState);
+            // 애니메이션 종료 때 천장에 닿는 게 있다면 crouch Idle 상태로
+            if (isTouchingCeiling)
+            {
+                stateMachine.ChangeState(player.crouchIdleState);
+            }
+            // 아니라면 일반 idle 상태로
+            else
+            {
+                stateMachine.ChangeState(player.idleState);   
+            }
         }
         // 아니라면 Ledge Climb 상태 유지중
         // 입력 및 위치 조정 수행
@@ -83,10 +93,11 @@ public class PlayerLedgeClimbState : PlayerState
             
             // x축 입력이 플레이어가 바라보는 방향과 같으면서 매달려 있고 올라가는 중이 아니라면
             // 클라이밍 시작, 애니메이션 재생
-            if (xInput == player.facingDirection && isHanging && !isClimbing)
+            if (xInput == player.facingDir && isHanging && !isClimbing)
             {
+                CheckSpace(); // 올라간 위치에 천장이 있는 지 확인
                 isClimbing = true;
-                player.animator.SetBool("climbLedge", true);
+                player.anim.SetBool("climbLedge", true);
             }
             // y축 입력이 아래방향이면서 매달려 있고 올라가는 중이 아니라면
             // 매달려있는 것에서 떨어짐 -> inAir 상태
@@ -116,6 +127,16 @@ public class PlayerLedgeClimbState : PlayerState
         base.AnimationFinishTrigger();
         
         // 애니메이션 종료 시 climbLedge false
-        player.animator.SetBool("climbLedge", false);
+        player.anim.SetBool("climbLedge", false);
+    }
+
+    // 난간을 올랐을 때 온전히 서있을 수 있는 공간이 있는 지 확인하는 함수
+    // 코너 위치 기준 stand collider height 만큼 ray를 쏴서 닿는 게 있다면 높이가 낮음(천장 존재)
+    private void CheckSpace()
+    {
+        isTouchingCeiling =
+            Physics2D.Raycast(cornerPosition + (Vector2.up * 0.015f) + (Vector2.right * player.facingDir * 0.015f),
+                Vector2.up, playerData.standColliderHeight, playerData.whatIsGround);
+        player.anim.SetBool("isTouchingCeiling", isTouchingCeiling);
     }
 }

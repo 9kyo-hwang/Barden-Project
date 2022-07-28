@@ -5,9 +5,15 @@ using UnityEngine;
 // PlayerState 상속
 public class PlayerGroundedStates : PlayerState
 {
+    // Input
     protected int xInput;
+    protected int yInput;
     private bool isJumpInputted;
     private bool isGrabInputted;
+    private bool isDashInputted;
+    
+    // Check
+    protected bool isTouchingCeiling;
     private bool isGrounded;
     private bool isTouchingWall;
     private bool isTouchingLedge;
@@ -21,8 +27,9 @@ public class PlayerGroundedStates : PlayerState
     {
         base.Enter();
         
-        // grounded 상태에 진입했다면 남은 점프 횟수 초기화
+        // grounded 상태에 진입했다면 남은 점프 횟수와 대시 가능 상태 초기화
         player.jumpState.ResetJumpCount();
+        player.dashState.ResetCanDash();
     }
 
     public override void Exit()
@@ -35,8 +42,10 @@ public class PlayerGroundedStates : PlayerState
         base.LogicUpdate();
         
         xInput = player.inputHandler.normalizedInputX;
+        yInput = player.inputHandler.normalizedInputY;
         isJumpInputted = player.inputHandler.isJumpInputStarted;
         isGrabInputted = player.inputHandler.isGrabInputStarted;
+        isDashInputted = player.inputHandler.isDashInputStarted;
         
         // grounded 상태에서 벗어나는 조건들
 
@@ -59,6 +68,11 @@ public class PlayerGroundedStates : PlayerState
         {
             stateMachine.ChangeState(player.wallGrabState);
         }
+        // 대시 키를 눌렀으면서 천장에 닿지 않았으면서 대시를 할 수 있는 상태라면 dash 상태로
+        else if (isDashInputted && player.dashState.CheckCanDash() && !isTouchingCeiling)
+        {
+            stateMachine.ChangeState(player.dashState);
+        }
     }
 
     public override void PhysicsUpdate()
@@ -71,6 +85,7 @@ public class PlayerGroundedStates : PlayerState
         base.DoCheck();
 
         isGrounded = player.CheckGround();
+        isTouchingCeiling = player.CheckCeiling();
         isTouchingWall = player.CheckWall();
         isTouchingLedge = player.CheckLedge();
     }

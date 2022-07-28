@@ -28,6 +28,22 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "Dash",
+                    "type": "Button",
+                    "id": "bc1dd268-a3fc-4e12-b363-1ec6386762ed",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "DashDirection",
+                    "type": "Value",
+                    "id": "fd44a15a-7a3e-46ea-9792-31e3dd10370d",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -160,6 +176,28 @@
                     "processors": "",
                     "groups": "PC",
                     "action": "Grab",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "70760e4a-9fa8-4f08-948b-a6ca3bc935d5",
+                    "path": "<Keyboard>/leftShift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "Dash",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ca95209d-a329-46d0-9451-0c4edf1a93ea",
+                    "path": "<Mouse>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "DashDirection",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

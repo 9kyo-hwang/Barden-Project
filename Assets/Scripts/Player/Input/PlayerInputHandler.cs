@@ -5,23 +5,38 @@ using UnityEngine.InputSystem;
 
 public class PlayerInputHandler : MonoBehaviour
 {
+    private PlayerInput playerInput; // Player Input component
+    private Camera camera; // Camera Component
+    
     // 각종 상태에서 값을 읽을 수 있어야 함
     public Vector2 movementInputRaw { get; private set; }
+    public Vector2 dashDirectionInputRaw { get; private set; }
+    public Vector2Int dashDirectionInputInt { get; private set; }
     public int normalizedInputX { get; private set; }
     public int normalizedInputY { get; private set; }
     public bool isJumpInputStarted { get; private set; }
     public bool isJumpInputCanceled { get; private set; }
     public bool isGrabInputStarted { get; private set; }
+    public bool isDashInputStarted { get; private set; }
+    public bool isDashInputCanceled { get; private set; }
 
     // input true 유지 시간(짧은 간격으로 키 입력 반복 오류를 막기 위한 변수)
     [SerializeField]
     private float inputHoldTime = 0.2f;
     
     private float jumpInputStartTime;
+    private float dashInputStartTime;
+
+    private void Start()
+    {
+        playerInput = GetComponent<PlayerInput>();
+        camera = Camera.main;
+    }
 
     private void Update()
     {
         CheckJumpInputHoldTime();
+        CheckDashInputHoldTime();
     }
 
     // InputAction에 지정된 키 context를 읽어 거기에 지정된 value 값을 넣음
@@ -84,11 +99,43 @@ public class PlayerInputHandler : MonoBehaviour
         }
     }
 
+    public void OnDashInput(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            isDashInputStarted = true;
+            isDashInputCanceled = false;
+            dashInputStartTime = Time.time;
+        }
+        else if (context.canceled)
+        {
+            isDashInputCanceled = true;
+        }
+    }
+
+    public void OnDashDirectionInput(InputAction.CallbackContext context)
+    {
+        dashDirectionInputRaw = context.ReadValue<Vector2>();
+
+        if (playerInput.currentControlScheme == "PC")
+        {
+            dashDirectionInputRaw = camera.ScreenToWorldPoint(dashDirectionInputRaw) - transform.position;
+        }
+
+        // int 반올림(0, 0 || 0, 1 || 1, 0 || 1, 1 || etc)
+        dashDirectionInputInt = Vector2Int.RoundToInt(dashDirectionInputRaw.normalized);
+    }
+
     // 점프 키 입력 참 판정 체크를 한 번만 하기 위해
-    // true로 사용된 후 즉시 false로 해제시키는 용도의 함수
+    // false로 해제시키는 용도의 함수
     public void UsedJumpInput()
     {
         isJumpInputStarted = false;
+    }
+
+    public void UsedDashInput()
+    {
+        isDashInputStarted = false;
     }
 
     private void CheckJumpInputHoldTime()
@@ -96,6 +143,14 @@ public class PlayerInputHandler : MonoBehaviour
         if (Time.time >= jumpInputStartTime + inputHoldTime)
         {
             isJumpInputStarted = false;
+        }
+    }
+
+    private void CheckDashInputHoldTime()
+    {
+        if (Time.time >= dashInputStartTime + inputHoldTime)
+        {
+            isDashInputStarted = false;
         }
     }
 }

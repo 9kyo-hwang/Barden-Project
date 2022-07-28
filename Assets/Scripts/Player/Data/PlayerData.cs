@@ -34,6 +34,21 @@ public class PlayerData : ScriptableObject
     public Vector2 startOffset;
     public Vector2 stopOffset;
 
+    [Header("Dash State")] 
+    public float dashCooldown = 0.5f;
+    public float maxHoldTime = 1f; // 최대 대시 키다운 시간
+    public float holdTimeScale = 0.25f; // 대시 키다운 중 시간 스케일 조정값
+    public float dashTime = 0.2f; // 대시 수행 후 지난 시간. drag 돌리기 위한 용도
+    public float dashVelocity = 30f;
+    public float dashDrag = 10f; // air density를 일시적으로 조정
+    public float dashEndYMultiplier = 0.2f; // dash 후 y축으로 과도하게 올라가는 걸 막는 용도
+    public float distanceBetweenAfterImage = 0.5f;
+
+    [Header("Crouch States")] 
+    public float crouchMoveVelocity = 5f;
+    public float crouchColliderHeight = 0.8f; // crouch 시 콜라이더 세로 길이 절반으로 조정
+    public float standColliderHeight = 1.6f; // 기본 콜라이더 세로 길이
+
     [Header("Check Variables")] 
     public float groundCheckRadius = 0.3f;
     public float wallCheckDistance = 0.5f;

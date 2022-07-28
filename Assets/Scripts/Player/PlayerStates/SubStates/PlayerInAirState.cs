@@ -5,20 +5,25 @@ using UnityEngine;
 // 어느 상위 상태에 속하지 않는 독립 하위 상태
 public class PlayerInAirState : PlayerState
 {
+    // Input
     private int xInput;
+    private bool isJumpInputted;
+    private bool isJumpInputStopped;
+    private bool isGrabInputted;
+    private bool isDashInputted;
+    
+    // Checks
     private bool isGrounded;
     private bool isTouchingWall;
     private bool isTouchingWallBack;
     private bool isTouchingWallBefore; // wall jump coyote time 적용을 위한 변수
     private bool isTouchingWallBackBefore; // wall jump coyote time 적용을 위한 변수
-    private bool isJumpInputted;
-    private bool isJumpInputStopped;
+    private bool isTouchingLedge;
+    
     private bool isJumping;
-    private bool isGrabInputted;
     private bool isCoyoteTime;
     private bool isWallJumpCoyoteTime;
     private float startWallJumpCoyoteTime;
-    private bool isTouchingLedge;
 
     public PlayerInAirState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animBoolName) : base(player, stateMachine, playerData, animBoolName)
     {
@@ -54,13 +59,14 @@ public class PlayerInAirState : PlayerState
         isJumpInputted = player.inputHandler.isJumpInputStarted;
         isJumpInputStopped = player.inputHandler.isJumpInputCanceled;
         isGrabInputted = player.inputHandler.isGrabInputStarted;
+        isDashInputted = player.inputHandler.isDashInputStarted;
         
         CheckJumpMultiplier();
         
         // inAir 상태에서 벗어나는 조건들
 
         // 땅에 닿았다면 land 상태로
-        if (isGrounded && player.currentVelocity.y < 0.01f)
+        if (isGrounded && player.curVelocity.y < 0.01f)
         {
             stateMachine.ChangeState(player.landState);
         }
@@ -97,9 +103,14 @@ public class PlayerInAirState : PlayerState
         }
         // 벽에 닿았으면서 플레이어가 바라보는 방향과 x축 입력 방향이 같고
         // 캐릭터의 y Velocity가 0 이하라면 wall Slide 상태로
-        else if (isTouchingWall && xInput == player.facingDirection && player.currentVelocity.y <= 0f)
+        else if (isTouchingWall && xInput == player.facingDir && player.curVelocity.y <= 0f)
         {
             stateMachine.ChangeState(player.wallSlideState);
+        }
+        // 대시 키를 눌렀으면서 대시를 할 수 있는 상태라면 dash 상태로
+        else if (isDashInputted && player.dashState.CheckCanDash())
+        {
+            stateMachine.ChangeState(player.dashState);
         }
         // 아니라면 x Velocity 재설정(공중 이동)
         else
@@ -107,8 +118,8 @@ public class PlayerInAirState : PlayerState
             player.CheckFlip(xInput);
             player.SetVelocityX(playerData.moveVelocity * xInput);
             
-            player.animator.SetFloat("yVelocity", player.currentVelocity.y);
-            player.animator.SetFloat("xVelocity", Mathf.Abs(player.currentVelocity.x));
+            player.anim.SetFloat("yVelocity", player.curVelocity.y);
+            player.anim.SetFloat("xVelocity", Mathf.Abs(player.curVelocity.x));
         }
     }
 
@@ -120,11 +131,11 @@ public class PlayerInAirState : PlayerState
             // 점프 키 업 시 y Velocity에 가중치를 곱해서 점프 높이를 낮추고 점프 중이 아니도록 설정
             if (isJumpInputStopped)
             {
-                player.SetVelocityY(player.currentVelocity.y * playerData.variableJumpHeightMultiplier);
+                player.SetVelocityY(player.curVelocity.y * playerData.variableJumpHeightMultiplier);
                 isJumping = false;
             }
             // 현재 y Velocity가 0보다 작으면 떨어지는 중이므로 점프 중이 아니도록 설정
-            else if(player.currentVelocity.y <= 0f)
+            else if(player.curVelocity.y <= 0f)
             {
                 isJumping = false;
             }

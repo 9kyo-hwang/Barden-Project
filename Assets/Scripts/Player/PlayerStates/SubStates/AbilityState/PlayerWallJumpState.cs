@@ -26,8 +26,8 @@ public class PlayerWallJumpState : PlayerAbilityState
         base.LogicUpdate();
         
         // 벽점프 진행 중 애니메이션 x, y 속력에 따라 조정
-        player.animator.SetFloat("yVelocity", player.currentVelocity.y);
-        player.animator.SetFloat("xVelocity", Mathf.Abs(player.currentVelocity.x));
+        player.anim.SetFloat("yVelocity", player.curVelocity.y);
+        player.anim.SetFloat("xVelocity", Mathf.Abs(player.curVelocity.x));
 
         // 벽 점프 유지 시간 초과 시 ability Done
         if (Time.time >= startTime + playerData.wallJumpTime)
@@ -40,6 +40,6 @@ public class PlayerWallJumpState : PlayerAbilityState
     public void DetermineWallJumpDirection(bool isTouchingWall)
     {
         // 벽에 닿았으면 플레이어가 바라보는 방향의 반대, 아니라면 정방향
-        wallJumpDirection = isTouchingWall ? -player.facingDirection : player.facingDirection;
+        wallJumpDirection = isTouchingWall ? -player.facingDir : player.facingDir;
     }
 }

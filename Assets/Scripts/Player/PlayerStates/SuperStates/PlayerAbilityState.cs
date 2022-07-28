@@ -31,7 +31,7 @@ public class PlayerAbilityState : PlayerState
         if (isAbilityDone)
         {
             // 즉각적으로 점프를 수행할 수 있기 때문에 y Velocity 제약 조건 설정
-            if (isGrounded && player.currentVelocity.y < 0.01f)
+            if (isGrounded && player.curVelocity.y < 0.01f)
             {
                 stateMachine.ChangeState(player.idleState);
             }

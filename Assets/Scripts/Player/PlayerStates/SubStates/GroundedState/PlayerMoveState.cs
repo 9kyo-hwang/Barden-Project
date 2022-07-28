@@ -25,10 +25,20 @@ public class PlayerMoveState : PlayerGroundedStates
         
         player.CheckFlip(xInput);
         player.SetVelocityX(playerData.moveVelocity * xInput);
-        
-        if (xInput == 0 && !isExitingState)
+
+        // move 상태를 빠져나가는 조건들
+        if (!isExitingState)
         {
-            stateMachine.ChangeState(player.idleState);
+            // x축 입력이 없다면 idle 상태로
+            if (xInput == 0)
+            {
+                stateMachine.ChangeState(player.idleState);
+            }
+            // y축 아래로 입력이 있다면 crouchMove 상태로
+            else if(yInput == -1)
+            {
+                stateMachine.ChangeState(player.crouchMoveState);
+            }
         }
     }
 
