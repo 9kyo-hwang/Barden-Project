@@ -15,7 +15,7 @@ public class PlayerWallClimbState : PlayerTouchingWallState
         if (!isExitingState) // 상태를 벗어나지 않았을 경우 수행
         {
             // player의 y Velocity를 지속적으로 wallClimbVelocity로 갱신
-            player.SetVelocityY(playerData.wallClimbVelocity);
+            core.movement.SetVelocityY(playerData.wallClimbVelocity);
 
             // wallClimb 상태를 벗어나는 조건들
         

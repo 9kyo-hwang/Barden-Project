@@ -14,7 +14,7 @@ public class PlayerCrouchIdleState : PlayerGroundedStates
         
         // 상태 진입 시 velocity 0으로 설정
         // move 상태에서 진입할 때 더이상 움직이지 않게 하기 위해
-        player.SetVelocityZero();
+        core.movement.SetVelocityZero();
         // 상태 진입 시 콜라이더 높이 재설정
         player.SetColliderHeight(playerData.crouchColliderHeight);
     }

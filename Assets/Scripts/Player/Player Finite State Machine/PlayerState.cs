@@ -5,6 +5,7 @@ using UnityEngine;
 // 게임 오브젝트에 부착되지 않는 스크립트 -> MonoBehaviour 상속 제거
 public class PlayerState
 {
+    protected Core core;
     protected Player player; // 참조용 플레이어
     protected PlayerStateMachine stateMachine; // 참조용 플레이어 상태 머신
     protected PlayerData playerData; // 참조용 플레이어 데이터
@@ -22,6 +23,7 @@ public class PlayerState
         this.stateMachine = stateMachine;
         this.playerData = playerData;
         this.animBoolName = animBoolName;
+        core = player.core; // player의 core로 코어 적용
     }
 
     // 모든 상태별 진입, 탈출, Update, FixedUpdate 함수 필요

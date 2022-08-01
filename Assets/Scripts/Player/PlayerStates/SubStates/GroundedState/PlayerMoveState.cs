@@ -23,8 +23,8 @@ public class PlayerMoveState : PlayerGroundedStates
     {
         base.LogicUpdate();
         
-        player.CheckFlip(xInput);
-        player.SetVelocityX(playerData.moveVelocity * xInput);
+        core.movement.CheckFlip(xInput);
+        core.movement.SetVelocityX(playerData.moveVelocity * xInput);
 
         // move 상태를 빠져나가는 조건들
         if (!isExitingState)

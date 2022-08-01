@@ -74,7 +74,7 @@ public class PlayerInAirState : PlayerState
             stateMachine.ChangeState(player.secondaryAttackState);
         }
         // 땅에 닿았다면 land 상태로
-        else if (isGrounded && player.curVelocity.y < 0.01f)
+        else if (isGrounded && core.movement.curVelocity.y < 0.01f)
         {
             stateMachine.ChangeState(player.landState);
         }
@@ -93,7 +93,7 @@ public class PlayerInAirState : PlayerState
             // PhysicsUpdate()의 DoCheck()에서 검사한 조건은 약간 이전의 조건으로 오류 발생 가능
             // 벽점프 수행 시 벽점프 코요테 타임 중단
             StopWallJumpCoyoteTime();
-            isTouchingWall = player.CheckWall();
+            isTouchingWall = core.colSenses.getWallFront;
             player.wallJumpState.DetermineWallJumpDirection(isTouchingWall);
             stateMachine.ChangeState(player.wallJumpState);
         }
@@ -111,7 +111,7 @@ public class PlayerInAirState : PlayerState
         }
         // 벽에 닿았으면서 플레이어가 바라보는 방향과 x축 입력 방향이 같고
         // 캐릭터의 y Velocity가 0 이하라면 wall Slide 상태로
-        else if (isTouchingWall && xInput == player.facingDir && player.curVelocity.y <= 0f)
+        else if (isTouchingWall && xInput == core.movement.facingDir && core.movement.curVelocity.y <= 0f)
         {
             stateMachine.ChangeState(player.wallSlideState);
         }
@@ -123,11 +123,11 @@ public class PlayerInAirState : PlayerState
         // 아니라면 x Velocity 재설정(공중 이동)
         else
         {
-            player.CheckFlip(xInput);
-            player.SetVelocityX(playerData.moveVelocity * xInput);
+            core.movement.CheckFlip(xInput);
+            core.movement.SetVelocityX(playerData.moveVelocity * xInput);
             
-            player.anim.SetFloat("yVelocity", player.curVelocity.y);
-            player.anim.SetFloat("xVelocity", Mathf.Abs(player.curVelocity.x));
+            player.anim.SetFloat("yVelocity", core.movement.curVelocity.y);
+            player.anim.SetFloat("xVelocity", Mathf.Abs(core.movement.curVelocity.x));
         }
     }
 
@@ -139,11 +139,11 @@ public class PlayerInAirState : PlayerState
             // 점프 키 업 시 y Velocity에 가중치를 곱해서 점프 높이를 낮추고 점프 중이 아니도록 설정
             if (isJumpInputStopped)
             {
-                player.SetVelocityY(player.curVelocity.y * playerData.variableJumpHeightMultiplier);
+                core.movement.SetVelocityY(core.movement.curVelocity.y * playerData.variableJumpHeightMultiplier);
                 isJumping = false;
             }
             // 현재 y Velocity가 0보다 작으면 떨어지는 중이므로 점프 중이 아니도록 설정
-            else if(player.curVelocity.y <= 0f)
+            else if(core.movement.curVelocity.y <= 0f)
             {
                 isJumping = false;
             }
@@ -164,10 +164,10 @@ public class PlayerInAirState : PlayerState
         isTouchingWallBackBefore = isTouchingWallBack;
 
         // 땅이나 벽에 닿아있는 지 정보 갱신
-        isGrounded = player.CheckGround();
-        isTouchingWall = player.CheckWall();
-        isTouchingWallBack = player.CheckWallBack();
-        isTouchingLedge = player.CheckLedge();
+        isGrounded = core.colSenses.getGround;
+        isTouchingWall = core.colSenses.getWallFront;
+        isTouchingWallBack = core.colSenses.getWallBack;
+        isTouchingLedge = core.colSenses.getLedge;
 
         if (isTouchingWall && !isTouchingLedge)
         {

@@ -9,6 +9,7 @@ public class PlayerLedgeClimbState : PlayerState
     private Vector2 cornerPosition;
     private Vector2 startPosition;
     private Vector2 stopPosition;
+    private Vector2 workspace;
 
     private bool isHanging;
     private bool isClimbing;
@@ -33,13 +34,13 @@ public class PlayerLedgeClimbState : PlayerState
         base.Enter();
         
         // 상태 진입 시 x, y 벨로서티 0으로, 위치를 탐지한 위치로 설정
-        player.SetVelocityZero();
+        core.movement.SetVelocityZero();
         player.transform.position = detectedPosition;
-        cornerPosition = player.DetermineCornerPosition();
+        cornerPosition = DetermineCornerPosition();
 
-        startPosition.Set(cornerPosition.x - (player.facingDir * playerData.startOffset.x),
+        startPosition.Set(cornerPosition.x - (core.movement.facingDir * playerData.startOffset.x),
             cornerPosition.y - playerData.startOffset.y);
-        stopPosition.Set(cornerPosition.x + (player.facingDir * playerData.stopOffset.x),
+        stopPosition.Set(cornerPosition.x + (core.movement.facingDir * playerData.stopOffset.x),
             cornerPosition.y + playerData.stopOffset.y);
 
         player.transform.position = startPosition;
@@ -86,14 +87,14 @@ public class PlayerLedgeClimbState : PlayerState
             yInput = player.inputHandler.normalizedInputY;
             isJumpInputted = player.inputHandler.isJumpInputStarted;
         
-            player.SetVelocityZero();
+            core.movement.SetVelocityZero();
             player.transform.position = startPosition;
 
             // LedgeClimb 상태를 벗어나는 조건들 
             
             // x축 입력이 플레이어가 바라보는 방향과 같으면서 매달려 있고 올라가는 중이 아니라면
             // 클라이밍 시작, 애니메이션 재생
-            if (xInput == player.facingDir && isHanging && !isClimbing)
+            if (xInput == core.movement.facingDir && isHanging && !isClimbing)
             {
                 CheckSpace(); // 올라간 위치에 천장이 있는 지 확인
                 isClimbing = true;
@@ -135,8 +136,27 @@ public class PlayerLedgeClimbState : PlayerState
     private void CheckSpace()
     {
         isTouchingCeiling =
-            Physics2D.Raycast(cornerPosition + (Vector2.up * 0.015f) + (Vector2.right * player.facingDir * 0.015f),
-                Vector2.up, playerData.standColliderHeight, playerData.whatIsGround);
+            Physics2D.Raycast(cornerPosition + (Vector2.up * 0.015f) + (Vector2.right * core.movement.facingDir * 0.015f),
+                Vector2.up, playerData.standColliderHeight, core.colSenses.WhatIsGround);
         player.anim.SetBool("isTouchingCeiling", isTouchingCeiling);
+    }
+
+    // 난간 오르기 수행 시 꼭짓점 위치(도착 지점)를 잡아주는 함수
+    // xDistance: 벽 체커 위치에서 Raycast 발사한 거리
+    // yDistance: 난간 체커 위치에서 xDistance만큼 떨어진 거리에서 아랫 방향으로 난간 체커 - 벽 체커 길이만큼 Raycast 발사한 거리
+    // 최종적으로 (벽 체커 위치 + xDistance, 난간 체커 위치 - yDistance) 위치 설정
+    private Vector2 DetermineCornerPosition()
+    {
+        RaycastHit2D xHit = Physics2D.Raycast(core.colSenses.WallChecker.position, Vector2.right * core.movement.facingDir,
+            core.colSenses.WallCheckDistance, core.colSenses.WhatIsGround);
+        var xDistance = xHit.distance + 0.015f; // 약간의 오차 허용 범위
+        workspace.Set(xDistance * core.movement.facingDir, 0f);
+
+        RaycastHit2D yHit = Physics2D.Raycast(core.colSenses.LedgeChecker.position + (Vector3)(workspace), Vector2.down,
+            core.colSenses.LedgeChecker.position.y - core.colSenses.WallChecker.position.y, core.colSenses.WhatIsGround);
+        var yDistance = yHit.distance + 0.015f; // 약간의 오차 허용 범위
+        workspace.Set(core.colSenses.WallChecker.position.x + (xDistance * core.movement.facingDir), core.colSenses.LedgeChecker.position.y - yDistance);
+
+        return workspace;
     }
 }

@@ -53,8 +53,8 @@ public class PlayerWallGrabState : PlayerTouchingWallState
         player.transform.position = holdPosition;
         
         // player의 x, y Velocity를 지속적으로 0으로 갱신
-        player.SetVelocityX(0f);
-        player.SetVelocityY(0f);
+        core.movement.SetVelocityX(0f);
+        core.movement.SetVelocityY(0f);
     }
 
     public override void PhysicsUpdate()

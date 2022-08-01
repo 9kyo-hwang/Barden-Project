@@ -26,7 +26,7 @@ public class PlayerDashState : PlayerAbilityState
         player.inputHandler.UsedDashInput();
 
         isHolding = true;
-        dashDirection = Vector2.right * player.facingDir;
+        dashDirection = Vector2.right * core.movement.facingDir;
 
         Time.timeScale = playerData.holdTimeScale; // 타임 스케일 변경
         startTime = Time.unscaledTime; // 타임 스케일에 영향 받지 않은 시작 시간 저장
@@ -40,9 +40,9 @@ public class PlayerDashState : PlayerAbilityState
         base.Exit();
 
         // dash 상태 탈출 때 과도한 y축 상승을 막기 위해 가중치 할당
-        if (player.curVelocity.y > 0)
+        if (core.movement.curVelocity.y > 0)
         {
-            player.SetVelocityY(player.curVelocity.y * playerData.dashEndYMultiplier);
+            core.movement.SetVelocityY(core.movement.curVelocity.y * playerData.dashEndYMultiplier);
         }
     }
 
@@ -52,8 +52,8 @@ public class PlayerDashState : PlayerAbilityState
 
         if (!isExitingState)
         {
-            player.anim.SetFloat("yVelocity", player.curVelocity.y);
-            player.anim.SetFloat("xVelocity", Mathf.Abs(player.curVelocity.x));
+            player.anim.SetFloat("yVelocity", core.movement.curVelocity.y);
+            player.anim.SetFloat("xVelocity", Mathf.Abs(core.movement.curVelocity.x));
             if (isHolding)
             {
                 dashDirectionInput = player.inputHandler.dashDirectionInputInt;
@@ -76,9 +76,9 @@ public class PlayerDashState : PlayerAbilityState
                     isHolding = false;
                     Time.timeScale = 1f;
                     startTime = Time.time;
-                    player.CheckFlip(Mathf.RoundToInt(dashDirection.x));
+                    core.movement.CheckFlip(Mathf.RoundToInt(dashDirection.x));
                     player.rb2d.drag = playerData.dashDrag; // 일시적으로 drag 증가
-                    player.SetVelocity(playerData.dashVelocity, dashDirection);
+                    core.movement.SetVelocity(playerData.dashVelocity, dashDirection);
                     player.dashDirIndicator.gameObject.SetActive(false); // 대시 발동 시 인디케이서 비활성화
                 }
             }
@@ -86,7 +86,7 @@ public class PlayerDashState : PlayerAbilityState
             else
             {
                 // 속력 설정
-                player.SetVelocity(playerData.dashVelocity, dashDirection);
+                core.movement.SetVelocity(playerData.dashVelocity, dashDirection);
 
                 // 대시 후 일정 시간 지났을 시
                 if (Time.time >= startTime + playerData.dashTime)
