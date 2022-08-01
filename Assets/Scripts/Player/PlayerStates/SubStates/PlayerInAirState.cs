@@ -65,8 +65,16 @@ public class PlayerInAirState : PlayerState
         
         // inAir 상태에서 벗어나는 조건들
 
+        if(player.inputHandler.attackInputArr[(int)AttackInput.primary])
+        {
+            stateMachine.ChangeState(player.primaryAttackState);
+        }
+        else if(player.inputHandler.attackInputArr[(int)AttackInput.secondary])
+        {
+            stateMachine.ChangeState(player.secondaryAttackState);
+        }
         // 땅에 닿았다면 land 상태로
-        if (isGrounded && player.curVelocity.y < 0.01f)
+        else if (isGrounded && player.curVelocity.y < 0.01f)
         {
             stateMachine.ChangeState(player.landState);
         }

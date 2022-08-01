@@ -22,6 +22,8 @@ public class Player : MonoBehaviour
     public PlayerDashState dashState { get; private set; }
     public PlayerCrouchIdleState crouchIdleState { get; private set; }
     public PlayerCrouchMoveState crouchMoveState { get; private set; }
+    public PlayerAttackState primaryAttackState {get; private set;}
+    public PlayerAttackState secondaryAttackState {get; private set;}
     
     [SerializeField]
     private PlayerData playerData;
@@ -33,6 +35,7 @@ public class Player : MonoBehaviour
     public Rigidbody2D rb2d { get; private set; }
     public Transform dashDirIndicator { get; private set; }
     public BoxCollider2D boxCol2d { get; private set; }
+    public PlayerInventory inventory {get; private set;}
     #endregion
     
     #region Check Transforms
@@ -72,6 +75,8 @@ public class Player : MonoBehaviour
         dashState = new PlayerDashState(this, stateMachine, playerData, "inAir"); // 대시 중 공중 애니메이션 수행
         crouchIdleState = new PlayerCrouchIdleState(this, stateMachine, playerData, "crouchIdle");
         crouchMoveState = new PlayerCrouchMoveState(this, stateMachine, playerData, "crouchMove");
+        primaryAttackState = new PlayerAttackState(this, stateMachine, playerData, "attack");
+        secondaryAttackState = new PlayerAttackState(this, stateMachine, playerData, "attack");
     }
 
     private void Start()
@@ -81,9 +86,14 @@ public class Player : MonoBehaviour
         rb2d = GetComponent<Rigidbody2D>();
         dashDirIndicator = transform.Find("DashDirectionIndicator");
         boxCol2d = GetComponent<BoxCollider2D>();
+        inventory = GetComponent<PlayerInventory>();
 
         facingDir = 1;
-        
+
+        // 장비 세팅
+        primaryAttackState.SetWeapon(inventory.weapons[(int)AttackInput.primary]);
+        //secondaryAttackState.SetWeapon(inventory.weapons[(int)AttackInput.secondary]);
+
         // idle 상태로 상태머신 초기화
         stateMachine.Initialize(idleState);
     }

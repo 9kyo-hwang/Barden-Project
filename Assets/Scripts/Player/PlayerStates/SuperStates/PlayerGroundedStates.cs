@@ -46,12 +46,21 @@ public class PlayerGroundedStates : PlayerState
         isJumpInputted = player.inputHandler.isJumpInputStarted;
         isGrabInputted = player.inputHandler.isGrabInputStarted;
         isDashInputted = player.inputHandler.isDashInputStarted;
-        
+
         // grounded 상태에서 벗어나는 조건들
 
+        // 웅크린 상태가 아닐 때(천장에 머리가 닿지 않았을 때) 스킬 키를 눌렀다면 attack 상태로
+        if(player.inputHandler.attackInputArr[(int)AttackInput.primary] && !isTouchingCeiling)
+        {
+            stateMachine.ChangeState(player.primaryAttackState);
+        }
+        else if(player.inputHandler.attackInputArr[(int)AttackInput.secondary] && !isTouchingCeiling)
+        {
+            stateMachine.ChangeState(player.secondaryAttackState);
+        }
         // 어떤 지상 상태에서든 점프 키 입력 시 점프 상태로 바뀔 수 있음
         // 단 남은 점프 횟수가 0보다 클 경우(CanJump() return 조건)
-        if (isJumpInputted && player.jumpState.CanJump())
+        else if (isJumpInputted && player.jumpState.CanJump())
         {
             stateMachine.ChangeState(player.jumpState);
         }

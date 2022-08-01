@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,6 +20,7 @@ public class PlayerInputHandler : MonoBehaviour
     public bool isGrabInputStarted { get; private set; }
     public bool isDashInputStarted { get; private set; }
     public bool isDashInputCanceled { get; private set; }
+    public bool[] attackInputArr {get; private set;}
 
     // input true 유지 시간(짧은 간격으로 키 입력 반복 오류를 막기 위한 변수)
     [SerializeField]
@@ -30,6 +32,10 @@ public class PlayerInputHandler : MonoBehaviour
     private void Start()
     {
         playerInput = GetComponent<PlayerInput>();
+
+        int attackInputCount = Enum.GetValues(typeof(AttackInput)).Length; // enum에 등록된 공격 키 개수 반환
+        attackInputArr = new bool[attackInputCount]; // 공격 키 개수만큼 boolean 배열 생성
+        
         camera = Camera.main;
     }
 
@@ -39,32 +45,41 @@ public class PlayerInputHandler : MonoBehaviour
         CheckDashInputHoldTime();
     }
 
+    public void OnPrimaryAttackInput(InputAction.CallbackContext context)
+    {
+        if(context.started)
+        {
+            attackInputArr[(int)AttackInput.primary] = true;
+        }
+
+        if(context.canceled)
+        {
+            attackInputArr[(int)AttackInput.primary] = false;
+        }
+    }
+
+    public void OnSecondaryAttackInput(InputAction.CallbackContext context)
+    {
+        if(context.started)
+        {
+            attackInputArr[(int)AttackInput.secondary] = true;
+        }
+
+        if(context.canceled)
+        {
+            attackInputArr[(int)AttackInput.secondary] = false;
+        }
+    }
+
     // InputAction에 지정된 키 context를 읽어 거기에 지정된 value 값을 넣음
     // 입력키: WASD, 방향키
     public void OnMoveInput(InputAction.CallbackContext context)
     {
         movementInputRaw = context.ReadValue<Vector2>(); // 키다운 한 버튼의 Vector2 값 대입
 
-        // 값 정규화(-1, 0, 1)
-        if (Mathf.Abs(movementInputRaw.x) > 0.5f)
-        {
-            normalizedInputX = (int)(movementInputRaw * Vector2.right).normalized.x;
-        }
-        else
-        {
-            normalizedInputX = 0;
-        }
-
-        if (Mathf.Abs(movementInputRaw.y) > 0.5f)
-        {
-            normalizedInputY = (int)(movementInputRaw * Vector2.up).normalized.y;
-        }
-        else
-        {
-            normalizedInputY = 0;
-        }
-
-
+        // 소수점 반올림으로 값 정규화(-1, 0, 1)
+        normalizedInputX = Mathf.RoundToInt(movementInputRaw.x);
+        normalizedInputY = Mathf.RoundToInt(movementInputRaw.y);
     }
     
     // 점프 버튼으로 지정한 키가 입력될 경우 수행하게 되는 함수
@@ -153,4 +168,10 @@ public class PlayerInputHandler : MonoBehaviour
             isDashInputStarted = false;
         }
     }
+}
+
+public enum AttackInput
+{
+    primary,
+    secondary
 }
