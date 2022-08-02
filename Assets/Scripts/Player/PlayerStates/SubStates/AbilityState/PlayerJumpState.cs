@@ -17,11 +17,11 @@ public class PlayerJumpState : PlayerAbilityState
         base.Enter();
         
         // 다른 상태에 흩어져있던 isJumpInput = false 기능을 jump 상태 진입 시 동작하도록 일원화
-        player.inputHandler.UsedJumpInput();
-        core.movement.SetVelocityY(playerData.jumpVelocity);
+        player.InputHandler.UsedJumpInput();
+        core.Movement.SetVelocityY(playerData.jumpVelocity);
         isAbilityDone = true;
         leftJumpCount--;
-        player.inAirState.SetIsJumping();
+        player.InAirState.SetIsJumping();
     }
 
     // 남은 점프 횟수를 판단해 점프를 할 수 있는 지 판단하는 함수

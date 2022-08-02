@@ -23,16 +23,16 @@ public class PlayerDashState : PlayerAbilityState
 
         // dash 상태 진입 시 boolean 변수 false화
         canDash = false;
-        player.inputHandler.UsedDashInput();
+        player.InputHandler.UsedDashInput();
 
         isHolding = true;
-        dashDirection = Vector2.right * core.movement.facingDir;
+        dashDirection = Vector2.right * core.Movement.FacingDir;
 
         Time.timeScale = playerData.holdTimeScale; // 타임 스케일 변경
         startTime = Time.unscaledTime; // 타임 스케일에 영향 받지 않은 시작 시간 저장
         
         // 대시 상태 진입 시 인디케이터 이미지 활성화
-        player.dashDirIndicator.gameObject.SetActive(true);
+        player.DashDirIndicator.gameObject.SetActive(true);
     }
 
     public override void Exit()
@@ -40,9 +40,9 @@ public class PlayerDashState : PlayerAbilityState
         base.Exit();
 
         // dash 상태 탈출 때 과도한 y축 상승을 막기 위해 가중치 할당
-        if (core.movement.curVelocity.y > 0)
+        if (core.Movement.CurVelocity.y > 0)
         {
-            core.movement.SetVelocityY(core.movement.curVelocity.y * playerData.dashEndYMultiplier);
+            core.Movement.SetVelocityY(core.Movement.CurVelocity.y * playerData.dashEndYMultiplier);
         }
     }
 
@@ -52,12 +52,12 @@ public class PlayerDashState : PlayerAbilityState
 
         if (!isExitingState)
         {
-            player.anim.SetFloat("yVelocity", core.movement.curVelocity.y);
-            player.anim.SetFloat("xVelocity", Mathf.Abs(core.movement.curVelocity.x));
+            player.Anim.SetFloat("yVelocity", core.Movement.CurVelocity.y);
+            player.Anim.SetFloat("xVelocity", Mathf.Abs(core.Movement.CurVelocity.x));
             if (isHolding)
             {
-                dashDirectionInput = player.inputHandler.dashDirectionInputInt;
-                isDashInputStopped = player.inputHandler.isDashInputCanceled;
+                dashDirectionInput = player.InputHandler.dashDirectionInputInt;
+                isDashInputStopped = player.InputHandler.isDashInputCanceled;
                 
                 // 아무 방향키도 안 누른 게 아닐 경우 방향 설정
                 if (dashDirectionInput != Vector2.zero)
@@ -68,7 +68,7 @@ public class PlayerDashState : PlayerAbilityState
 
                 // 사이각 구해서 indicator 이미지 회전, 단 기본적으로 45도 틀어져있어서 -45도
                 var angle = Vector2.SignedAngle(Vector2.right, dashDirection);
-                player.dashDirIndicator.rotation = Quaternion.Euler(0f, 0f, angle - 45f);
+                player.DashDirIndicator.rotation = Quaternion.Euler(0f, 0f, angle - 45f);
 
                 // dash 키 업 또는 최대 hold 시간 초과 시 holding stop
                 if (isDashInputStopped || Time.unscaledTime >= startTime + playerData.maxHoldTime)
@@ -76,22 +76,22 @@ public class PlayerDashState : PlayerAbilityState
                     isHolding = false;
                     Time.timeScale = 1f;
                     startTime = Time.time;
-                    core.movement.CheckFlip(Mathf.RoundToInt(dashDirection.x));
-                    player.rb2d.drag = playerData.dashDrag; // 일시적으로 drag 증가
-                    core.movement.SetVelocity(playerData.dashVelocity, dashDirection);
-                    player.dashDirIndicator.gameObject.SetActive(false); // 대시 발동 시 인디케이서 비활성화
+                    core.Movement.CheckFlip(Mathf.RoundToInt(dashDirection.x));
+                    player.Rb2d.drag = playerData.dashDrag; // 일시적으로 drag 증가
+                    core.Movement.SetVelocity(playerData.dashVelocity, dashDirection);
+                    player.DashDirIndicator.gameObject.SetActive(false); // 대시 발동 시 인디케이서 비활성화
                 }
             }
             // 대시 키 업 시
             else
             {
                 // 속력 설정
-                core.movement.SetVelocity(playerData.dashVelocity, dashDirection);
+                core.Movement.SetVelocity(playerData.dashVelocity, dashDirection);
 
                 // 대시 후 일정 시간 지났을 시
                 if (Time.time >= startTime + playerData.dashTime)
                 {
-                    player.rb2d.drag = 0f; // drag 복구
+                    player.Rb2d.drag = 0f; // drag 복구
                     isAbilityDone = true; // ability done
                     lastDashTime = Time.time; // 마지막 대시 시간 갱신
                 }

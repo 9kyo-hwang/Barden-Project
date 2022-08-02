@@ -18,12 +18,12 @@ public class PlayerLandState : PlayerGroundedStates
             // 땅에 착지했을 때 x축 입력이 있다면 move 상태로
             if (xInput != 0)
             {
-                stateMachine.ChangeState(player.moveState);
+                stateMachine.ChangeState(player.MoveState);
             }
             // 착지 애니메이션이 끝까지 수행되었다면 idle 상태로
             else if(isAnimationFinished)
             {
-                stateMachine.ChangeState(player.idleState);
+                stateMachine.ChangeState(player.IdleState);
             }
         }
     }

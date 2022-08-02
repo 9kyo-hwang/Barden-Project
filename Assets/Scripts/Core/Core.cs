@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,24 +6,24 @@ using UnityEngine;
 // 코어 컴포넌트들을 총괄하는 스크립트
 public class Core : MonoBehaviour
 {
-    public Movement movement {get; private set;}
-    public CollisionSenses colSenses {get; private set;}
+    public Movement Movement { get; private set; }
+    public CollisionSenses ColSenses { get; private set; }
 
-    // 하위 오브젝트에 있는 코어 컴포넌트들의 할당
+    // 코어 컴포넌트들의 할당
     private void Awake()
     {
-        movement = GetComponentInChildren<Movement>();
-        colSenses = GetComponentInChildren<CollisionSenses>();
+        Movement = GetComponentInChildren<Movement>();
+        ColSenses = GetComponentInChildren<CollisionSenses>();
 
-        if(!movement || !colSenses)
+        if (!Movement || !ColSenses)
         {
-            Debug.LogError("Missing Core Component");
+            Debug.LogError("Missing Core Components");
         }
     }
 
     // 코어 컴포넌트들의 LogicUpdate 수행
     public void LogicUpdate()
     {
-        movement.LogicUpdate();
+        Movement.LogicUpdate();
     }
 }

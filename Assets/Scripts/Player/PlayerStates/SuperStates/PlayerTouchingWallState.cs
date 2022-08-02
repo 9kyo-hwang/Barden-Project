@@ -30,10 +30,10 @@ public class PlayerTouchingWallState : PlayerState
     {
         base.LogicUpdate();
 
-        xInput = player.inputHandler.normalizedInputX;
-        yInput = player.inputHandler.normalizedInputY;
-        isGrabInputted = player.inputHandler.isGrabInputStarted;
-        isJumpInputted = player.inputHandler.isJumpInputStarted;
+        xInput = player.InputHandler.normalizedInputX;
+        yInput = player.InputHandler.normalizedInputY;
+        isGrabInputted = player.InputHandler.isGrabInputStarted;
+        isJumpInputted = player.InputHandler.isJumpInputStarted;
 
         // touching Wall 상태에서 벗어나는 조건들
 
@@ -41,24 +41,24 @@ public class PlayerTouchingWallState : PlayerState
         // wall jump가 수행될 수 있음
         if (isJumpInputted)
         {
-            player.wallJumpState.DetermineWallJumpDirection(isTouchingWall);
-            stateMachine.ChangeState(player.wallJumpState);
+            player.WallJumpState.DetermineWallJumpDirection(isTouchingWall);
+            stateMachine.ChangeState(player.WallJumpState);
         }
         // 땅에 닿았으면서 !grab input인 경우 idle 상태로
         else if (isGrounded && !isGrabInputted)
         {
-            stateMachine.ChangeState(player.idleState);
+            stateMachine.ChangeState(player.IdleState);
         }
         // 벽에서 떨어졌거나, x축 입력이 바라보는 방향과 다르거나 없는 경우
         // 또는 !grabInput이면서 땅에 닿지 않았으면 inAir 상태로
-        else if (!isTouchingWall || (xInput != core.movement.facingDir && !isGrabInputted))
+        else if (!isTouchingWall || (xInput != core.Movement.FacingDir && !isGrabInputted))
         {
-            stateMachine.ChangeState(player.inAirState);
+            stateMachine.ChangeState(player.InAirState);
         }
         // 벽에 닿았으면서 난간에 닿지 않았다면 ledgeClimb 상태로
         else if (isTouchingWall && !isTouchingLedge)
         {
-            stateMachine.ChangeState(player.ledgeClimbState);
+            stateMachine.ChangeState(player.LedgeClimbState);
         }
     }
 
@@ -70,14 +70,14 @@ public class PlayerTouchingWallState : PlayerState
     public override void DoCheck()
     {
         base.DoCheck();
-
-        isGrounded = core.colSenses.getGround;
-        isTouchingWall = core.colSenses.getWallFront;
-        isTouchingLedge = core.colSenses.getLedge;
+        
+        isGrounded = core.ColSenses.GetGround;
+        isTouchingWall = core.ColSenses.GetWall;
+        isTouchingLedge = core.ColSenses.GetLedge;
 
         if (isTouchingWall && !isTouchingLedge)
         {
-            player.ledgeClimbState.SetDetectedPosition(player.transform.position);
+            player.LedgeClimbState.SetDetectedPosition(player.transform.position);
         }
     }
 

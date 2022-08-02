@@ -6,6 +6,7 @@ using UnityEngine;
 public class PlayerState
 {
     protected Core core;
+    
     protected Player player; // 참조용 플레이어
     protected PlayerStateMachine stateMachine; // 참조용 플레이어 상태 머신
     protected PlayerData playerData; // 참조용 플레이어 데이터
@@ -23,7 +24,7 @@ public class PlayerState
         this.stateMachine = stateMachine;
         this.playerData = playerData;
         this.animBoolName = animBoolName;
-        core = player.core; // player의 core로 코어 적용
+        core = player.Core;
     }
 
     // 모든 상태별 진입, 탈출, Update, FixedUpdate 함수 필요
@@ -33,7 +34,7 @@ public class PlayerState
     public virtual void Enter()
     {
         DoCheck();
-        player.anim.SetBool(animBoolName, true);
+        player.Anim.SetBool(animBoolName, true);
         startTime = Time.time;
         Debug.Log(animBoolName);
         isAnimationFinished = false;
@@ -43,7 +44,7 @@ public class PlayerState
     // 특정 상태에서 탈출했을 때 호출
     public virtual void Exit()
     {
-        player.anim.SetBool(animBoolName, false);
+        player.Anim.SetBool(animBoolName, false);
         isExitingState = true;
     }
     
