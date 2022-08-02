@@ -37,16 +37,16 @@ public class PlayerAttackState : PlayerAbilityState
     {
         base.LogicUpdate();
 
-        xInput = player.inputHandler.normalizedInputX;
+        xInput = player.InputHandler.normalizedInputX;
     
         if(shouldCheckFlip)
         {
-            player.CheckFlip(xInput);
+            core.Movement.CheckFlip(xInput);
         }
 
         if(setVelocity)
         {
-            player.SetVelocityX(velocityToSet * player.facingDir);
+            core.Movement.SetVelocityX(velocityToSet * core.Movement.FacingDir);
         }
     }
 
@@ -59,7 +59,7 @@ public class PlayerAttackState : PlayerAbilityState
     // float velocity 값을 받아 공격 모션 중 플레이어의 Velocity 설정
     public void SetPlayerVelocity(float velocity)
     {
-        player.SetVelocityX(velocity * player.facingDir);
+        core.Movement.SetVelocityX(velocity * core.Movement.FacingDir);
 
         velocityToSet = velocity;
         setVelocity = true;

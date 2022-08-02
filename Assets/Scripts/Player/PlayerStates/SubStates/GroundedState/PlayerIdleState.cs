@@ -12,7 +12,7 @@ public class PlayerIdleState : PlayerGroundedStates
     {
         base.Enter();
         
-        player.SetVelocityZero();
+        core.Movement.SetVelocityZero();
     }
 
     public override void Exit()
@@ -30,12 +30,12 @@ public class PlayerIdleState : PlayerGroundedStates
             // x축 입력이 있다면 move 상태로
             if (xInput != 0)
             {
-                stateMachine.ChangeState(player.moveState);
+                stateMachine.ChangeState(player.MoveState);
             }
             // y축 아래로 입력이 있다면 crouch idle 상태로
             else if (yInput == -1)
             {
-                stateMachine.ChangeState(player.crouchIdleState);
+                stateMachine.ChangeState(player.CrouchIdleState);
             }
         }
     }

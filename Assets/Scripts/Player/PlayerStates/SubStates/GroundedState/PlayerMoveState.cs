@@ -23,8 +23,8 @@ public class PlayerMoveState : PlayerGroundedStates
     {
         base.LogicUpdate();
         
-        player.CheckFlip(xInput);
-        player.SetVelocityX(playerData.moveVelocity * xInput);
+        core.Movement.CheckFlip(xInput);
+        core.Movement.SetVelocityX(playerData.moveVelocity * xInput);
 
         // move 상태를 빠져나가는 조건들
         if (!isExitingState)
@@ -32,12 +32,12 @@ public class PlayerMoveState : PlayerGroundedStates
             // x축 입력이 없다면 idle 상태로
             if (xInput == 0)
             {
-                stateMachine.ChangeState(player.idleState);
+                stateMachine.ChangeState(player.IdleState);
             }
             // y축 아래로 입력이 있다면 crouchMove 상태로
             else if(yInput == -1)
             {
-                stateMachine.ChangeState(player.crouchMoveState);
+                stateMachine.ChangeState(player.CrouchMoveState);
             }
         }
     }

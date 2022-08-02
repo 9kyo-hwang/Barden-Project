@@ -48,9 +48,4 @@ public class PlayerData : ScriptableObject
     public float crouchMoveVelocity = 5f;
     public float crouchColliderHeight = 0.8f; // crouch 시 콜라이더 세로 길이 절반으로 조정
     public float standColliderHeight = 1.6f; // 기본 콜라이더 세로 길이
-
-    [Header("Check Variables")] 
-    public float groundCheckRadius = 0.3f;
-    public float wallCheckDistance = 0.5f;
-    public LayerMask whatIsGround;
 }
