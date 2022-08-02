@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // Player - Weapons - 무기 - Base에 부착될 스크립트
-// base의 animation trigger를 동작시키는 중간자 역할 스크립트
+// base의 animation trigger를 실제로 동작시키는 중간자 역할 스크립트
 public class WeaponAnimationToWeapon : MonoBehaviour
 {
     private Weapon weapon;
@@ -37,5 +37,10 @@ public class WeaponAnimationToWeapon : MonoBehaviour
     private void AnimationTurnOnFlipTrigger()
     {
         weapon.AnimationTurnOnFlipTrigger();
+    }
+
+    private void AnimationActionTrigger()
+    {
+        weapon.AnimationActionTrigger();
     }
 }

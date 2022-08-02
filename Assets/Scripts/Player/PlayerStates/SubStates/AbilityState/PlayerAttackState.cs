@@ -37,7 +37,7 @@ public class PlayerAttackState : PlayerAbilityState
     {
         base.LogicUpdate();
 
-        xInput = player.InputHandler.normalizedInputX;
+        xInput = player.InputHandler.InputXNormalize;
     
         if(shouldCheckFlip)
         {

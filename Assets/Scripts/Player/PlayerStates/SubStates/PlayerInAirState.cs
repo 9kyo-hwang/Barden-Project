@@ -56,21 +56,21 @@ public class PlayerInAirState : PlayerState
         CheckCoyoteTime();
         CheckWallJumpCoyoteTime();
         
-        xInput = player.InputHandler.normalizedInputX;
-        isJumpInputted = player.InputHandler.isJumpInputStarted;
-        isJumpInputStopped = player.InputHandler.isJumpInputCanceled;
-        isGrabInputted = player.InputHandler.isGrabInputStarted;
-        isDashInputted = player.InputHandler.isDashInputStarted;
+        xInput = player.InputHandler.InputXNormalize;
+        isJumpInputted = player.InputHandler.IsInputJumpStarted;
+        isJumpInputStopped = player.InputHandler.IsInputJumpCanceled;
+        isGrabInputted = player.InputHandler.IsInputGrabStarted;
+        isDashInputted = player.InputHandler.IsInputDashStarted;
         
         CheckJumpMultiplier();
         
         // inAir 상태에서 벗어나는 조건들
 
-        if(player.InputHandler.attackInputArr[(int)AttackInput.primary])
+        if(player.InputHandler.IsInputAttackArray[(int)AttackInput.primary])
         {
             stateMachine.ChangeState(player.PrimaryAttackState);
         }
-        else if(player.InputHandler.attackInputArr[(int)AttackInput.secondary])
+        else if(player.InputHandler.IsInputAttackArray[(int)AttackInput.secondary])
         {
             stateMachine.ChangeState(player.SecondaryAttackState);
         }

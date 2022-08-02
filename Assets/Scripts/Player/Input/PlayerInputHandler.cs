@@ -9,23 +9,21 @@ public class PlayerInputHandler : MonoBehaviour
     private PlayerInput playerInput; // Player Input component
     private Camera camera; // Camera Component
     
-    // 각종 상태에서 값을 읽을 수 있어야 함
-    public Vector2 movementInputRaw { get; private set; }
-    public Vector2 dashDirectionInputRaw { get; private set; }
-    public Vector2Int dashDirectionInputInt { get; private set; }
-    public int normalizedInputX { get; private set; }
-    public int normalizedInputY { get; private set; }
-    public bool isJumpInputStarted { get; private set; }
-    public bool isJumpInputCanceled { get; private set; }
-    public bool isGrabInputStarted { get; private set; }
-    public bool isDashInputStarted { get; private set; }
-    public bool isDashInputCanceled { get; private set; }
-    public bool[] attackInputArr {get; private set;}
+    // property 변수들
+    public Vector2 InputMovementRaw { get; private set; }
+    public Vector2 InputDashDirectionRaw { get; private set; }
+    public Vector2Int InputDashDirectionInt { get; private set; }
+    public int InputXNormalize { get; private set; }
+    public int InputYNormalize { get; private set; }
+    public bool IsInputJumpStarted { get; private set; }
+    public bool IsInputJumpCanceled { get; private set; }
+    public bool IsInputGrabStarted { get; private set; }
+    public bool IsInputDashStarted { get; private set; }
+    public bool IsInputDashCanceled { get; private set; }
+    public bool[] IsInputAttackArray { get; private set; }
 
     // input true 유지 시간(짧은 간격으로 키 입력 반복 오류를 막기 위한 변수)
-    [SerializeField]
-    private float inputHoldTime = 0.2f;
-    
+    [SerializeField] private float inputHoldTime = 0.2f;
     private float jumpInputStartTime;
     private float dashInputStartTime;
 
@@ -34,7 +32,7 @@ public class PlayerInputHandler : MonoBehaviour
         playerInput = GetComponent<PlayerInput>();
 
         int attackInputCount = Enum.GetValues(typeof(AttackInput)).Length; // enum에 등록된 공격 키 개수 반환
-        attackInputArr = new bool[attackInputCount]; // 공격 키 개수만큼 boolean 배열 생성
+        IsInputAttackArray = new bool[attackInputCount]; // 공격 키 개수만큼 boolean 배열 생성
         
         camera = Camera.main;
     }
@@ -49,12 +47,12 @@ public class PlayerInputHandler : MonoBehaviour
     {
         if(context.started)
         {
-            attackInputArr[(int)AttackInput.primary] = true;
+            IsInputAttackArray[(int)AttackInput.primary] = true;
         }
 
         if(context.canceled)
         {
-            attackInputArr[(int)AttackInput.primary] = false;
+            IsInputAttackArray[(int)AttackInput.primary] = false;
         }
     }
 
@@ -62,12 +60,12 @@ public class PlayerInputHandler : MonoBehaviour
     {
         if(context.started)
         {
-            attackInputArr[(int)AttackInput.secondary] = true;
+            IsInputAttackArray[(int)AttackInput.secondary] = true;
         }
 
         if(context.canceled)
         {
-            attackInputArr[(int)AttackInput.secondary] = false;
+            IsInputAttackArray[(int)AttackInput.secondary] = false;
         }
     }
 
@@ -75,11 +73,11 @@ public class PlayerInputHandler : MonoBehaviour
     // 입력키: WASD, 방향키
     public void OnMoveInput(InputAction.CallbackContext context)
     {
-        movementInputRaw = context.ReadValue<Vector2>(); // 키다운 한 버튼의 Vector2 값 대입
+        InputMovementRaw = context.ReadValue<Vector2>(); // 키다운 한 버튼의 Vector2 값 대입
 
         // 소수점 반올림으로 값 정규화(-1, 0, 1)
-        normalizedInputX = Mathf.RoundToInt(movementInputRaw.x);
-        normalizedInputY = Mathf.RoundToInt(movementInputRaw.y);
+        InputXNormalize = Mathf.RoundToInt(InputMovementRaw.x);
+        InputYNormalize = Mathf.RoundToInt(InputMovementRaw.y);
     }
     
     // 점프 버튼으로 지정한 키가 입력될 경우 수행하게 되는 함수
@@ -89,15 +87,15 @@ public class PlayerInputHandler : MonoBehaviour
         // jump 키다운 시
         if (context.started)
         {
-            isJumpInputStarted = true;
-            isJumpInputCanceled = false;
+            IsInputJumpStarted = true;
+            IsInputJumpCanceled = false;
             jumpInputStartTime = Time.time;
         }
 
         // jump 키업 시
         if (context.canceled)
         {
-            isJumpInputCanceled = true;
+            IsInputJumpCanceled = true;
         }
     }
 
@@ -105,12 +103,12 @@ public class PlayerInputHandler : MonoBehaviour
     {
         if (context.started)
         {
-            isGrabInputStarted = true;
+            IsInputGrabStarted = true;
         }
 
         if (context.canceled)
         {
-            isGrabInputStarted = false;
+            IsInputGrabStarted = false;
         }
     }
 
@@ -118,46 +116,46 @@ public class PlayerInputHandler : MonoBehaviour
     {
         if (context.started)
         {
-            isDashInputStarted = true;
-            isDashInputCanceled = false;
+            IsInputDashStarted = true;
+            IsInputDashCanceled = false;
             dashInputStartTime = Time.time;
         }
         else if (context.canceled)
         {
-            isDashInputCanceled = true;
+            IsInputDashCanceled = true;
         }
     }
 
     public void OnDashDirectionInput(InputAction.CallbackContext context)
     {
-        dashDirectionInputRaw = context.ReadValue<Vector2>();
+        InputDashDirectionRaw = context.ReadValue<Vector2>();
 
         if (playerInput.currentControlScheme == "PC")
         {
-            dashDirectionInputRaw = camera.ScreenToWorldPoint(dashDirectionInputRaw) - transform.position;
+            InputDashDirectionRaw = camera.ScreenToWorldPoint(InputDashDirectionRaw) - transform.position;
         }
 
         // int 반올림(0, 0 || 0, 1 || 1, 0 || 1, 1 || etc)
-        dashDirectionInputInt = Vector2Int.RoundToInt(dashDirectionInputRaw.normalized);
+        InputDashDirectionInt = Vector2Int.RoundToInt(InputDashDirectionRaw.normalized);
     }
 
     // 점프 키 입력 참 판정 체크를 한 번만 하기 위해
     // false로 해제시키는 용도의 함수
     public void UsedJumpInput()
     {
-        isJumpInputStarted = false;
+        IsInputJumpStarted = false;
     }
 
     public void UsedDashInput()
     {
-        isDashInputStarted = false;
+        IsInputDashStarted = false;
     }
 
     private void CheckJumpInputHoldTime()
     {
         if (Time.time >= jumpInputStartTime + inputHoldTime)
         {
-            isJumpInputStarted = false;
+            IsInputJumpStarted = false;
         }
     }
 
@@ -165,13 +163,9 @@ public class PlayerInputHandler : MonoBehaviour
     {
         if (Time.time >= dashInputStartTime + inputHoldTime)
         {
-            isDashInputStarted = false;
+            IsInputDashStarted = false;
         }
     }
 }
 
-public enum AttackInput
-{
-    primary,
-    secondary
-}
+public enum AttackInput { primary, secondary }

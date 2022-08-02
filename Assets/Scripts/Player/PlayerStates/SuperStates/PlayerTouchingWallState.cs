@@ -30,10 +30,10 @@ public class PlayerTouchingWallState : PlayerState
     {
         base.LogicUpdate();
 
-        xInput = player.InputHandler.normalizedInputX;
-        yInput = player.InputHandler.normalizedInputY;
-        isGrabInputted = player.InputHandler.isGrabInputStarted;
-        isJumpInputted = player.InputHandler.isJumpInputStarted;
+        xInput = player.InputHandler.InputXNormalize;
+        yInput = player.InputHandler.InputYNormalize;
+        isGrabInputted = player.InputHandler.IsInputGrabStarted;
+        isJumpInputted = player.InputHandler.IsInputJumpStarted;
 
         // touching Wall 상태에서 벗어나는 조건들
 

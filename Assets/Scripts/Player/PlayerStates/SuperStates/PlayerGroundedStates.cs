@@ -41,20 +41,20 @@ public class PlayerGroundedStates : PlayerState
     {
         base.LogicUpdate();
         
-        xInput = player.InputHandler.normalizedInputX;
-        yInput = player.InputHandler.normalizedInputY;
-        isJumpInputted = player.InputHandler.isJumpInputStarted;
-        isGrabInputted = player.InputHandler.isGrabInputStarted;
-        isDashInputted = player.InputHandler.isDashInputStarted;
+        xInput = player.InputHandler.InputXNormalize;
+        yInput = player.InputHandler.InputYNormalize;
+        isJumpInputted = player.InputHandler.IsInputJumpStarted;
+        isGrabInputted = player.InputHandler.IsInputGrabStarted;
+        isDashInputted = player.InputHandler.IsInputDashStarted;
 
         // grounded 상태에서 벗어나는 조건들
 
         // 웅크린 상태가 아닐 때(천장에 머리가 닿지 않았을 때) 스킬 키를 눌렀다면 attack 상태로
-        if(player.InputHandler.attackInputArr[(int)AttackInput.primary] && !isTouchingCeiling)
+        if(player.InputHandler.IsInputAttackArray[(int)AttackInput.primary] && !isTouchingCeiling)
         {
             stateMachine.ChangeState(player.PrimaryAttackState);
         }
-        else if(player.InputHandler.attackInputArr[(int)AttackInput.secondary] && !isTouchingCeiling)
+        else if(player.InputHandler.IsInputAttackArray[(int)AttackInput.secondary] && !isTouchingCeiling)
         {
             stateMachine.ChangeState(player.SecondaryAttackState);
         }

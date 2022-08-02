@@ -8,5 +8,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "newWeaponData", menuName = "Data/Weapon Data/Weapon")]
 public class SO_WeaponData : ScriptableObject
 {
-    public float[] moveSpeed;
+    public int AttackCount { get; protected set; }
+    public float[] MovementSpeed { get; protected set; } // getter setter 사용 시 Inspector 창에서 표기가 되지 않음
 }

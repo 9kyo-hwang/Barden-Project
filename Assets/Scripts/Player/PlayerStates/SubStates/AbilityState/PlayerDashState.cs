@@ -56,8 +56,8 @@ public class PlayerDashState : PlayerAbilityState
             player.Anim.SetFloat("xVelocity", Mathf.Abs(core.Movement.CurVelocity.x));
             if (isHolding)
             {
-                dashDirectionInput = player.InputHandler.dashDirectionInputInt;
-                isDashInputStopped = player.InputHandler.isDashInputCanceled;
+                dashDirectionInput = player.InputHandler.InputDashDirectionInt;
+                isDashInputStopped = player.InputHandler.IsInputDashCanceled;
                 
                 // 아무 방향키도 안 누른 게 아닐 경우 방향 설정
                 if (dashDirectionInput != Vector2.zero)

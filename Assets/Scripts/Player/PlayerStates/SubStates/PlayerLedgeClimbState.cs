@@ -83,9 +83,9 @@ public class PlayerLedgeClimbState : PlayerState
         // 입력 및 위치 조정 수행
         else
         {
-            xInput = player.InputHandler.normalizedInputX;
-            yInput = player.InputHandler.normalizedInputY;
-            isJumpInputted = player.InputHandler.isJumpInputStarted;
+            xInput = player.InputHandler.InputXNormalize;
+            yInput = player.InputHandler.InputYNormalize;
+            isJumpInputted = player.InputHandler.IsInputJumpStarted;
         
             core.Movement.SetVelocityZero();
             player.transform.position = startPosition;
