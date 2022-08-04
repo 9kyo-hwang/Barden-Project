@@ -5,7 +5,8 @@ using UnityEngine;
 public class Enemy1IdleState : EntityIdleState
 {
     private Enemy1 enemy;
-    public Enemy1IdleState(Entity entity, EntityStateMachine stateMachine, string animBoolName, EntityData_IdleState idleData, Enemy1 enemy) : base(entity, stateMachine, animBoolName, idleData)
+
+    public Enemy1IdleState(Entity entity, EntityStateMachine stateMachine, EntityData entityData, string animBoolName, Enemy1 enemy) : base(entity, stateMachine, entityData, animBoolName)
     {
         this.enemy = enemy;
     }
@@ -28,7 +29,7 @@ public class Enemy1IdleState : EntityIdleState
 
         if(isDetectingPlayerInMinRange)
         {
-            stateMachine.ChangeState(enemy.PlayerDetectedState);
+            stateMachine.ChangeState(enemy.DetectedPlayerState);
         }
         else if(isIdleTimeOver)
         {

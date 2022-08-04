@@ -6,9 +6,7 @@ using Random = UnityEngine.Random;
 
 public class Entity : MonoBehaviour
 {
-    #region State Variables
     public EntityStateMachine StateMachine { get; private set; }
-    #endregion
 
     #region Components
     public Animator Anim { get; private set; }

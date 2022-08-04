@@ -5,7 +5,8 @@ using UnityEngine;
 public class Enemy1MoveState : EntityMoveState
 {
     private Enemy1 enemy; // 이 클래스로부터 더이상 상속이 일어나지 않도록 private
-    public Enemy1MoveState(Entity entity, EntityStateMachine stateMachine, string animBoolName, EntityData_MoveState moveData, Enemy1 enemy) : base(entity, stateMachine, animBoolName, moveData)
+
+    public Enemy1MoveState(Entity entity, EntityStateMachine stateMachine, EntityData entityData, string animBoolName, Enemy1 enemy) : base(entity, stateMachine, entityData, animBoolName)
     {
         this.enemy = enemy;
     }
@@ -29,7 +30,7 @@ public class Enemy1MoveState : EntityMoveState
         // Player가 탐지되었을 경우 PlayerDetected State로
         if(isDetectingPlayerInMinRange)
         {
-            stateMachine.ChangeState(enemy.PlayerDetectedState);
+            stateMachine.ChangeState(enemy.DetectedPlayerState);
         }
         // 벽에 닿았거나 난간에 닿은게 아니라면 Idle State로
         else if(isDetectingWall || !isDetectingLedge)

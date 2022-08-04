@@ -2,11 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy1PlayerDetectedState : PlayerDetectedState
+public class Enemy1LookForPlayerState : EntityLookForPlayerState
 {
     private Enemy1 enemy;
-
-    public Enemy1PlayerDetectedState(Entity entity, EntityStateMachine stateMachine, string animBoolName, EntityData_PlayerDetectedState playerDetectedData, Enemy1 enemy) : base(entity, stateMachine, animBoolName, playerDetectedData)
+    public Enemy1LookForPlayerState(Entity entity, EntityStateMachine stateMachine, EntityData entityData, string animBoolName, Enemy1 enemy) : base(entity, stateMachine, entityData, animBoolName)
     {
         this.enemy = enemy;
     }
@@ -30,10 +29,15 @@ public class Enemy1PlayerDetectedState : PlayerDetectedState
     {
         base.LogicUpdate();
 
-        if(!isDetectingPlayerInMaxRange)
+        // Look For Player State를 벗어나는 조건들
+
+        if(isDetectingPlayerInMinRange)
         {
-            enemy.IdleState.SetFlipAfterIdle(false);
-            stateMachine.ChangeState(enemy.IdleState);
+            stateMachine.ChangeState(enemy.DetectedPlayerState);
+        }
+        else if(isAllTurnsTimeDone)
+        {
+            stateMachine.ChangeState(enemy.MoveState);
         }
     }
 

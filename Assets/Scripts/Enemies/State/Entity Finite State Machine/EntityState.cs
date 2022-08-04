@@ -7,15 +7,17 @@ public class EntityState
 {
     protected Entity entity; // 참조용 엔터티
     protected EntityStateMachine stateMachine; // 참조용 상태 머신
+    protected EntityData entityData;
 
     protected float startTime; // 상태 진입 시작 시간. 항상 참조됨
     
     protected string animBoolName; // 어떤 애니메이션을 실행시켜야 하는 지 판단하는 스트링 변수
     
-    public EntityState(Entity entity, EntityStateMachine stateMachine, string animBoolName)
+    public EntityState(Entity entity, EntityStateMachine stateMachine, EntityData entityData, string animBoolName)
     {
         this.entity = entity;
         this.stateMachine = stateMachine;
+        this.entityData = entityData;
         this.animBoolName = animBoolName;
     }
 

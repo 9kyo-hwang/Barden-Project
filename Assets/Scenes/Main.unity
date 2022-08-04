@@ -156,9 +156,6 @@ MonoBehaviour:
   wallChecker: {fileID: 1873426362}
   ledgeChecker: {fileID: 2123302309}
   playerChecker: {fileID: 1682547998}
-  idleData: {fileID: 11400000, guid: 1c6731f466196174cbc66656d3605de1, type: 2}
-  moveData: {fileID: 11400000, guid: f0964cc5fb8e6b343a8c49d436a3436b, type: 2}
-  playerDetectedData: {fileID: 0}
 --- !u!4 &312962
 Transform:
   m_ObjectHideFlags: 0
@@ -13672,7 +13669,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.4987775, y: 1}
+    m_SensorSize: {x: 2.9266503, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0

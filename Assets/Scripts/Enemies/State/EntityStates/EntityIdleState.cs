@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class EntityIdleState : EntityState
 {
-    protected EntityData_IdleState data;
 
     protected bool flipAfterIdle;
     protected bool isIdleTimeOver;
@@ -12,9 +11,9 @@ public class EntityIdleState : EntityState
 
     protected float idleTime;
 
-    public EntityIdleState(Entity entity, EntityStateMachine stateMachine, string animBoolName, EntityData_IdleState data) : base(entity, stateMachine, animBoolName)
+    public EntityIdleState(Entity entity, EntityStateMachine stateMachine, EntityData entityData, string animBoolName) : base(entity, stateMachine, entityData, animBoolName)
     {
-        this.data = data;
+
     }
 
     public override void Enter()
@@ -67,7 +66,7 @@ public class EntityIdleState : EntityState
 
     private void SetRandomIdleTime()
     {
-        idleTime = Random.Range(data.minIdleTime, data.maxIdleTime);
+        idleTime = Random.Range(entityData.minIdleTime, entityData.maxIdleTime);
     }
     #endregion
 }
