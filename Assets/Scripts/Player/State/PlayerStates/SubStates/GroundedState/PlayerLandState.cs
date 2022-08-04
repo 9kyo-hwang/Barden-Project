@@ -20,6 +20,11 @@ public class PlayerLandState : PlayerGroundedStates
             {
                 stateMachine.ChangeState(player.MoveState);
             }
+            // 땅에 착지했을 때 y축 아랫 방향 입력이 있다면 Crouch Idle 상태로
+            else if (yInput == -1)
+            {
+                stateMachine.ChangeState(player.CrouchIdleState);
+            }
             // 착지 애니메이션이 끝까지 수행되었다면 idle 상태로
             else if(isAnimationFinished)
             {

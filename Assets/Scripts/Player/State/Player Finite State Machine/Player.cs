@@ -42,7 +42,6 @@ public class Player : MonoBehaviour
     #endregion
 
     #region Other Variables
-    // property이므로 대문자 명명
     private Vector2 workspace; // velocity 변경용 임시 벡터 변수
     #endregion
     
@@ -89,12 +88,12 @@ public class Player : MonoBehaviour
     private void Update()
     {
         Core.LogicUpdate();
-        StateMachine.currentState.LogicUpdate(); // 현재 상태에 대한 FrameUpdate() 수행
+        StateMachine.CurrentState.LogicUpdate(); // 현재 상태에 대한 FrameUpdate() 수행
     }
 
     private void FixedUpdate()
     {
-        StateMachine.currentState.PhysicsUpdate(); // 현재 상태에 대한 TimeUpdate() 수행
+        StateMachine.CurrentState.PhysicsUpdate(); // 현재 상태에 대한 TimeUpdate() 수행
     }
     #endregion
 
@@ -115,12 +114,12 @@ public class Player : MonoBehaviour
     // PlayerState에 있는 AnimationTrigger 함수 수행
     private void AnimationTrigger()
     {
-        StateMachine.currentState.AnimationTrigger();    
+        StateMachine.CurrentState.AnimationTrigger();    
     }
 
     private void AnimationFinishTrigger()
     {
-        StateMachine.currentState.AnimationFinishTrigger();
+        StateMachine.CurrentState.AnimationFinishTrigger();
     }
     #endregion
 }

@@ -27,8 +27,7 @@ public class Movement : CoreComponent
     public void SetVelocityX(float velocity)
     {
         workspace.Set(velocity, CurVelocity.y);
-        Rb2d.velocity = workspace;
-        CurVelocity = workspace;
+        Rb2d.velocity = CurVelocity = workspace;
     }
 
     public void SetVelocityY(float velocity)

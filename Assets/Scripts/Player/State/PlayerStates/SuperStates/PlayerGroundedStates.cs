@@ -60,7 +60,7 @@ public class PlayerGroundedStates : PlayerState
         }
         // 어떤 지상 상태에서든 점프 키 입력 시 점프 상태로 바뀔 수 있음
         // 단 남은 점프 횟수가 0보다 클 경우(CanJump() return 조건)
-        else if (isJumpInputted && player.JumpState.CanJump())
+        else if (isJumpInputted && !isTouchingCeiling && player.JumpState.CanJump())
         {
             stateMachine.ChangeState(player.JumpState);
         }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerDashState : PlayerAbilityState
 {
-    public bool canDash { get; private set; }
+    public bool CanDash { get; private set; }
     private bool isHolding; // Time scale holding boolean variable
     private bool isDashInputStopped;
 
@@ -22,7 +22,7 @@ public class PlayerDashState : PlayerAbilityState
         base.Enter();
 
         // dash 상태 진입 시 boolean 변수 false화
-        canDash = false;
+        CanDash = false;
         player.InputHandler.UsedDashInput();
 
         isHolding = true;
@@ -101,12 +101,12 @@ public class PlayerDashState : PlayerAbilityState
 
     public bool CheckCanDash()
     {
-        return canDash && Time.time >= lastDashTime + playerData.dashCooldown;
+        return CanDash && Time.time >= lastDashTime + playerData.dashCooldown;
     }
 
     public void ResetCanDash()
     {
-        canDash = true;
+        CanDash = true;
     }
 
 }

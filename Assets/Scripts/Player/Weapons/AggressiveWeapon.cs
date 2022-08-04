@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class AggressiveWeapon : Weapon
 {
@@ -40,9 +41,11 @@ public class AggressiveWeapon : Weapon
         WeaponAttackDetails details = aggressiveWeaponData.AttackDetails[attackCount]; // Weapon 데이터의 attackDetails 가져옴
 
         // detectedDamageable에 담긴 IDamageable 모든 원소
-        foreach (IDamageable item in detectedDamageable)
+        // 데미지를 받아 Destroy 되는 시점에서 foreach 문은 아직 다 리스트 내 모든 오브젝트를 순회하지 못함.
+        // 이 때 발생하는 Error를 막기 위해, .ToList()를 사용해 리스트 사본에 접근하게 함. System.Linq 포함 필요
+        foreach (IDamageable item in detectedDamageable.ToList())
         {
-            item.Damage(details.damageAmount); // details의 데미지만큼 IDamageable 오브젝트들에게 Damage 수행
+            item.Damage(details.damageAmount); // details의 데미지만큼 IDamageable 오브젝트들의 Damage 수행
         }
     }
 

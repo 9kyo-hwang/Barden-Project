@@ -8,6 +8,7 @@ public class PlayerInAirState : PlayerState
 {
     // Input
     private int xInput;
+    private int yInput;
     private bool isJumpInputted;
     private bool isJumpInputStopped;
     private bool isGrabInputted;
@@ -20,7 +21,7 @@ public class PlayerInAirState : PlayerState
     private bool isTouchingWallBefore; // wall jump coyote time 적용을 위한 변수
     private bool isTouchingWallBackBefore; // wall jump coyote time 적용을 위한 변수
     private bool isTouchingLedge;
-    
+
     private bool isJumping;
     private bool isCoyoteTime;
     private bool isWallJumpCoyoteTime;
@@ -57,6 +58,7 @@ public class PlayerInAirState : PlayerState
         CheckWallJumpCoyoteTime();
         
         xInput = player.InputHandler.InputXNormalize;
+        yInput = player.InputHandler.InputYNormalize;
         isJumpInputted = player.InputHandler.IsInputJumpStarted;
         isJumpInputStopped = player.InputHandler.IsInputJumpCanceled;
         isGrabInputted = player.InputHandler.IsInputGrabStarted;
