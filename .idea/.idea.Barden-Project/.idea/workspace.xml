@@ -12,6 +12,7 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Core/CoreComponents/CollisionSenses.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Interfaces/IDamageable.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Player/Player Finite State Machine/Player.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Player/PlayerStates/SubStates/AbilityState/PlayerAttackState.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Player/PlayerStates/SubStates/AbilityState/PlayerWallJumpState.cs" root0="FORCE_HIGHLIGHTING" />
@@ -100,7 +101,7 @@
       <workItem from="1659007407237" duration="4361000" />
       <workItem from="1659158992073" duration="7872000" />
       <workItem from="1659421845389" duration="821000" />
-      <workItem from="1659423249211" duration="4832000" />
+      <workItem from="1659423249211" duration="5610000" />
     </task>
     <servers />
   </component>
