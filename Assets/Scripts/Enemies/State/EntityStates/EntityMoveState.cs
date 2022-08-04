@@ -4,24 +4,22 @@ using UnityEngine;
 
 public class EntityMoveState : EntityState
 {
-    protected EntityData_MoveState moveData;
+    protected EntityData_MoveState data;
     
     protected bool isDetectingWall;
     protected bool isDetectingLedge;
-    
-    public EntityMoveState(Entity entity, EntityStateMachine stateMachine, string animBoolName, EntityData_MoveState moveData) : base(entity, stateMachine, animBoolName)
+    protected bool isDetectingPlayerInMinRange;
+
+    public EntityMoveState(Entity entity, EntityStateMachine stateMachine, string animBoolName, EntityData_MoveState data) : base(entity, stateMachine, animBoolName)
     {
-        this.moveData = moveData;
+        this.data = data;
     }
 
     public override void Enter()
     {
         base.Enter();
         
-        entity.SetVelocityX(moveData.movementSpeed);
-
-        isDetectingLedge = entity.GetLedge;
-        isDetectingWall = entity.GetWall;
+        entity.SetVelocityX(data.movementSpeed);
     }
 
     public override void Exit()
@@ -42,5 +40,9 @@ public class EntityMoveState : EntityState
     public override void DoCheck()
     {
         base.DoCheck();
+
+        isDetectingLedge = entity.GetLedge;
+        isDetectingWall = entity.GetWall;
+        isDetectingPlayerInMinRange = entity.GetPlayerInMinRange;
     }
 }
