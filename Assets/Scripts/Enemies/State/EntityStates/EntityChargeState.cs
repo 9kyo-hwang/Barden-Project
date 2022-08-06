@@ -8,8 +8,9 @@ public class EntityChargeState : EntityState
     protected bool isDetectingLedge;
     protected bool isDetectingWall;
     protected bool isChargeTimeOver;
+    protected bool performCloseRangeAction;
 
-    public EntityChargeState(Entity entity, EntityStateMachine stateMachine, EntityData entityData, string animBoolName) : base(entity, stateMachine, entityData, animBoolName)
+    public EntityChargeState(Entity entity, EntityStateMachine stateMachine, EntityData data, string animBoolName) : base(entity, stateMachine, data, animBoolName)
     {
     }
 
@@ -20,6 +21,7 @@ public class EntityChargeState : EntityState
         isDetectingPlayerInMinRange = entity.GetPlayerInMinRange;
         isDetectingLedge = entity.GetLedge;
         isDetectingWall = entity.GetWall;
+        performCloseRangeAction = entity.GetPlayerInCloseRangeAction;
     }
 
     public override void Enter()
@@ -27,7 +29,7 @@ public class EntityChargeState : EntityState
         base.Enter();
 
         isChargeTimeOver = false;
-        entity.SetVelocityX(entityData.chargeSpeed);
+        entity.SetVelocityX(data.chargeSpeed);
     }
 
     public override void Exit()
@@ -39,7 +41,7 @@ public class EntityChargeState : EntityState
     {
         base.LogicUpdate();
 
-        if(Time.time >= startTime + entityData.chargeTime)
+        if(Time.time >= startTime + data.chargeTime)
         {
             isChargeTimeOver = true;
         }

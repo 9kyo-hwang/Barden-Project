@@ -2,9 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public struct AttackDetails
+public struct EntityAttackDetails
 {
-
+    public Vector2 position;
+    public float damage;
+    public float stunDamage;
 }
 
 // Serializable을 선언해줘야 SO가 Details를 가져갈 때 Inspector 창에 표시됨

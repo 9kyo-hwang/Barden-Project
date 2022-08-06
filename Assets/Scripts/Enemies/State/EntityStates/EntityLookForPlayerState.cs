@@ -12,7 +12,7 @@ public class EntityLookForPlayerState : EntityState
     protected float lastTurnTime;
     protected int currentTurnCount;
 
-    public EntityLookForPlayerState(Entity entity, EntityStateMachine stateMachine, EntityData entityData, string animBoolName) : base(entity, stateMachine, entityData, animBoolName)
+    public EntityLookForPlayerState(Entity entity, EntityStateMachine stateMachine, EntityData data, string animBoolName) : base(entity, stateMachine, data, animBoolName)
     {
         
     }
@@ -56,19 +56,19 @@ public class EntityLookForPlayerState : EntityState
             turnImmediately = false;
         }
         // 턴 대기시간을 초과했으면서 아직 모든 턴 횟수를 다 쓴게 아니라면
-        else if(Time.time >= lastTurnTime + entityData.timeBetweenTurn && !isAllTurnsDone)
+        else if(Time.time >= lastTurnTime + data.timeBetweenTurn && !isAllTurnsDone)
         {
             entity.Flip();
             lastTurnTime = Time.time;
             currentTurnCount++;
         }
 
-        if(currentTurnCount >= entityData.maxTurnCount)
+        if(currentTurnCount >= data.maxTurnCount)
         {
             isAllTurnsDone = true;
         }
 
-        if(Time.time >= lastTurnTime + entityData.timeBetweenTurn && isAllTurnsDone)
+        if(Time.time >= lastTurnTime + data.timeBetweenTurn && isAllTurnsDone)
         {
             isAllTurnsTimeDone = true;
         }

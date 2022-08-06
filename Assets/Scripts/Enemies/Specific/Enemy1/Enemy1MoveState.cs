@@ -6,7 +6,7 @@ public class Enemy1MoveState : EntityMoveState
 {
     private Enemy1 enemy; // 이 클래스로부터 더이상 상속이 일어나지 않도록 private
 
-    public Enemy1MoveState(Entity entity, EntityStateMachine stateMachine, EntityData entityData, string animBoolName, Enemy1 enemy) : base(entity, stateMachine, entityData, animBoolName)
+    public Enemy1MoveState(Entity entity, EntityStateMachine stateMachine, EntityData data, string animBoolName, Enemy1 enemy) : base(entity, stateMachine, data, animBoolName)
     {
         this.enemy = enemy;
     }

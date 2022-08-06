@@ -8,8 +8,9 @@ public class EntityDetectedPlayerState : EntityState
     protected bool isDetectingPlayerInMinRange;
     protected bool isDetectingPlayerInMaxRange;
     protected bool performLongRangeAction;
+    protected bool performCloseRangeAction;
 
-    public EntityDetectedPlayerState(Entity entity, EntityStateMachine stateMachine, EntityData entityData, string animBoolName) : base(entity, stateMachine, entityData, animBoolName)
+    public EntityDetectedPlayerState(Entity entity, EntityStateMachine stateMachine, EntityData data, string animBoolName) : base(entity, stateMachine, data, animBoolName)
     {
 
     }
@@ -31,7 +32,7 @@ public class EntityDetectedPlayerState : EntityState
     {
         base.LogicUpdate();
 
-        if(Time.time >= startTime + entityData.longRangeActionTime)
+        if(Time.time >= startTime + data.longRangeActionTime)
         {
             performLongRangeAction = true;
         }
@@ -48,5 +49,6 @@ public class EntityDetectedPlayerState : EntityState
 
         isDetectingPlayerInMinRange = entity.GetPlayerInMinRange;
         isDetectingPlayerInMaxRange = entity.GetPlayerInMaxRange;
+        performCloseRangeAction = entity.GetPlayerInCloseRangeAction;
     }
 }

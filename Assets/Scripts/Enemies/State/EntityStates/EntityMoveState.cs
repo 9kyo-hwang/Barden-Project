@@ -8,7 +8,7 @@ public class EntityMoveState : EntityState
     protected bool isDetectingLedge;
     protected bool isDetectingPlayerInMinRange;
 
-    public EntityMoveState(Entity entity, EntityStateMachine stateMachine, EntityData entityData, string animBoolName) : base(entity, stateMachine, entityData, animBoolName)
+    public EntityMoveState(Entity entity, EntityStateMachine stateMachine, EntityData data, string animBoolName) : base(entity, stateMachine, data, animBoolName)
     {
 
     }
@@ -17,7 +17,7 @@ public class EntityMoveState : EntityState
     {
         base.Enter();
         
-        entity.SetVelocityX(entityData.movementSpeed);
+        entity.SetVelocityX(data.movementSpeed);
     }
 
     public override void Exit()

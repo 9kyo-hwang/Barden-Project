@@ -6,7 +6,7 @@ public class Enemy1DetectedPlayerState : EntityDetectedPlayerState
 {
     private Enemy1 enemy;
 
-    public Enemy1DetectedPlayerState(Entity entity, EntityStateMachine stateMachine, EntityData entityData, string animBoolName, Enemy1 enemy) : base(entity, stateMachine, entityData, animBoolName)
+    public Enemy1DetectedPlayerState(Entity entity, EntityStateMachine stateMachine, EntityData data, string animBoolName, Enemy1 enemy) : base(entity, stateMachine, data, animBoolName)
     {
         this.enemy = enemy;
     }
@@ -32,7 +32,11 @@ public class Enemy1DetectedPlayerState : EntityDetectedPlayerState
 
         // Detected Player State를 벗어나는 조건들
 
-        if(performLongRangeAction)
+        if (performCloseRangeAction)
+        {
+            stateMachine.ChangeState(enemy.MeleeAttackState);
+        }
+        else if(performLongRangeAction)
         {
             stateMachine.ChangeState(enemy.ChargeState);
         }

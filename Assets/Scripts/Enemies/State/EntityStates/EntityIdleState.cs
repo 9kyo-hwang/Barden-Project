@@ -11,7 +11,7 @@ public class EntityIdleState : EntityState
 
     protected float idleTime;
 
-    public EntityIdleState(Entity entity, EntityStateMachine stateMachine, EntityData entityData, string animBoolName) : base(entity, stateMachine, entityData, animBoolName)
+    public EntityIdleState(Entity entity, EntityStateMachine stateMachine, EntityData data, string animBoolName) : base(entity, stateMachine, data, animBoolName)
     {
 
     }
@@ -66,7 +66,7 @@ public class EntityIdleState : EntityState
 
     private void SetRandomIdleTime()
     {
-        idleTime = Random.Range(entityData.minIdleTime, entityData.maxIdleTime);
+        idleTime = Random.Range(data.minIdleTime, data.maxIdleTime);
     }
     #endregion
 }
