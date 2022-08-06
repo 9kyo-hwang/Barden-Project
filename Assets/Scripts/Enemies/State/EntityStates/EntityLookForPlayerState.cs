@@ -35,7 +35,7 @@ public class EntityLookForPlayerState : EntityState
         lastTurnTime = startTime;
         currentTurnCount = 0;
 
-        entity.SetVelocityX(0f);
+        core.Movement.SetVelocityX(0f);
     }
 
     public override void Exit()
@@ -50,7 +50,7 @@ public class EntityLookForPlayerState : EntityState
         // 즉시 turn 해야하는 상황일 경우
         if(turnImmediately)
         {
-            entity.Flip();
+            core.Movement.Flip();
             lastTurnTime = Time.time;
             currentTurnCount++;
             turnImmediately = false;
@@ -58,7 +58,7 @@ public class EntityLookForPlayerState : EntityState
         // 턴 대기시간을 초과했으면서 아직 모든 턴 횟수를 다 쓴게 아니라면
         else if(Time.time >= lastTurnTime + data.timeBetweenTurn && !isAllTurnsDone)
         {
-            entity.Flip();
+            core.Movement.Flip();
             lastTurnTime = Time.time;
             currentTurnCount++;
         }

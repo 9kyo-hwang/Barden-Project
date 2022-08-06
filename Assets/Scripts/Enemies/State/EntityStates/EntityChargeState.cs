@@ -19,8 +19,8 @@ public class EntityChargeState : EntityState
         base.DoCheck();
 
         isDetectingPlayerInMinRange = entity.GetPlayerInMinRange;
-        isDetectingLedge = entity.GetLedge;
-        isDetectingWall = entity.GetWall;
+        isDetectingLedge = core.ColSenses.GetLedgeVer;
+        isDetectingWall = core.ColSenses.GetWall;
         performCloseRangeAction = entity.GetPlayerInCloseRangeAction;
     }
 
@@ -29,7 +29,7 @@ public class EntityChargeState : EntityState
         base.Enter();
 
         isChargeTimeOver = false;
-        entity.SetVelocityX(data.chargeSpeed);
+        core.Movement.SetVelocityX(data.chargeSpeed * core.Movement.FacingDir);
     }
 
     public override void Exit()

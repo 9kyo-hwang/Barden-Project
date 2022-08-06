@@ -20,7 +20,7 @@ public class EntityStunState : EntityState
 
         isStunTimeOver = false;
         isMovementStopped = false;
-        entity.SetVelocity(data.knockbackSpeed, data.knockbackAngle, entity.LastDamageDir);
+        core.Movement.SetVelocity(data.knockbackSpeed, data.knockbackAngle, entity.LastDamageDir);
     }
 
     public override void Exit()
@@ -41,7 +41,7 @@ public class EntityStunState : EntityState
         if (isGrounded && Time.time >= startTime + data.knockbackTime && !isMovementStopped)
         {
             isMovementStopped = true;
-            entity.SetVelocityX(0f);
+            core.Movement.SetVelocityX(0f);
         }
     }
 
@@ -54,7 +54,7 @@ public class EntityStunState : EntityState
     {
         base.DoCheck();
 
-        isGrounded = entity.GetGround;
+        isGrounded = core.ColSenses.GetGround;
         performCloseRangeAction = entity.GetPlayerInCloseRangeAction;
         isDetectingPlayerInMinRange = entity.GetPlayerInMinRange;
     }

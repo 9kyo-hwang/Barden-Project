@@ -16,7 +16,7 @@ public class EntityMeleeAttackState : EntityAttackState
 
         // 근접 공격 상태 진입 시 데미지와 공격 위치 설정
         entityAttackDetails.damage = data.attackDamage;
-        entityAttackDetails.position = entity.Alive.transform.position;
+        entityAttackDetails.position = entity.transform.position;
     }
 
     public override void Exit()

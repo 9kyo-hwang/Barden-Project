@@ -21,7 +21,7 @@ public class EntityDetectedPlayerState : EntityState
         base.Enter();
 
         performLongRangeAction = false;
-        entity.SetVelocityX(0f);
+        core.Movement.SetVelocityX(0f);
     }
 
     public override void Exit()
@@ -50,7 +50,7 @@ public class EntityDetectedPlayerState : EntityState
 
         isDetectingPlayerInMinRange = entity.GetPlayerInMinRange;
         isDetectingPlayerInMaxRange = entity.GetPlayerInMaxRange;
-        isDetectingLedge = entity.GetLedge;
+        isDetectingLedge = core.ColSenses.GetLedgeVer;
         performCloseRangeAction = entity.GetPlayerInCloseRangeAction;
     }
 }

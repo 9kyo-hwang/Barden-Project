@@ -63,7 +63,7 @@ public class Movement : CoreComponent
             Flip();
     }
     
-    private void Flip()
+    public void Flip()
     {
         FacingDir *= -1;
         // 움직임을 담당하는 코드가 플레이어의 하위 오브젝트로 내려옴에 따라

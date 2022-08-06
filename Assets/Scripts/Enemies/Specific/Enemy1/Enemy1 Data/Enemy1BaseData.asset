@@ -37,7 +37,10 @@ MonoBehaviour:
   attackDamage: 10
   stunTime: 3
   knockbackTime: 0.2
-  knockbackSpeed: 3
+  knockbackSpeed: 20
   stunResistance: 3
   stunRecoveryTime: 2
-  knockbackAngle: {x: 0, y: 0}
+  knockbackAngle: {x: 1, y: 2}
+  deathChunkParticle: {fileID: 0}
+  deathBloodParticle: {fileID: 0}
+  hitParticle: {fileID: 0}

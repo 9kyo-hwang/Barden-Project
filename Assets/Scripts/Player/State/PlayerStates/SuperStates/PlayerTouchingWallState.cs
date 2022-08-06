@@ -73,7 +73,7 @@ public class PlayerTouchingWallState : PlayerState
         
         isGrounded = core.ColSenses.GetGround;
         isTouchingWall = core.ColSenses.GetWall;
-        isTouchingLedge = core.ColSenses.GetLedge;
+        isTouchingLedge = core.ColSenses.GetLedgeHor;
 
         if (isTouchingWall && !isTouchingLedge)
         {

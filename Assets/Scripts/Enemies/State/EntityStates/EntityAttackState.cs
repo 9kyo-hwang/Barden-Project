@@ -19,7 +19,7 @@ public class EntityAttackState : EntityState
         
         isAnimationFinished = false;
         entity.AnimToStateMachine.attackState = this;
-        entity.SetVelocityX(0f);
+        core.Movement.SetVelocityX(0f);
     }
 
     public override void Exit()

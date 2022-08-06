@@ -170,7 +170,7 @@ public class PlayerInAirState : PlayerState
         isGrounded = core.ColSenses.GetGround;
         isTouchingWall = core.ColSenses.GetWall;
         isTouchingWallBack = core.ColSenses.GetWallBack;
-        isTouchingLedge = core.ColSenses.GetLedge;
+        isTouchingLedge = core.ColSenses.GetLedgeHor;
 
         if (isTouchingWall && !isTouchingLedge)
         {

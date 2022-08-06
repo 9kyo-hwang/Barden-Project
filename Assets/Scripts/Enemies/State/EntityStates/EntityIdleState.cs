@@ -20,7 +20,7 @@ public class EntityIdleState : EntityState
     {
         base.Enter();
 
-        entity.SetVelocityX(0f);
+        core.Movement.SetVelocityX(0f);
         isIdleTimeOver = false;
         SetRandomIdleTime();
     }
@@ -31,7 +31,7 @@ public class EntityIdleState : EntityState
 
         if(flipAfterIdle)
         {
-            entity.Flip();
+            core.Movement.Flip();
         }
     }
 

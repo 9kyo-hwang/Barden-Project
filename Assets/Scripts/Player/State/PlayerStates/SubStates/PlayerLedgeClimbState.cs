@@ -148,7 +148,7 @@ public class PlayerLedgeClimbState : PlayerState
     private Vector2 DetermineCornerPosition()
     {
         var wallCheckPos = core.ColSenses.WallChecker.position;
-        var ledgeCheckPos = core.ColSenses.LedgeChecker.position;
+        var ledgeCheckPos = core.ColSenses.HorLedgeChecker.position;
         
         RaycastHit2D xHit = Physics2D.Raycast(wallCheckPos, Vector2.right * core.Movement.FacingDir,
             core.ColSenses.WallCheckDistance, core.ColSenses.WhatIsGround);

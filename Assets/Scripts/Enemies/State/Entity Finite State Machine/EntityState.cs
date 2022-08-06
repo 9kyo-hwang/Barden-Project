@@ -8,6 +8,7 @@ public class EntityState
     protected Entity entity; // 참조용 엔터티
     protected EntityStateMachine stateMachine; // 참조용 상태 머신
     protected EntityData data;
+    protected Core core;
 
     protected float startTime; // 상태 진입 시작 시간. 항상 참조됨
 
@@ -19,6 +20,7 @@ public class EntityState
         this.stateMachine = stateMachine;
         this.data = data;
         this.animBoolName = animBoolName;
+        core = entity.Core;
     }
 
     // 모든 상태별 진입, 탈출, Update, FixedUpdate 함수 필요
