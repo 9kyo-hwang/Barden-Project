@@ -44,6 +44,11 @@ public class Enemy1DetectedPlayerState : EntityDetectedPlayerState
         {
             stateMachine.ChangeState(enemy.LookForPlayerState);
         }
+        else if (!isDetectingLedge)
+        {
+            entity.Flip();
+            stateMachine.ChangeState(enemy.MoveState);
+        }
     }
 
     public override void PhysicsUpdate()

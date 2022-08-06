@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Enemy1 : Entity
 {
@@ -11,6 +12,8 @@ public class Enemy1 : Entity
     public Enemy1ChargeState ChargeState { get; private set; }
     public Enemy1LookForPlayerState LookForPlayerState { get; private set; }
     public Enemy1MeleeAttackState MeleeAttackState { get; private set; }
+    public Enemy1StunState StunState { get; private set; }
+    public Enemy1DeadState DeadState { get; private set; }
 
     [SerializeField] private Transform meleeAttackPosition;
 
@@ -24,6 +27,8 @@ public class Enemy1 : Entity
         ChargeState = new Enemy1ChargeState(this, StateMachine, data, "charge", this);
         LookForPlayerState = new Enemy1LookForPlayerState(this, StateMachine, data, "lookForPlayer", this);
         MeleeAttackState = new Enemy1MeleeAttackState(this, StateMachine, data, "meleeAttack", meleeAttackPosition, this);
+        StunState = new Enemy1StunState(this, StateMachine, data, "stun", this);
+        DeadState = new Enemy1DeadState(this, StateMachine, data, "dead", this);
     }
 
     public override void Start()
@@ -31,6 +36,20 @@ public class Enemy1 : Entity
         base.Start();
         
         StateMachine.Initialize(MoveState);
+    }
+
+    public override void Damage(EntityAttackDetails details)
+    {
+        base.Damage(details);
+
+        if (isDead)
+        {
+            StateMachine.ChangeState(DeadState);
+        }
+        else if (isStunned && StateMachine.CurrentState != StunState)
+        {
+            StateMachine.ChangeState(StunState);
+        }
     }
 
     public override void OnDrawGizmos()

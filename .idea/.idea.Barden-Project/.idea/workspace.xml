@@ -14,8 +14,11 @@
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/AnimationToStatemachine.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Core/CoreComponents/CollisionSenses.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Enemies/Data/EntityData.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Enemies/Specific/Enemy1/Enemy1DeadState.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Enemies/Specific/Enemy1/Enemy1MeleeAttackState.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Enemies/Specific/Enemy1/Enemy1StunState.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Enemies/State/EntityStates/EntityAttackState.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Enemies/State/EntityStates/EntityDeadState.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Enemies/State/EntityStates/EntityMeleeAttackState.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Enemies/State/EntityStates/EntityStunState.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Interfaces/IDamageable.cs" root0="FORCE_HIGHLIGHTING" />
@@ -101,6 +104,7 @@
       <workItem from="1659423249211" duration="5610000" />
       <workItem from="1659591694807" duration="6537000" />
       <workItem from="1659763566420" duration="11258000" />
+      <workItem from="1659782779841" duration="3762000" />
     </task>
     <servers />
   </component>

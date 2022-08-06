@@ -52,4 +52,9 @@ public class EntityData : ScriptableObject
     public float stunResistance = 3f;
     public float stunRecoveryTime = 2f;
     public Vector2 knockbackAngle;
+
+    [Header("Dead State")] 
+    public GameObject deathChunkParticle;
+    public GameObject deathBloodParticle;
+    public GameObject hitParticle;
 }

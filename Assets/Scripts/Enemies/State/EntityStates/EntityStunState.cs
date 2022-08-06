@@ -7,6 +7,8 @@ public class EntityStunState : EntityState
     protected bool isStunTimeOver;
     protected bool isGrounded;
     protected bool isMovementStopped;
+    protected bool performCloseRangeAction;
+    protected bool isDetectingPlayerInMinRange;
 
     public EntityStunState(Entity entity, EntityStateMachine stateMachine, EntityData data, string animBoolName) : base(entity, stateMachine, data, animBoolName)
     {
@@ -53,5 +55,7 @@ public class EntityStunState : EntityState
         base.DoCheck();
 
         isGrounded = entity.GetGround;
+        performCloseRangeAction = entity.GetPlayerInCloseRangeAction;
+        isDetectingPlayerInMinRange = entity.GetPlayerInMinRange;
     }
 }

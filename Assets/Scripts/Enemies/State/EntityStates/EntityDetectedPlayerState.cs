@@ -9,6 +9,7 @@ public class EntityDetectedPlayerState : EntityState
     protected bool isDetectingPlayerInMaxRange;
     protected bool performLongRangeAction;
     protected bool performCloseRangeAction;
+    protected bool isDetectingLedge;
 
     public EntityDetectedPlayerState(Entity entity, EntityStateMachine stateMachine, EntityData data, string animBoolName) : base(entity, stateMachine, data, animBoolName)
     {
@@ -49,6 +50,7 @@ public class EntityDetectedPlayerState : EntityState
 
         isDetectingPlayerInMinRange = entity.GetPlayerInMinRange;
         isDetectingPlayerInMaxRange = entity.GetPlayerInMaxRange;
+        isDetectingLedge = entity.GetLedge;
         performCloseRangeAction = entity.GetPlayerInCloseRangeAction;
     }
 }
