@@ -40,9 +40,9 @@ public class PlayerDashState : PlayerAbilityState
         base.Exit();
 
         // dash 상태 탈출 때 과도한 y축 상승을 막기 위해 가중치 할당
-        if (core.Movement.CurVelocity.y > 0)
+        if (core.Movement.CurrentVelocity.y > 0)
         {
-            core.Movement.SetVelocityY(core.Movement.CurVelocity.y * playerData.dashEndYMultiplier);
+            core.Movement.SetVelocityY(core.Movement.CurrentVelocity.y * playerData.dashEndYMultiplier);
         }
     }
 
@@ -52,8 +52,8 @@ public class PlayerDashState : PlayerAbilityState
 
         if (!isExitingState)
         {
-            player.Anim.SetFloat("yVelocity", core.Movement.CurVelocity.y);
-            player.Anim.SetFloat("xVelocity", Mathf.Abs(core.Movement.CurVelocity.x));
+            player.Anim.SetFloat("yVelocity", core.Movement.CurrentVelocity.y);
+            player.Anim.SetFloat("xVelocity", Mathf.Abs(core.Movement.CurrentVelocity.x));
             if (isHolding)
             {
                 dashDirectionInput = player.InputHandler.InputDashDirectionInt;

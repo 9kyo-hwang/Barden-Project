@@ -19,8 +19,8 @@ public class EntityChargeState : EntityState
         base.DoCheck();
 
         isDetectingPlayerInMinRange = entity.GetPlayerInMinRange;
-        isDetectingLedge = core.ColSenses.GetLedgeVer;
-        isDetectingWall = core.ColSenses.GetWall;
+        isDetectingLedge = core.CollisionSenses.GetLedgeVer;
+        isDetectingWall = core.CollisionSenses.GetWall;
         performCloseRangeAction = entity.GetPlayerInCloseRangeAction;
     }
 

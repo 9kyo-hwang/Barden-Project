@@ -26,8 +26,8 @@ public class PlayerWallJumpState : PlayerAbilityState
         base.LogicUpdate();
         
         // 벽점프 진행 중 애니메이션 x, y 속력에 따라 조정
-        player.Anim.SetFloat("yVelocity", core.Movement.CurVelocity.y);
-        player.Anim.SetFloat("xVelocity", Mathf.Abs(core.Movement.CurVelocity.x));
+        player.Anim.SetFloat("yVelocity", core.Movement.CurrentVelocity.y);
+        player.Anim.SetFloat("xVelocity", Mathf.Abs(core.Movement.CurrentVelocity.x));
 
         // 벽 점프 유지 시간 초과 시 ability Done
         if (Time.time >= startTime + playerData.wallJumpTime)

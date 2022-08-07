@@ -31,7 +31,7 @@ public class PlayerAbilityState : PlayerState
         if (isAbilityDone)
         {
             // 즉각적으로 점프를 수행할 수 있기 때문에 y Velocity 제약 조건 설정
-            if (isGrounded && core.Movement.CurVelocity.y < 0.01f)
+            if (isGrounded && core.Movement.CurrentVelocity.y < 0.01f)
             {
                 stateMachine.ChangeState(player.IdleState);
             }
@@ -51,6 +51,6 @@ public class PlayerAbilityState : PlayerState
     {
         base.DoCheck();
         
-        isGrounded = core.ColSenses.GetGround;
+        isGrounded = core.CollisionSenses.GetGround;
     }
 }

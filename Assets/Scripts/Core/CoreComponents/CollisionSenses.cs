@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEditor.Search;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Generics;
 
 public class CollisionSenses : CoreComponent
 {
@@ -24,57 +25,27 @@ public class CollisionSenses : CoreComponent
 
     public Transform GroundChecker
     {
-        get
-        {
-            if (groundChecker) return groundChecker;
-            
-            Debug.LogError("No Ground Check on " + core.transform.parent.name);
-            return null;
-        }
+        get => GenericNotImplementedError<Transform>.TryGet(groundChecker, core.transform.parent.name);
         private set => groundChecker = value;
     }
     public Transform WallChecker     
     {
-        get
-        {
-            if (wallChecker) return wallChecker;
-            
-            Debug.LogError("No Wall Check on " + core.transform.parent.name);
-            return null;
-        }
+        get => GenericNotImplementedError<Transform>.TryGet(wallChecker, core.transform.parent.name);
         private set => wallChecker = value;
     }
     public Transform HorLedgeChecker
     {
-        get
-        {
-            if (horLedgeChecker) return horLedgeChecker;
-            
-            Debug.LogError("No Horizontal Ledge Check on " + core.transform.parent.name);
-            return null;
-        }
+        get => GenericNotImplementedError<Transform>.TryGet(horLedgeChecker, core.transform.parent.name);
         private set => horLedgeChecker = value;
     }
     public Transform VerLedgeChecker
     {
-        get
-        {
-            if (verLedgeChecker) return verLedgeChecker;
-            
-            Debug.LogError("No Vertical Ledge Check on " + core.transform.parent.name);
-            return null;
-        }
+        get => GenericNotImplementedError<Transform>.TryGet(verLedgeChecker, core.transform.parent.name);
         private set => verLedgeChecker = value;
     }
     public Transform CeilingChecker
     {
-        get
-        {
-            if (ceilingChecker) return ceilingChecker;
-            
-            Debug.LogError("No Ceiling Check on " + core.transform.parent.name);
-            return null;
-        }
+        get => GenericNotImplementedError<Transform>.TryGet(ceilingChecker, core.transform.parent.name);
         private set => ceilingChecker = value;
     }
     

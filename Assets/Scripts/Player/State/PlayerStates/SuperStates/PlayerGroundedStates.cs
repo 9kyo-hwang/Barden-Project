@@ -93,9 +93,9 @@ public class PlayerGroundedStates : PlayerState
     {
         base.DoCheck();
         
-        isGrounded = core.ColSenses.GetGround;
-        isTouchingWall = core.ColSenses.GetWall;
-        isTouchingLedge = core.ColSenses.GetLedgeHor;
-        isTouchingCeiling = core.ColSenses.GetCeiling;
+        isGrounded = core.CollisionSenses.GetGround;
+        isTouchingWall = core.CollisionSenses.GetWall;
+        isTouchingLedge = core.CollisionSenses.GetLedgeHor;
+        isTouchingCeiling = core.CollisionSenses.GetCeiling;
     }
 }

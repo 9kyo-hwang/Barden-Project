@@ -137,7 +137,7 @@ public class PlayerLedgeClimbState : PlayerState
     {
         isTouchingCeiling =
             Physics2D.Raycast(cornerPosition + (Vector2.up * 0.015f) + (Vector2.right * core.Movement.FacingDir * 0.015f),
-                Vector2.up, playerData.standColliderHeight, core.ColSenses.WhatIsGround);
+                Vector2.up, playerData.standColliderHeight, core.CollisionSenses.WhatIsGround);
         player.Anim.SetBool("isTouchingCeiling", isTouchingCeiling);
     }
     
@@ -147,16 +147,16 @@ public class PlayerLedgeClimbState : PlayerState
     // 최종적으로 (벽 체커 위치 + xDistance, 난간 체커 위치 - yDistance) 위치 설정
     private Vector2 DetermineCornerPosition()
     {
-        var wallCheckPos = core.ColSenses.WallChecker.position;
-        var ledgeCheckPos = core.ColSenses.HorLedgeChecker.position;
+        var wallCheckPos = core.CollisionSenses.WallChecker.position;
+        var ledgeCheckPos = core.CollisionSenses.HorLedgeChecker.position;
         
         RaycastHit2D xHit = Physics2D.Raycast(wallCheckPos, Vector2.right * core.Movement.FacingDir,
-            core.ColSenses.WallCheckDistance, core.ColSenses.WhatIsGround);
+            core.CollisionSenses.WallCheckDistance, core.CollisionSenses.WhatIsGround);
         var xDistance = xHit.distance + 0.015f; // 약간의 오차 허용 범위
         workspace.Set(xDistance * core.Movement.FacingDir, 0f);
 
         RaycastHit2D yHit = Physics2D.Raycast(ledgeCheckPos + (Vector3)(workspace), Vector2.down,
-            ledgeCheckPos.y - wallCheckPos.y, core.ColSenses.WhatIsGround);
+            ledgeCheckPos.y - wallCheckPos.y, core.CollisionSenses.WhatIsGround);
         var yDistance = yHit.distance + 0.015f; // 약간의 오차 허용 범위
         workspace.Set(wallCheckPos.x + (xDistance * core.Movement.FacingDir), ledgeCheckPos.y - yDistance);
 

@@ -39,8 +39,8 @@ public class EntityMoveState : EntityState
     {
         base.DoCheck();
 
-        isDetectingLedge = core.ColSenses.GetLedgeVer;
-        isDetectingWall = core.ColSenses.GetWall;
+        isDetectingLedge = core.CollisionSenses.GetLedgeVer;
+        isDetectingWall = core.CollisionSenses.GetWall;
         isDetectingPlayerInMinRange = entity.GetPlayerInMinRange;
     }
 }

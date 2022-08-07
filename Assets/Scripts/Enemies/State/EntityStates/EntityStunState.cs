@@ -54,7 +54,7 @@ public class EntityStunState : EntityState
     {
         base.DoCheck();
 
-        isGrounded = core.ColSenses.GetGround;
+        isGrounded = core.CollisionSenses.GetGround;
         performCloseRangeAction = entity.GetPlayerInCloseRangeAction;
         isDetectingPlayerInMinRange = entity.GetPlayerInMinRange;
     }

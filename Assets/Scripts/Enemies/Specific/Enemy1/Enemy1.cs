@@ -35,7 +35,7 @@ public class Enemy1 : Entity
     {
         base.Start();
         
-        StateMachine.Initialize(MoveState);
+        StateMachine.Initialize(MoveState); // Awake에 있으면 안됨
     }
 
     public override void Damage(EntityAttackDetails details)

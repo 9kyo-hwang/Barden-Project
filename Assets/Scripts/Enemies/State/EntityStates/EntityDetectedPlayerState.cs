@@ -50,7 +50,7 @@ public class EntityDetectedPlayerState : EntityState
 
         isDetectingPlayerInMinRange = entity.GetPlayerInMinRange;
         isDetectingPlayerInMaxRange = entity.GetPlayerInMaxRange;
-        isDetectingLedge = core.ColSenses.GetLedgeVer;
+        isDetectingLedge = core.CollisionSenses.GetLedgeVer;
         performCloseRangeAction = entity.GetPlayerInCloseRangeAction;
     }
 }
