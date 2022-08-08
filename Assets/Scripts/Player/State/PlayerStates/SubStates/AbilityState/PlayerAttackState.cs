@@ -53,7 +53,7 @@ public class PlayerAttackState : PlayerAbilityState
     public void SetWeapon(Weapon weapon)
     {
         this.weapon = weapon;
-        weapon.InitializeWeapon(this);
+        weapon.InitializeWeapon(this, core);
     }
 
     // float velocity 값을 받아 공격 모션 중 플레이어의 Velocity 설정

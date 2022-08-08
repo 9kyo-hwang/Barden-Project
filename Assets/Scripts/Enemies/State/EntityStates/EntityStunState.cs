@@ -20,7 +20,7 @@ public class EntityStunState : EntityState
 
         isStunTimeOver = false;
         isMovementStopped = false;
-        core.Movement.SetVelocity(data.knockbackSpeed, data.knockbackAngle, entity.LastDamageDir);
+        core.Movement.SetVelocityDirection(data.knockbackSpeed, data.knockbackAngle, entity.LastDamageDir);
     }
 
     public override void Exit()

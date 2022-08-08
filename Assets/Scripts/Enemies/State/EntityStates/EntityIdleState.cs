@@ -38,6 +38,8 @@ public class EntityIdleState : EntityState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
+        
+        core.Movement.SetVelocityX(0f);
 
         if(Time.time >= startTime + idleTime)
         {

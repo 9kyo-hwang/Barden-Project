@@ -42,8 +42,10 @@ public class EntityData : ScriptableObject
     public float closeRangeActionDistance = 1f;
 
     [Header("Melee Attack State")] 
-    [FormerlySerializedAs("atkRadius")] public float attackRadius = 0.5f;
-    [FormerlySerializedAs("atkDamage")] public float attackDamage = 10f;
+    public float attackRadius = 0.5f;
+    public float attackDamage = 10f;
+    public Vector2 knockbackAngle = Vector2.one;
+    public float knockbackStrength = 10f;
 
     [Header("Stun State")] 
     public float stunTime = 3f;
@@ -51,7 +53,6 @@ public class EntityData : ScriptableObject
     public float knockbackSpeed = 20f;
     public float stunResistance = 3f;
     public float stunRecoveryTime = 2f;
-    public Vector2 knockbackAngle;
 
     [Header("Dead State")] 
     public GameObject deathChunkParticle;

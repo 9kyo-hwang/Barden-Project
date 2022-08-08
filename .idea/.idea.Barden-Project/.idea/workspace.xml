@@ -24,6 +24,7 @@
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Enemies/State/EntityStates/EntityStunState.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Generics/GenericNotImplementedError.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Interfaces/IDamageable.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Interfaces/IKnockbackable.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/test/test.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/UIElements/PanelEventHandler.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ugui@1.0.0/Runtime/UI/Core/Culling/RectangularVertexClipper.cs" root0="SKIP_HIGHLIGHTING" />
@@ -109,6 +110,7 @@
       <workItem from="1659782779841" duration="4456000" />
       <workItem from="1659789425846" duration="3926000" />
       <workItem from="1659865927536" duration="2364000" />
+      <workItem from="1659939373129" duration="3276000" />
     </task>
     <servers />
   </component>

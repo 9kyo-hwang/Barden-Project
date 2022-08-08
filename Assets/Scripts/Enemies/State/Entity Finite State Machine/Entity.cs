@@ -103,30 +103,6 @@ public class Entity : MonoBehaviour
         curStunResistance = data.stunResistance;
     }
 
-    public virtual void Damage(EntityAttackDetails details)
-    {
-        lastDamagedTime = Time.time;
-        
-        curHp -= details.damage;
-        curStunResistance -= details.stunDamage;
-        
-        Knockback(data.knockbackSpeed);
-
-        Instantiate(data.hitParticle, transform.position, Quaternion.Euler(0f, 0f, Random.Range(0f, 360f)));
-        
-        LastDamageDir = details.position.x > transform.position.x ? -1 : 1;
-
-        if (curStunResistance <= 0) // 데미지가 일정 수준 이상이면 스턴 발동
-        {
-            isStunned = true;
-        }
-
-        if (curHp <= 0)
-        {
-            isDead = true;
-        }
-    }
-
     public virtual void OnDrawGizmos()
     {
         if (Core == null) return;

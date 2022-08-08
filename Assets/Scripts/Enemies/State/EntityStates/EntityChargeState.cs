@@ -40,6 +40,8 @@ public class EntityChargeState : EntityState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
+        
+        core.Movement.SetVelocityX(data.chargeSpeed * core.Movement.FacingDir);
 
         if(Time.time >= startTime + data.chargeTime)
         {

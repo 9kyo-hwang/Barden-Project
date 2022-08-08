@@ -46,6 +46,8 @@ public class EntityLookForPlayerState : EntityState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
+        
+        core.Movement.SetVelocityX(0f);
 
         // 즉시 turn 해야하는 상황일 경우
         if(turnImmediately)

@@ -1,11 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Interfaces;
 
 public class EntityMeleeAttackState : EntityAttackState
 {
-    protected EntityAttackDetails entityAttackDetails;
-    
     public EntityMeleeAttackState(Entity entity, EntityStateMachine stateMachine, EntityData data, string animBoolName, Transform attackPosition) : base(entity, stateMachine, data, animBoolName, attackPosition)
     {
     }
@@ -13,10 +12,6 @@ public class EntityMeleeAttackState : EntityAttackState
     public override void Enter()
     {
         base.Enter();
-
-        // 근접 공격 상태 진입 시 데미지와 공격 위치 설정
-        entityAttackDetails.damage = data.attackDamage;
-        entityAttackDetails.position = entity.transform.position;
     }
 
     public override void Exit()
@@ -53,12 +48,18 @@ public class EntityMeleeAttackState : EntityAttackState
     {
         base.AttackTrigger();
 
-        Collider2D[] detectedObjs =
+        var detectedObjs =
             Physics2D.OverlapCircleAll(attackPosition.position, data.attackRadius, data.whatIsPlayer);
 
-        foreach (Collider2D col in detectedObjs)
+        foreach (var col in detectedObjs)
         {
-            col.transform.SendMessage("Damage", entityAttackDetails);
+            // Interface 적용
+            var damageable = col.GetComponent<IDamageable>();
+            // null 전파 연산자(damageable != null -> damageable.damage() 수행)
+            damageable?.Damage(data.attackDamage);
+            
+            var knockbackable = col.GetComponent<IKnockbackable>();
+            knockbackable?.Knockback(data.knockbackStrength, data.knockbackAngle, core.Movement.FacingDir);
         }
     }
 

@@ -30,6 +30,8 @@ public class EntityAttackState : EntityState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
+        
+        core.Movement.SetVelocityX(0f);
     }
 
     public override void PhysicsUpdate()

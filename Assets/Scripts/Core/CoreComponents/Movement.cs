@@ -5,8 +5,9 @@ using UnityEngine;
 public class Movement : CoreComponent
 {
     public Rigidbody2D Rb2d { get; private set; }
-    public Vector2 CurrentVelocity { get; private set; }
     public int FacingDir { get; private set; }
+    public bool CanSetVelocity { get; set; }
+    public Vector2 CurrentVelocity { get; private set; }
     private Vector2 workspace;
 
     protected override void Awake()
@@ -16,6 +17,8 @@ public class Movement : CoreComponent
         Rb2d = GetComponentInParent<Rigidbody2D>();
 
         FacingDir = 1;
+
+        CanSetVelocity = true;
     }
 
     public void LogicUpdate()
@@ -27,33 +30,44 @@ public class Movement : CoreComponent
     public void SetVelocityX(float velocity)
     {
         workspace.Set(velocity, CurrentVelocity.y);
-        Rb2d.velocity = CurrentVelocity = workspace;
+        SetVelocityFinal();
     }
 
     public void SetVelocityY(float velocity)
     {
         workspace.Set(CurrentVelocity.x, velocity);
-        Rb2d.velocity = CurrentVelocity = workspace;
+        SetVelocityFinal();
     }
-
-    // 속력뿐만 아니라 방향까지 정하는 함수
-    public void SetVelocity(float velocity, Vector2 angle, int direction)
-    {
-        angle.Normalize(); // 벡터 정규화 필요
-        workspace.Set(angle.x * velocity * direction, angle.y * velocity);
-        Rb2d.velocity = CurrentVelocity = workspace;
-    }
-
+    
     public void SetVelocityZero()
     {
-        Rb2d.velocity = CurrentVelocity = Vector2.zero;
+        workspace.Set(0, 0);
+        SetVelocityFinal();
     }
 
     // Vector2 방향을 정해주는 함수
-    public void SetVelocity(float velocity, Vector2 direction)
+    public void SetVelocityAngle(float velocity, Vector2 angle)
     {
-        workspace = direction * velocity;
-        Rb2d.velocity = CurrentVelocity = workspace;
+        workspace.Set(angle.x * velocity, angle.y * velocity);
+        SetVelocityFinal();
+    }
+    
+    // 속력뿐만 아니라 방향까지 정하는 함수
+    public void SetVelocityDirection(float velocity, Vector2 angle, int direction)
+    {
+        angle.Normalize(); // 벡터 정규화 필요
+        workspace.Set(angle.x * velocity * direction, angle.y * velocity);
+        SetVelocityFinal();
+    }
+    
+    // Velocity 변경을 최종적으로 적용시키는 함수
+    public void SetVelocityFinal()
+    {
+        // Velocity를 적용시킬 수 있을 때에만 적용
+        if (CanSetVelocity)
+        {
+            Rb2d.velocity = CurrentVelocity = workspace;
+        }
     }
     #endregion
     

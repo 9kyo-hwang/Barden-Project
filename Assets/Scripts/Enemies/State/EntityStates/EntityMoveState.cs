@@ -28,6 +28,8 @@ public class EntityMoveState : EntityState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
+        
+        core.Movement.SetVelocityX(data.movementSpeed * core.Movement.FacingDir);
     }
 
     public override void PhysicsUpdate()

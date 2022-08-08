@@ -38,20 +38,6 @@ public class Enemy1 : Entity
         StateMachine.Initialize(MoveState); // Awake에 있으면 안됨
     }
 
-    public override void Damage(EntityAttackDetails details)
-    {
-        base.Damage(details);
-
-        if (isDead)
-        {
-            StateMachine.ChangeState(DeadState);
-        }
-        else if (isStunned && StateMachine.CurrentState != StunState)
-        {
-            StateMachine.ChangeState(StunState);
-        }
-    }
-
     public override void OnDrawGizmos()
     {
         base.OnDrawGizmos();

@@ -32,6 +32,8 @@ public class EntityDetectedPlayerState : EntityState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
+        
+        core.Movement.SetVelocityX(0f);
 
         if(Time.time >= startTime + data.longRangeActionTime)
         {

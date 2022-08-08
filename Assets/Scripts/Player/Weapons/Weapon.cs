@@ -14,6 +14,8 @@ public class Weapon : MonoBehaviour
 
     protected PlayerAttackState attackState;
 
+    protected Core core;
+
     protected int attackCount;
 
     protected virtual void Awake()
@@ -90,8 +92,9 @@ public class Weapon : MonoBehaviour
 
     #endregion
 
-    public void InitializeWeapon(PlayerAttackState attackState)
+    public void InitializeWeapon(PlayerAttackState attackState, Core core)
     {
         this.attackState = attackState;
+        this.core = core;
     }
 }

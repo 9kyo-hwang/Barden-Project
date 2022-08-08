@@ -78,7 +78,7 @@ public class PlayerDashState : PlayerAbilityState
                     startTime = Time.time;
                     core.Movement.CheckFlip(Mathf.RoundToInt(dashDirection.x));
                     player.Rb2d.drag = playerData.dashDrag; // 일시적으로 drag 증가
-                    core.Movement.SetVelocity(playerData.dashVelocity, dashDirection);
+                    core.Movement.SetVelocityAngle(playerData.dashVelocity, dashDirection);
                     player.DashDirIndicator.gameObject.SetActive(false); // 대시 발동 시 인디케이서 비활성화
                 }
             }
@@ -86,7 +86,7 @@ public class PlayerDashState : PlayerAbilityState
             else
             {
                 // 속력 설정
-                core.Movement.SetVelocity(playerData.dashVelocity, dashDirection);
+                core.Movement.SetVelocityAngle(playerData.dashVelocity, dashDirection);
 
                 // 대시 후 일정 시간 지났을 시
                 if (Time.time >= startTime + playerData.dashTime)
