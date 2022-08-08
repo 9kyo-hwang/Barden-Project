@@ -16,7 +16,7 @@ public class PlayerWallSlideState : PlayerTouchingWallState
         if (!isExitingState) // 상태를 벗어나지 않았을 경우 수행
         {
             // player의 y Velocity를 지속적으로 -wallSlideVelocity로 갱신
-            core.Movement.SetVelocityY(-playerData.wallSlideVelocity);
+            Movement?.SetVelocityY(-playerData.wallSlideVelocity);
 
             // wall Slide를 벗어나는 조건들
         

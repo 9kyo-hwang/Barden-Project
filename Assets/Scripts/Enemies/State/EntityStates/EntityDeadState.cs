@@ -20,24 +20,4 @@ public class EntityDeadState : EntityState
         
         entity.gameObject.SetActive(false);
     }
-
-    public override void Exit()
-    {
-        base.Exit();
-    }
-
-    public override void LogicUpdate()
-    {
-        base.LogicUpdate();
-    }
-
-    public override void PhysicsUpdate()
-    {
-        base.PhysicsUpdate();
-    }
-
-    public override void DoCheck()
-    {
-        base.DoCheck();
-    }
 }

@@ -13,7 +13,8 @@ public class PlayerDashState : PlayerAbilityState
     private Vector2 dashDirection;
     private Vector2 dashDirectionInput;
     
-    public PlayerDashState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animBoolName) : base(player, stateMachine, playerData, animBoolName)
+    public PlayerDashState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animBoolName) 
+        : base(player, stateMachine, playerData, animBoolName)
     {
         
     }
@@ -26,7 +27,7 @@ public class PlayerDashState : PlayerAbilityState
         player.InputHandler.UsedDashInput();
 
         isHolding = true;
-        dashDirection = Vector2.right * core.Movement.FacingDir;
+        dashDirection = Vector2.right * Movement.FacingDir;
 
         Time.timeScale = playerData.holdTimeScale; // 타임 스케일 변경
         startTime = Time.unscaledTime; // 타임 스케일에 영향 받지 않은 시작 시간 저장
@@ -40,9 +41,9 @@ public class PlayerDashState : PlayerAbilityState
         base.Exit();
 
         // dash 상태 탈출 때 과도한 y축 상승을 막기 위해 가중치 할당
-        if (core.Movement.CurrentVelocity.y > 0)
+        if (Movement?.CurrentVelocity.y > 0)
         {
-            core.Movement.SetVelocityY(core.Movement.CurrentVelocity.y * playerData.dashEndYMultiplier);
+            Movement?.SetVelocityY(Movement.CurrentVelocity.y * playerData.dashEndYMultiplier);
         }
     }
 
@@ -52,8 +53,8 @@ public class PlayerDashState : PlayerAbilityState
 
         if (!isExitingState)
         {
-            player.Anim.SetFloat("yVelocity", core.Movement.CurrentVelocity.y);
-            player.Anim.SetFloat("xVelocity", Mathf.Abs(core.Movement.CurrentVelocity.x));
+            player.Anim.SetFloat("yVelocity", Movement.CurrentVelocity.y);
+            player.Anim.SetFloat("xVelocity", Mathf.Abs(Movement.CurrentVelocity.x));
             if (isHolding)
             {
                 dashDirectionInput = player.InputHandler.InputDashDirectionInt;
@@ -76,9 +77,9 @@ public class PlayerDashState : PlayerAbilityState
                     isHolding = false;
                     Time.timeScale = 1f;
                     startTime = Time.time;
-                    core.Movement.CheckFlip(Mathf.RoundToInt(dashDirection.x));
+                    Movement?.CheckFlip(Mathf.RoundToInt(dashDirection.x));
                     player.Rb2d.drag = playerData.dashDrag; // 일시적으로 drag 증가
-                    core.Movement.SetVelocityAngle(playerData.dashVelocity, dashDirection);
+                    Movement?.SetVelocityAngle(playerData.dashVelocity, dashDirection);
                     player.DashDirIndicator.gameObject.SetActive(false); // 대시 발동 시 인디케이서 비활성화
                 }
             }
@@ -86,7 +87,7 @@ public class PlayerDashState : PlayerAbilityState
             else
             {
                 // 속력 설정
-                core.Movement.SetVelocityAngle(playerData.dashVelocity, dashDirection);
+                Movement?.SetVelocityAngle(playerData.dashVelocity, dashDirection);
 
                 // 대시 후 일정 시간 지났을 시
                 if (Time.time >= startTime + playerData.dashTime)

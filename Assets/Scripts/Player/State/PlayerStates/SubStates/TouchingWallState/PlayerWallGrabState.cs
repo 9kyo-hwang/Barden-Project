@@ -6,7 +6,8 @@ public class PlayerWallGrabState : PlayerTouchingWallState
 {
     private Vector2 holdPosition;
     
-    public PlayerWallGrabState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animBoolName) : base(player, stateMachine, playerData, animBoolName)
+    public PlayerWallGrabState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animBoolName) 
+        : base(player, stateMachine, playerData, animBoolName)
     {
         
     }
@@ -53,7 +54,7 @@ public class PlayerWallGrabState : PlayerTouchingWallState
         player.transform.position = holdPosition;
         
         // player의 x, y Velocity를 지속적으로 0으로 갱신
-        core.Movement.SetVelocityZero();
+        Movement?.SetVelocityZero();
     }
 
     public override void PhysicsUpdate()

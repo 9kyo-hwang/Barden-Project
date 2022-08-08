@@ -6,6 +6,7 @@ using UnityEngine;
 // 어느 상위 상태에 속하지 않는 독립 하위 상태
 public class PlayerInAirState : PlayerState
 {
+    #region Variables
     // Input
     private int xInput;
     private int yInput;
@@ -22,10 +23,19 @@ public class PlayerInAirState : PlayerState
     private bool isTouchingWallBackBefore; // wall jump coyote time 적용을 위한 변수
     private bool isTouchingLedge;
 
+    // other variables
     private bool isJumping;
     private bool isCoyoteTime;
     private bool isWallJumpCoyoteTime;
     private float startWallJumpCoyoteTime;
+    #endregion
+    
+    #region Core Components
+    protected Movement Movement => movement ?? core.GetCoreComponentValue(ref movement);
+    private Movement movement;
+    private CollisionSenses CollisionSenses => collisionSenses ?? core.GetCoreComponentValue(ref collisionSenses);
+    private CollisionSenses collisionSenses;
+    #endregion
 
     public PlayerInAirState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animBoolName) : base(player, stateMachine, playerData, animBoolName)
     {
@@ -77,7 +87,7 @@ public class PlayerInAirState : PlayerState
             stateMachine.ChangeState(player.SecondaryAttackState);
         }
         // 땅에 닿았다면 land 상태로
-        else if (isGrounded && core.Movement.CurrentVelocity.y < 0.01f)
+        else if (isGrounded && Movement.CurrentVelocity.y < 0.01f)
         {
             stateMachine.ChangeState(player.LandState);
         }
@@ -96,7 +106,7 @@ public class PlayerInAirState : PlayerState
             // PhysicsUpdate()의 DoCheck()에서 검사한 조건은 약간 이전의 조건으로 오류 발생 가능
             // 벽점프 수행 시 벽점프 코요테 타임 중단
             StopWallJumpCoyoteTime();
-            isTouchingWall = core.CollisionSenses.GetWall;
+            isTouchingWall = CollisionSenses.GetWall;
             player.WallJumpState.DetermineWallJumpDirection(isTouchingWall);
             stateMachine.ChangeState(player.WallJumpState);
         }
@@ -114,7 +124,7 @@ public class PlayerInAirState : PlayerState
         }
         // 벽에 닿았으면서 플레이어가 바라보는 방향과 x축 입력 방향이 같고
         // 캐릭터의 y Velocity가 0 이하라면 wall Slide 상태로
-        else if (isTouchingWall && xInput == core.Movement.FacingDir && core.Movement.CurrentVelocity.y <= 0f)
+        else if (isTouchingWall && xInput == Movement?.FacingDir && Movement?.CurrentVelocity.y <= 0f)
         {
             stateMachine.ChangeState(player.WallSlideState);
         }
@@ -126,11 +136,11 @@ public class PlayerInAirState : PlayerState
         // 아니라면 x Velocity 재설정(공중 이동)
         else
         {
-            core.Movement.CheckFlip(xInput);
-            core.Movement.SetVelocityX(playerData.moveVelocity * xInput);
+            Movement?.CheckFlip(xInput);
+            Movement?.SetVelocityX(playerData.moveVelocity * xInput);
             
-            player.Anim.SetFloat("yVelocity", core.Movement.CurrentVelocity.y);
-            player.Anim.SetFloat("xVelocity", Mathf.Abs(core.Movement.CurrentVelocity.x));
+            player.Anim.SetFloat("yVelocity", Movement.CurrentVelocity.y);
+            player.Anim.SetFloat("xVelocity", Mathf.Abs(Movement.CurrentVelocity.x));
         }
     }
 
@@ -142,11 +152,11 @@ public class PlayerInAirState : PlayerState
             // 점프 키 업 시 y Velocity에 가중치를 곱해서 점프 높이를 낮추고 점프 중이 아니도록 설정
             if (isJumpInputStopped)
             {
-                core.Movement.SetVelocityY(core.Movement.CurrentVelocity.y * playerData.variableJumpHeightMultiplier);
+                Movement?.SetVelocityY(Movement.CurrentVelocity.y * playerData.variableJumpHeightMultiplier);
                 isJumping = false;
             }
             // 현재 y Velocity가 0보다 작으면 떨어지는 중이므로 점프 중이 아니도록 설정
-            else if(core.Movement.CurrentVelocity.y <= 0f)
+            else if(Movement?.CurrentVelocity.y <= 0f)
             {
                 isJumping = false;
             }
@@ -166,11 +176,13 @@ public class PlayerInAirState : PlayerState
         isTouchingWallBefore = isTouchingWall;
         isTouchingWallBackBefore = isTouchingWallBack;
 
-        // 땅이나 벽에 닿아있는 지 정보 갱신
-        isGrounded = core.CollisionSenses.GetGround;
-        isTouchingWall = core.CollisionSenses.GetWall;
-        isTouchingWallBack = core.CollisionSenses.GetWallBack;
-        isTouchingLedge = core.CollisionSenses.GetLedgeHor;
+        if (CollisionSenses)
+        {
+            isGrounded = CollisionSenses.GetGround;
+            isTouchingWall = CollisionSenses.GetWall;
+            isTouchingWallBack = CollisionSenses.GetWallBack;
+            isTouchingLedge = CollisionSenses.GetLedgeHor;
+        }
 
         if (isTouchingWall && !isTouchingLedge)
         {

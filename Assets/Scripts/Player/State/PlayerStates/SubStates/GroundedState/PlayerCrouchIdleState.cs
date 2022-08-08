@@ -14,7 +14,7 @@ public class PlayerCrouchIdleState : PlayerGroundedStates
         
         // 상태 진입 시 velocity 0으로 설정
         // move 상태에서 진입할 때 더이상 움직이지 않게 하기 위해
-        core.Movement.SetVelocityZero();
+        Movement?.SetVelocityZero();
         // 상태 진입 시 콜라이더 높이 재설정
         player.SetColliderHeight(playerData.crouchColliderHeight);
     }
@@ -36,12 +36,12 @@ public class PlayerCrouchIdleState : PlayerGroundedStates
             // crouch Idle 상태를 벗어나는 조건들
             
             // x축 입력이 있다면 crouch Move 상태로
-            if (xInput != 0)
+            if (inputX != 0)
             {
                 stateMachine.ChangeState(player.CrouchMoveState);
             }
             // y축 아랫 방향 입력이 없으며 천장에 닿지 않았다면 idle 상태로
-            else if (yInput != -1 && !isTouchingCeiling)
+            else if (inputY != -1 && !isTouchingCeiling)
             {
                 stateMachine.ChangeState(player.IdleState);
             }

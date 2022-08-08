@@ -54,21 +54,26 @@ public class CollisionSenses : CoreComponent
     public LayerMask WhatIsGround { get => whatIsGround; set => whatIsGround = value; }
     #endregion
     
+    #region Core Components
+    private Movement Movement => movement ?? core.GetCoreComponentValue(ref movement);
+    private Movement movement;
+    #endregion
+    
     #region Get Properties(before Check Functions)
     public bool GetCeiling => Physics2D.OverlapCircle(CeilingChecker.position, groundCheckRadius, whatIsGround);
 
     public bool GetGround => Physics2D.OverlapCircle(GroundChecker.position, groundCheckRadius, whatIsGround);
 
     public bool GetWall =>
-        Physics2D.Raycast(WallChecker.position, Vector2.right * core.Movement.FacingDir, wallCheckDistance,
+        Physics2D.Raycast(WallChecker.position, Vector2.right * Movement.FacingDir, wallCheckDistance,
             whatIsGround);
 
     public bool GetWallBack =>
-        Physics2D.Raycast(WallChecker.position, Vector2.right * -core.Movement.FacingDir, wallCheckDistance,
+        Physics2D.Raycast(WallChecker.position, Vector2.right * -Movement.FacingDir, wallCheckDistance,
             whatIsGround);
 
     public bool GetLedgeHor =>
-        Physics2D.Raycast(HorLedgeChecker.position, Vector2.right * core.Movement.FacingDir, wallCheckDistance,
+        Physics2D.Raycast(HorLedgeChecker.position, Vector2.right * Movement.FacingDir, wallCheckDistance,
             whatIsGround);
 
     public bool GetLedgeVer =>

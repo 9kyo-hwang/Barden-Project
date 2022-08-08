@@ -5,6 +5,7 @@ using UnityEngine;
 // 어느 상위 상태에 속하지 않는 독립 하위 상태
 public class PlayerLedgeClimbState : PlayerState
 {
+    #region Variables
     private Vector2 detectedPosition;
     private Vector2 cornerPosition;
     private Vector2 startPosition;
@@ -18,6 +19,14 @@ public class PlayerLedgeClimbState : PlayerState
 
     private int xInput;
     private int yInput;
+    #endregion
+    
+    #region Core Components
+    protected Movement Movement => movement ?? core.GetCoreComponentValue(ref movement);
+    private Movement movement;
+    private CollisionSenses CollisionSenses => collisionSenses ?? core.GetCoreComponentValue(ref collisionSenses);
+    private CollisionSenses collisionSenses;
+    #endregion
     
     public PlayerLedgeClimbState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animBoolName) : base(player, stateMachine, playerData, animBoolName)
     {
@@ -34,13 +43,13 @@ public class PlayerLedgeClimbState : PlayerState
         base.Enter();
         
         // 상태 진입 시 x, y 벨로서티 0으로, 위치를 탐지한 위치로 설정
-        core.Movement.SetVelocityZero();
+        Movement?.SetVelocityZero();
         player.transform.position = detectedPosition;
         cornerPosition = DetermineCornerPosition();
 
-        startPosition.Set(cornerPosition.x - (core.Movement.FacingDir * playerData.startOffset.x),
+        startPosition.Set(cornerPosition.x - (Movement.FacingDir * playerData.startOffset.x),
             cornerPosition.y - playerData.startOffset.y);
-        stopPosition.Set(cornerPosition.x + (core.Movement.FacingDir * playerData.stopOffset.x),
+        stopPosition.Set(cornerPosition.x + (Movement.FacingDir * playerData.stopOffset.x),
             cornerPosition.y + playerData.stopOffset.y);
 
         player.transform.position = startPosition;
@@ -87,14 +96,14 @@ public class PlayerLedgeClimbState : PlayerState
             yInput = player.InputHandler.InputYNormalize;
             isJumpInputted = player.InputHandler.IsInputJumpStarted;
         
-            core.Movement.SetVelocityZero();
+            Movement?.SetVelocityZero();
             player.transform.position = startPosition;
 
             // LedgeClimb 상태를 벗어나는 조건들 
             
             // x축 입력이 플레이어가 바라보는 방향과 같으면서 매달려 있고 올라가는 중이 아니라면
             // 클라이밍 시작, 애니메이션 재생
-            if (xInput == core.Movement.FacingDir && isHanging && !isClimbing)
+            if (xInput == Movement?.FacingDir && isHanging && !isClimbing)
             {
                 CheckSpace(); // 올라간 위치에 천장이 있는 지 확인
                 isClimbing = true;
@@ -136,8 +145,8 @@ public class PlayerLedgeClimbState : PlayerState
     private void CheckSpace()
     {
         isTouchingCeiling =
-            Physics2D.Raycast(cornerPosition + (Vector2.up * 0.015f) + (Vector2.right * core.Movement.FacingDir * 0.015f),
-                Vector2.up, playerData.standColliderHeight, core.CollisionSenses.WhatIsGround);
+            Physics2D.Raycast(cornerPosition + (Vector2.up * 0.015f) + (Vector2.right * Movement.FacingDir * 0.015f),
+                Vector2.up, playerData.standColliderHeight, CollisionSenses.WhatIsGround);
         player.Anim.SetBool("isTouchingCeiling", isTouchingCeiling);
     }
     
@@ -147,19 +156,18 @@ public class PlayerLedgeClimbState : PlayerState
     // 최종적으로 (벽 체커 위치 + xDistance, 난간 체커 위치 - yDistance) 위치 설정
     private Vector2 DetermineCornerPosition()
     {
-        var wallCheckPos = core.CollisionSenses.WallChecker.position;
-        var ledgeCheckPos = core.CollisionSenses.HorLedgeChecker.position;
-        
-        RaycastHit2D xHit = Physics2D.Raycast(wallCheckPos, Vector2.right * core.Movement.FacingDir,
-            core.CollisionSenses.WallCheckDistance, core.CollisionSenses.WhatIsGround);
+        var wallCheckPos = CollisionSenses.WallChecker.position;
+        var ledgeCheckPos = CollisionSenses.HorLedgeChecker.position;
+            
+        RaycastHit2D xHit = Physics2D.Raycast(wallCheckPos, Vector2.right * Movement.FacingDir,
+            CollisionSenses.WallCheckDistance, CollisionSenses.WhatIsGround);
         var xDistance = xHit.distance + 0.015f; // 약간의 오차 허용 범위
-        workspace.Set(xDistance * core.Movement.FacingDir, 0f);
+        workspace.Set(xDistance * Movement.FacingDir, 0f);
 
         RaycastHit2D yHit = Physics2D.Raycast(ledgeCheckPos + (Vector3)(workspace), Vector2.down,
-            ledgeCheckPos.y - wallCheckPos.y, core.CollisionSenses.WhatIsGround);
+            ledgeCheckPos.y - wallCheckPos.y, CollisionSenses.WhatIsGround);
         var yDistance = yHit.distance + 0.015f; // 약간의 오차 허용 범위
-        workspace.Set(wallCheckPos.x + (xDistance * core.Movement.FacingDir), ledgeCheckPos.y - yDistance);
-
+        workspace.Set(wallCheckPos.x + (xDistance * Movement.FacingDir), ledgeCheckPos.y - yDistance);
         return workspace;
     }
 }

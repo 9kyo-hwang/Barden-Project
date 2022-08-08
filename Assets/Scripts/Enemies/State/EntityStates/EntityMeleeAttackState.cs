@@ -5,43 +5,13 @@ using Interfaces;
 
 public class EntityMeleeAttackState : EntityAttackState
 {
+    #region Core Components
+    private Movement Movement => movement ?? core.GetCoreComponentValue(ref movement);
+    private Movement movement;
+    #endregion
+    
     public EntityMeleeAttackState(Entity entity, EntityStateMachine stateMachine, EntityData data, string animBoolName, Transform attackPosition) : base(entity, stateMachine, data, animBoolName, attackPosition)
     {
-    }
-
-    public override void Enter()
-    {
-        base.Enter();
-    }
-
-    public override void Exit()
-    {
-        base.Exit();
-    }
-
-    public override void LogicUpdate()
-    {
-        base.LogicUpdate();
-    }
-
-    public override void PhysicsUpdate()
-    {
-        base.PhysicsUpdate();
-    }
-
-    public override void DoCheck()
-    {
-        base.DoCheck();
-    }
-
-    public override void AnimationTrigger()
-    {
-        base.AnimationTrigger();
-    }
-
-    public override void AnimationFinishTrigger()
-    {
-        base.AnimationFinishTrigger();
     }
 
     public override void AttackTrigger()
@@ -59,12 +29,7 @@ public class EntityMeleeAttackState : EntityAttackState
             damageable?.Damage(data.attackDamage);
             
             var knockbackable = col.GetComponent<IKnockbackable>();
-            knockbackable?.Knockback(data.knockbackStrength, data.knockbackAngle, core.Movement.FacingDir);
+            knockbackable?.Knockback(data.knockbackStrength, data.knockbackAngle, Movement.FacingDir);
         }
-    }
-
-    public override void AttackFinish()
-    {
-        base.AttackFinish();
     }
 }

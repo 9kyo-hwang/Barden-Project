@@ -4,6 +4,14 @@ using UnityEngine;
 
 public class PlayerTouchingWallState : PlayerState
 {
+    #region Core Components
+    protected Movement Movement => movement ?? core.GetCoreComponentValue(ref movement);
+    private CollisionSenses CollisionSenses => collisionSenses ?? core.GetCoreComponentValue(ref collisionSenses);
+    private Movement movement;
+    private CollisionSenses collisionSenses;
+    #endregion
+    
+    #region Variables
     protected bool isGrounded;
     protected bool isTouchingWall;
     protected bool isTouchingLedge;
@@ -11,6 +19,7 @@ public class PlayerTouchingWallState : PlayerState
     protected bool isJumpInputted;
     protected int xInput;
     protected int yInput;
+    #endregion
 
     public PlayerTouchingWallState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animBoolName) : base(player, stateMachine, playerData, animBoolName)
     {
@@ -51,7 +60,7 @@ public class PlayerTouchingWallState : PlayerState
         }
         // 벽에서 떨어졌거나, x축 입력이 바라보는 방향과 다르거나 없는 경우
         // 또는 !grabInput이면서 땅에 닿지 않았으면 inAir 상태로
-        else if (!isTouchingWall || (xInput != core.Movement.FacingDir && !isGrabInputted))
+        else if (!isTouchingWall || (xInput != Movement?.FacingDir && !isGrabInputted))
         {
             stateMachine.ChangeState(player.InAirState);
         }
@@ -70,10 +79,13 @@ public class PlayerTouchingWallState : PlayerState
     public override void DoCheck()
     {
         base.DoCheck();
-        
-        isGrounded = core.CollisionSenses.GetGround;
-        isTouchingWall = core.CollisionSenses.GetWall;
-        isTouchingLedge = core.CollisionSenses.GetLedgeHor;
+
+        if (CollisionSenses)
+        {
+            isGrounded = CollisionSenses.GetGround;
+            isTouchingWall = CollisionSenses.GetWall;
+            isTouchingLedge = CollisionSenses.GetLedgeHor;
+        }
 
         if (isTouchingWall && !isTouchingLedge)
         {

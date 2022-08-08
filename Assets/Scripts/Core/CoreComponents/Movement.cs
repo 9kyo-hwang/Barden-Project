@@ -21,7 +21,7 @@ public class Movement : CoreComponent
         CanSetVelocity = true;
     }
 
-    public void LogicUpdate()
+    public override void LogicUpdate()
     {
         CurrentVelocity = Rb2d.velocity;
     }
@@ -52,7 +52,7 @@ public class Movement : CoreComponent
         SetVelocityFinal();
     }
     
-    // 속력뿐만 아니라 방향까지 정하는 함수
+    // Velocity, Angle, x축 Direction까지 정하는 함수
     public void SetVelocityDirection(float velocity, Vector2 angle, int direction)
     {
         angle.Normalize(); // 벡터 정규화 필요

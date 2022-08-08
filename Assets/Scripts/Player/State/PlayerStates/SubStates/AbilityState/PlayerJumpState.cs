@@ -18,7 +18,7 @@ public class PlayerJumpState : PlayerAbilityState
         
         // 다른 상태에 흩어져있던 isJumpInput = false 기능을 jump 상태 진입 시 동작하도록 일원화
         player.InputHandler.UsedJumpInput();
-        core.Movement.SetVelocityY(playerData.jumpVelocity);
+        Movement?.SetVelocityY(playerData.jumpVelocity);
         isAbilityDone = true;
         leftJumpCount--;
         player.InAirState.SetIsJumping();

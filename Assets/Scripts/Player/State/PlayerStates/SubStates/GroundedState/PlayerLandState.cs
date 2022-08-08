@@ -16,12 +16,12 @@ public class PlayerLandState : PlayerGroundedStates
         if (!isExitingState)
         {
             // 땅에 착지했을 때 x축 입력이 있다면 move 상태로
-            if (xInput != 0)
+            if (inputX != 0)
             {
                 stateMachine.ChangeState(player.MoveState);
             }
             // 땅에 착지했을 때 y축 아랫 방향 입력이 있다면 Crouch Idle 상태로
-            else if (yInput == -1)
+            else if (inputY == -1)
             {
                 stateMachine.ChangeState(player.CrouchIdleState);
             }

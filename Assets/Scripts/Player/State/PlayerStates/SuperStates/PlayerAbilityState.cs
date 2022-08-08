@@ -4,6 +4,13 @@ using UnityEngine;
 
 public class PlayerAbilityState : PlayerState
 {
+    #region Core Components
+    protected Movement Movement => movement ?? core.GetCoreComponentValue(ref movement);
+    private Movement movement;
+    private CollisionSenses CollisionSenses => collisionSenses ?? core.GetCoreComponentValue(ref collisionSenses);
+    private CollisionSenses collisionSenses;
+    #endregion
+    
     protected bool isAbilityDone; // 행동이 종료됐는 지 나타내는 변수
     private bool isGrounded; // 땅에 닿아있는 지 나타내는 변수
     public PlayerAbilityState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animBoolName) : base(player, stateMachine, playerData, animBoolName)
@@ -31,7 +38,7 @@ public class PlayerAbilityState : PlayerState
         if (isAbilityDone)
         {
             // 즉각적으로 점프를 수행할 수 있기 때문에 y Velocity 제약 조건 설정
-            if (isGrounded && core.Movement.CurrentVelocity.y < 0.01f)
+            if (isGrounded && Movement?.CurrentVelocity.y < 0.01f)
             {
                 stateMachine.ChangeState(player.IdleState);
             }
@@ -50,7 +57,10 @@ public class PlayerAbilityState : PlayerState
     public override void DoCheck()
     {
         base.DoCheck();
-        
-        isGrounded = core.CollisionSenses.GetGround;
+
+        if (CollisionSenses)
+        {
+            isGrounded = CollisionSenses.GetGround;
+        }
     }
 }

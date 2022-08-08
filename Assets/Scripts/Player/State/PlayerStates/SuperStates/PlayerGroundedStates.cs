@@ -1,24 +1,35 @@
 using System.Collections;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using UnityEngine;
 
 // PlayerState 상속
 public class PlayerGroundedStates : PlayerState
 {
     // Input
-    protected int xInput;
-    protected int yInput;
-    private bool isJumpInputted;
-    private bool isGrabInputted;
-    private bool isDashInputted;
-    
+    protected int inputX;
+    protected int inputY;
+    private bool isInputJump;
+    private bool isInputGrab;
+    private bool isInputDash;
+
     // Check
     protected bool isTouchingCeiling;
     private bool isGrounded;
     private bool isTouchingWall;
     private bool isTouchingLedge;
     
-    public PlayerGroundedStates(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animBoolName) : base(player, stateMachine, playerData, animBoolName)
+    // Core Components
+    private CollisionSenses CollisionSenses // collisionSenses를 ref 함으로서 타입 유추 가능, <> 없어도 됨 
+        => collisionSenses ?? core.GetCoreComponentValue(ref collisionSenses);
+    private CollisionSenses collisionSenses;
+
+    protected Movement Movement
+        => movement ?? core.GetCoreComponentValue(ref movement);
+    private Movement movement;
+    
+    public PlayerGroundedStates(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animBoolName) 
+        : base(player, stateMachine, playerData, animBoolName)
     {
         
     }
@@ -41,11 +52,11 @@ public class PlayerGroundedStates : PlayerState
     {
         base.LogicUpdate();
         
-        xInput = player.InputHandler.InputXNormalize;
-        yInput = player.InputHandler.InputYNormalize;
-        isJumpInputted = player.InputHandler.IsInputJumpStarted;
-        isGrabInputted = player.InputHandler.IsInputGrabStarted;
-        isDashInputted = player.InputHandler.IsInputDashStarted;
+        inputX = player.InputHandler.InputXNormalize;
+        inputY = player.InputHandler.InputYNormalize;
+        isInputJump = player.InputHandler.IsInputJumpStarted;
+        isInputGrab = player.InputHandler.IsInputGrabStarted;
+        isInputDash = player.InputHandler.IsInputDashStarted;
 
         // grounded 상태에서 벗어나는 조건들
 
@@ -60,7 +71,7 @@ public class PlayerGroundedStates : PlayerState
         }
         // 어떤 지상 상태에서든 점프 키 입력 시 점프 상태로 바뀔 수 있음
         // 단 남은 점프 횟수가 0보다 클 경우(CanJump() return 조건)
-        else if (isJumpInputted && !isTouchingCeiling && player.JumpState.CanJump())
+        else if (isInputJump && !isTouchingCeiling && player.JumpState.CanJump())
         {
             stateMachine.ChangeState(player.JumpState);
         }
@@ -73,12 +84,12 @@ public class PlayerGroundedStates : PlayerState
         }
         // 벽과 난간에 닿은 상태로 grab 키를 눌렀을 경우 wall Grab 상태로
         // 낮은 턱에서 grab 키를 누르면 난간에 매달리는 모션을 취하기 때문
-        else if (isTouchingWall && isGrabInputted && isTouchingLedge)
+        else if (isTouchingWall && isInputGrab && isTouchingLedge)
         {
             stateMachine.ChangeState(player.WallGrabState);
         }
         // 대시 키를 눌렀으면서 천장에 닿지 않았으면서 대시를 할 수 있는 상태라면 dash 상태로
-        else if (isDashInputted && player.DashState.CheckCanDash() && !isTouchingCeiling)
+        else if (isInputDash && player.DashState.CheckCanDash() && !isTouchingCeiling)
         {
             stateMachine.ChangeState(player.DashState);
         }
@@ -92,10 +103,13 @@ public class PlayerGroundedStates : PlayerState
     public override void DoCheck()
     {
         base.DoCheck();
-        
-        isGrounded = core.CollisionSenses.GetGround;
-        isTouchingWall = core.CollisionSenses.GetWall;
-        isTouchingLedge = core.CollisionSenses.GetLedgeHor;
-        isTouchingCeiling = core.CollisionSenses.GetCeiling;
+
+        if (CollisionSenses)
+        {
+            isGrounded = CollisionSenses.GetGround;
+            isTouchingWall = CollisionSenses.GetWall;
+            isTouchingLedge = CollisionSenses.GetLedgeHor;
+            isTouchingCeiling = CollisionSenses.GetCeiling;
+        }
     }
 }

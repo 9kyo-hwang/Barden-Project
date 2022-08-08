@@ -8,6 +8,9 @@ public class EntityAttackState : EntityState
 
     protected bool isAnimationFinished;
     protected bool isDetectingPlayerInMinRange;
+
+    private Movement Movement => movement ?? core.GetCoreComponentValue(ref movement);
+    private Movement movement;
     public EntityAttackState(Entity entity, EntityStateMachine stateMachine, EntityData data, string animBoolName, Transform attackPosition) : base(entity, stateMachine, data, animBoolName)
     {
         this.attackPosition = attackPosition;
@@ -19,7 +22,7 @@ public class EntityAttackState : EntityState
         
         isAnimationFinished = false;
         entity.AnimToStateMachine.attackState = this;
-        core.Movement.SetVelocityX(0f);
+        Movement?.SetVelocityX(0f);
     }
 
     public override void Exit()
@@ -31,7 +34,7 @@ public class EntityAttackState : EntityState
     {
         base.LogicUpdate();
         
-        core.Movement.SetVelocityX(0f);
+        Movement?.SetVelocityX(0f);
     }
 
     public override void PhysicsUpdate()

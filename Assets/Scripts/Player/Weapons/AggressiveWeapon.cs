@@ -6,6 +6,11 @@ using Interfaces;
 
 public class AggressiveWeapon : Weapon
 {
+    #region Core Components
+    private Movement Movement => movement ?? core.GetCoreComponentValue(ref movement);
+    private Movement movement;
+    #endregion
+    
     // AggressiveWeaopn은 SO_WeaponData를 상속받는 SO_AggressiveData를 가져야 함
     protected SO_AggressiveWeaponData aggressiveWeaponData;
 
@@ -54,7 +59,7 @@ public class AggressiveWeapon : Weapon
         // detectedKnockbackable에 담긴 IDamageable 모든 원소 받아옴
         foreach (var item in detectedKnockbackables.ToList())
         {
-            item.Knockback(details.knockbackStrength, details.knockbackAngle, core.Movement.FacingDir); // details의 데미지만큼 IDamageable 오브젝트들의 Damage 수행
+            item.Knockback(details.knockbackStrength, details.knockbackAngle, Movement.FacingDir); // details의 데미지만큼 IDamageable 오브젝트들의 Damage 수행
         }
     }
 

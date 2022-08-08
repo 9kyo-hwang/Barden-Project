@@ -4,13 +4,21 @@ using UnityEngine;
 
 public class EntityDetectedPlayerState : EntityState
 {
-
+    #region Variables
     protected bool isDetectingPlayerInMinRange;
     protected bool isDetectingPlayerInMaxRange;
     protected bool performLongRangeAction;
     protected bool performCloseRangeAction;
     protected bool isDetectingLedge;
-
+    #endregion
+    
+    #region Core Components
+    protected Movement Movement => movement ?? core.GetCoreComponentValue(ref movement);
+    private Movement movement;
+    private CollisionSenses CollisionSenses => collisionSenses ?? core.GetCoreComponentValue(ref collisionSenses);
+    private CollisionSenses collisionSenses;
+    #endregion
+    
     public EntityDetectedPlayerState(Entity entity, EntityStateMachine stateMachine, EntityData data, string animBoolName) : base(entity, stateMachine, data, animBoolName)
     {
 
@@ -21,7 +29,7 @@ public class EntityDetectedPlayerState : EntityState
         base.Enter();
 
         performLongRangeAction = false;
-        core.Movement.SetVelocityX(0f);
+        Movement?.SetVelocityX(0f);
     }
 
     public override void Exit()
@@ -33,7 +41,7 @@ public class EntityDetectedPlayerState : EntityState
     {
         base.LogicUpdate();
         
-        core.Movement.SetVelocityX(0f);
+        Movement?.SetVelocityX(0f);
 
         if(Time.time >= startTime + data.longRangeActionTime)
         {
@@ -50,9 +58,11 @@ public class EntityDetectedPlayerState : EntityState
     {
         base.DoCheck();
 
+        if(CollisionSenses)
+            isDetectingLedge = CollisionSenses.GetLedgeVer;
+        
         isDetectingPlayerInMinRange = entity.GetPlayerInMinRange;
         isDetectingPlayerInMaxRange = entity.GetPlayerInMaxRange;
-        isDetectingLedge = core.CollisionSenses.GetLedgeVer;
         performCloseRangeAction = entity.GetPlayerInCloseRangeAction;
     }
 }

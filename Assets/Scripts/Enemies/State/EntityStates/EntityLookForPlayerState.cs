@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EntityLookForPlayerState : EntityState
 {
+    #region Variables
     protected bool turnImmediately;
     protected bool isDetectingPlayerInMinRange;
     protected bool isAllTurnsDone;
@@ -11,6 +12,12 @@ public class EntityLookForPlayerState : EntityState
 
     protected float lastTurnTime;
     protected int currentTurnCount;
+    #endregion
+    
+    #region Core Components
+    private Movement Movement => movement ?? core.GetCoreComponentValue(ref movement);
+    private Movement movement;
+    #endregion
 
     public EntityLookForPlayerState(Entity entity, EntityStateMachine stateMachine, EntityData data, string animBoolName) : base(entity, stateMachine, data, animBoolName)
     {
@@ -35,7 +42,7 @@ public class EntityLookForPlayerState : EntityState
         lastTurnTime = startTime;
         currentTurnCount = 0;
 
-        core.Movement.SetVelocityX(0f);
+        Movement?.SetVelocityX(0f);
     }
 
     public override void Exit()
@@ -47,12 +54,12 @@ public class EntityLookForPlayerState : EntityState
     {
         base.LogicUpdate();
         
-        core.Movement.SetVelocityX(0f);
+        Movement?.SetVelocityX(0f);
 
         // 즉시 turn 해야하는 상황일 경우
         if(turnImmediately)
         {
-            core.Movement.Flip();
+            Movement?.Flip();
             lastTurnTime = Time.time;
             currentTurnCount++;
             turnImmediately = false;
@@ -60,7 +67,7 @@ public class EntityLookForPlayerState : EntityState
         // 턴 대기시간을 초과했으면서 아직 모든 턴 횟수를 다 쓴게 아니라면
         else if(Time.time >= lastTurnTime + data.timeBetweenTurn && !isAllTurnsDone)
         {
-            core.Movement.Flip();
+            Movement?.Flip();
             lastTurnTime = Time.time;
             currentTurnCount++;
         }

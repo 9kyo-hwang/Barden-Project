@@ -4,12 +4,21 @@ using UnityEngine;
 
 public class EntityChargeState : EntityState
 {
+    #region Variables
     protected bool isDetectingPlayerInMinRange;
     protected bool isDetectingLedge;
     protected bool isDetectingWall;
     protected bool isChargeTimeOver;
     protected bool performCloseRangeAction;
-
+    #endregion
+    
+    #region Core Components
+    private Movement Movement => movement ?? core.GetCoreComponentValue(ref movement);
+    private Movement movement;
+    private CollisionSenses CollisionSenses => collisionSenses ?? core.GetCoreComponentValue(ref collisionSenses);
+    private CollisionSenses collisionSenses;
+    #endregion
+    
     public EntityChargeState(Entity entity, EntityStateMachine stateMachine, EntityData data, string animBoolName) : base(entity, stateMachine, data, animBoolName)
     {
     }
@@ -18,9 +27,12 @@ public class EntityChargeState : EntityState
     {
         base.DoCheck();
 
+        if (CollisionSenses)
+        {
+            isDetectingLedge = CollisionSenses.GetLedgeVer;
+            isDetectingWall = CollisionSenses.GetWall;
+        }
         isDetectingPlayerInMinRange = entity.GetPlayerInMinRange;
-        isDetectingLedge = core.CollisionSenses.GetLedgeVer;
-        isDetectingWall = core.CollisionSenses.GetWall;
         performCloseRangeAction = entity.GetPlayerInCloseRangeAction;
     }
 
@@ -29,7 +41,7 @@ public class EntityChargeState : EntityState
         base.Enter();
 
         isChargeTimeOver = false;
-        core.Movement.SetVelocityX(data.chargeSpeed * core.Movement.FacingDir);
+        Movement?.SetVelocityX(data.chargeSpeed * Movement.FacingDir);
     }
 
     public override void Exit()
@@ -41,7 +53,7 @@ public class EntityChargeState : EntityState
     {
         base.LogicUpdate();
         
-        core.Movement.SetVelocityX(data.chargeSpeed * core.Movement.FacingDir);
+        Movement?.SetVelocityX(data.chargeSpeed * Movement.FacingDir);
 
         if(Time.time >= startTime + data.chargeTime)
         {

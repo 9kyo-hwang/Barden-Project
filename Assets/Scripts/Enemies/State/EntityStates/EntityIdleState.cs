@@ -4,13 +4,17 @@ using UnityEngine;
 
 public class EntityIdleState : EntityState
 {
-
     protected bool flipAfterIdle;
     protected bool isIdleTimeOver;
     protected bool isDetectingPlayerInMinRange;
 
     protected float idleTime;
 
+    #region Core Components
+    private Movement Movement => movement ?? core.GetCoreComponentValue(ref movement);
+    private Movement movement;
+    #endregion
+    
     public EntityIdleState(Entity entity, EntityStateMachine stateMachine, EntityData data, string animBoolName) : base(entity, stateMachine, data, animBoolName)
     {
 
@@ -20,7 +24,7 @@ public class EntityIdleState : EntityState
     {
         base.Enter();
 
-        core.Movement.SetVelocityX(0f);
+        Movement?.SetVelocityX(0f);
         isIdleTimeOver = false;
         SetRandomIdleTime();
     }
@@ -31,7 +35,7 @@ public class EntityIdleState : EntityState
 
         if(flipAfterIdle)
         {
-            core.Movement.Flip();
+            Movement?.Flip();
         }
     }
 
@@ -39,7 +43,7 @@ public class EntityIdleState : EntityState
     {
         base.LogicUpdate();
         
-        core.Movement.SetVelocityX(0f);
+        Movement?.SetVelocityX(0f);
 
         if(Time.time >= startTime + idleTime)
         {

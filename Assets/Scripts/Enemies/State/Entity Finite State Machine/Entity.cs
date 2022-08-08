@@ -16,8 +16,10 @@ public class Entity : MonoBehaviour
     public AnimationToStatemachine AnimToStateMachine { get; private set; }
     public Core Core { get; private set; }
     
+    private Movement Movement => movement ?? Core.GetCoreComponentValue(ref movement);
+    private Movement movement;
     #endregion
-    
+
     #region Other Variables
     public int LastDamageDir { get; private set; }
 
@@ -93,8 +95,11 @@ public class Entity : MonoBehaviour
 
     public virtual void Knockback(float velocity)
     {
-        workspace.Set(Core.Movement.Rb2d.velocity.x, velocity);
-        Core.Movement.Rb2d.velocity = workspace;
+        if (Movement)
+        {
+            workspace.Set(Movement.Rb2d.velocity.x, velocity);
+            Movement.Rb2d.velocity = workspace;
+        }
     }
 
     public virtual void ResetStunResistance()
@@ -111,7 +116,7 @@ public class Entity : MonoBehaviour
         var ledgeCheckerPos = ledgeChecker.position;
         var playerCheckerPos = playerChecker.position;
         
-        Gizmos.DrawLine(wallCheckerPos, wallCheckerPos + (Vector3)(Vector2.right * Core.Movement.FacingDir * data.wallCheckDistance));
+        Gizmos.DrawLine(wallCheckerPos, wallCheckerPos + (Vector3)(Vector2.right * Movement.FacingDir * data.wallCheckDistance));
         Gizmos.DrawLine(ledgeCheckerPos, ledgeCheckerPos + (Vector3)(Vector2.down * data.ledgeCheckDistance));
         
         Gizmos.DrawWireSphere(playerCheckerPos + (Vector3)(Vector2.right * data.closeRangeActionDistance), 0.2f);

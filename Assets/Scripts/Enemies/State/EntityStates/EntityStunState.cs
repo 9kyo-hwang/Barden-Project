@@ -4,11 +4,20 @@ using UnityEngine;
 
 public class EntityStunState : EntityState
 {
+    #region Variables
     protected bool isStunTimeOver;
     protected bool isGrounded;
     protected bool isMovementStopped;
     protected bool performCloseRangeAction;
     protected bool isDetectingPlayerInMinRange;
+    #endregion
+    
+    #region Core Components
+    private Movement Movement => movement ?? core.GetCoreComponentValue(ref movement);
+    private Movement movement;
+    private CollisionSenses CollisionSenses => collisionSenses ?? core.GetCoreComponentValue(ref collisionSenses);
+    private CollisionSenses collisionSenses;
+    #endregion
 
     public EntityStunState(Entity entity, EntityStateMachine stateMachine, EntityData data, string animBoolName) : base(entity, stateMachine, data, animBoolName)
     {
@@ -20,7 +29,7 @@ public class EntityStunState : EntityState
 
         isStunTimeOver = false;
         isMovementStopped = false;
-        core.Movement.SetVelocityDirection(data.knockbackSpeed, data.knockbackAngle, entity.LastDamageDir);
+        Movement?.SetVelocityDirection(data.knockbackSpeed, data.knockbackAngle, entity.LastDamageDir);
     }
 
     public override void Exit()
@@ -41,7 +50,7 @@ public class EntityStunState : EntityState
         if (isGrounded && Time.time >= startTime + data.knockbackTime && !isMovementStopped)
         {
             isMovementStopped = true;
-            core.Movement.SetVelocityX(0f);
+            Movement?.SetVelocityX(0f);
         }
     }
 
@@ -54,7 +63,9 @@ public class EntityStunState : EntityState
     {
         base.DoCheck();
 
-        isGrounded = core.CollisionSenses.GetGround;
+        if(CollisionSenses)
+            isGrounded = CollisionSenses.GetGround;
+        
         performCloseRangeAction = entity.GetPlayerInCloseRangeAction;
         isDetectingPlayerInMinRange = entity.GetPlayerInMinRange;
     }
