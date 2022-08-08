@@ -10,12 +10,28 @@ public class Core : MonoBehaviour
     // 각 컴포넌트들을 직접 프로퍼티로 받아오는 것이 아닌
     // 컴포넌트 리스트를 만들어 거기서 관리하도록 변경
 
-    private readonly List<CoreComponent> components = new List<CoreComponent>();
+    private readonly List<CoreComponent> coreComponents = new List<CoreComponent>();
 
+    // Core Awake에서 하위에 있는 CoreComponents들을 먼저 리스트에 추가
+    private void Awake()
+    {
+        var components = GetComponentsInChildren<CoreComponent>();
+
+        foreach (var component in components)
+        {
+            AddComponent(component);
+        }
+
+        // 리스트에 있는 코어 컴포넌트들을 현재 코어에 맞게 세팅
+        foreach (var component in coreComponents)
+        {
+            component.Init(this);
+        }
+    }
     public void LogicUpdate()
     {
         // List에 있는 코어 컴포넌트들의 LogicUpdate 수행
-        foreach (var component in components)
+        foreach (var component in coreComponents)
         {
             component.LogicUpdate();
         }
@@ -25,9 +41,9 @@ public class Core : MonoBehaviour
     public void AddComponent(CoreComponent component)
     {
         // List에 해당 컴포넌트가 있지 않다면 List에 추가
-        if (!components.Contains(component))
+        if (!coreComponents.Contains(component))
         {
-            components.Add(component);
+            coreComponents.Add(component);
         }
     }
 
@@ -36,7 +52,7 @@ public class Core : MonoBehaviour
     {
         // T 타입 오브젝트만 필터링해 반환
         // 그 중 (특정 조건에 맞는) 첫 번째 요소 내지 기본값 반환
-        var component = components.OfType<T>().FirstOrDefault();
+        var component = coreComponents.OfType<T>().FirstOrDefault();
 
         if (component == null)
         {

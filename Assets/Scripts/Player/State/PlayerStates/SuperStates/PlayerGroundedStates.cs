@@ -69,7 +69,7 @@ public class PlayerGroundedStates : PlayerState
         {
             stateMachine.ChangeState(player.SecondaryAttackState);
         }
-        // 어떤 지상 상태에서든 점프 키 입력 시 점프 상태로 바뀔 수 있음
+        // 천장에 닿아있지만 않으면 점프 키 입력 시 점프 상태로 바뀔 수 있음
         // 단 남은 점프 횟수가 0보다 클 경우(CanJump() return 조건)
         else if (isInputJump && !isTouchingCeiling && player.JumpState.CanJump())
         {

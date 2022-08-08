@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +8,9 @@ public class Stats : CoreComponent
 {
     [SerializeField] private float maxHealthPoint;
     private float currentHealthPoint;
+
+    // 이벤트 공급자 클래스
+    public event Action HealthZero;
 
     protected override void Awake()
     {
@@ -22,6 +26,7 @@ public class Stats : CoreComponent
         if (currentHealthPoint <= 0)
         {
             currentHealthPoint = 0;
+            HealthZero?.Invoke(); // 구독자가 있을 경우 이벤트 발생
             Debug.Log( core.transform.parent.name + " Health Point is Zero");
         }
     }

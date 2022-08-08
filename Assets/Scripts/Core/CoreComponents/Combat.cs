@@ -1,21 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Security;
 using Interfaces;
 using UnityEngine;
 
 public class Combat : CoreComponent, IDamageable, IKnockbackable
 {
+    [SerializeField] private GameObject damageParticles;
     [SerializeField] private float maxKnockbackTime = 0.2f;
     private bool isActiveKnockback;
     private float knockbackStartTime;
 
+    #region Core Components
     private Movement Movement => core.GetCoreComponentValue(ref movement);
     private CollisionSenses CollisionSenses => core.GetCoreComponentValue(ref collisionSenses);
     private Stats Stats => core.GetCoreComponentValue(ref stats);
+    private ParticleManager ParticleManager => core.GetCoreComponentValue(ref particleManager);
     
     private Movement movement;
     private CollisionSenses collisionSenses;
     private Stats stats;
+    private ParticleManager particleManager;
+    #endregion
 
     public override void LogicUpdate()
     {
@@ -26,6 +32,7 @@ public class Combat : CoreComponent, IDamageable, IKnockbackable
     {
         Debug.Log(core.transform.parent.name + " Damaged!");
         Stats?.DecreaseHealthPoint(amount);
+        ParticleManager?.RandomRotationParticles(damageParticles);
     }
 
     public void Knockback(float strength, Vector2 angle, int direction)
