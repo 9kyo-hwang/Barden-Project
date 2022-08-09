@@ -11,42 +11,31 @@ public class Enemy1DetectedPlayerState : EntityDetectedPlayerState
         this.enemy = enemy;
     }
 
-    public override void DoCheck()
-    {
-        base.DoCheck();
-    }
-
-    public override void Enter()
-    {
-        base.Enter();
-    }
-
-    public override void Exit()
-    {
-        base.Exit();
-    }
-
     public override void LogicUpdate()
     {
         base.LogicUpdate();
 
         // Detected Player State를 벗어나는 조건들
 
-        if (performCloseRangeAction)
+        // 근접한 공격 범위에 플레이어가 들어왔다면
+        if (isEnteringPlayerInCloseActionRange)
         {
             stateMachine.ChangeState(enemy.MeleeAttackState);
         }
-        else if(performLongRangeAction)
+        // 떨어진 공격 범위에 플레이어가 들어왔다면
+        else if(isEnteringPlayerInLongActionRange)
         {
             stateMachine.ChangeState(enemy.ChargeState);
         }
-        else if(!isDetectingPlayerInMaxRange)
+        // 플레이어 최대 탐지 범위 밖으로 나가지 않았다면
+        else if(!isEnteringPlayerInMaxDetectionRange)
         {
             stateMachine.ChangeState(enemy.LookForPlayerState);
         }
-        else if (!isDetectingLedge)
+        // 난간에 닿지 않았다면(발 끝에 달려있는 난간 탐지용 ray에 정보가 없다면 난간에 도달했다는 의미)
+        else if (!isTouchingLedge)
         {
-            Movement?.Flip();
+            Movement.Flip();
             stateMachine.ChangeState(enemy.MoveState);
         }
     }

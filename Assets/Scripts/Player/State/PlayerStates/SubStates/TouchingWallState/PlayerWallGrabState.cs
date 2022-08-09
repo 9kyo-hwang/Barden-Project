@@ -36,12 +36,12 @@ public class PlayerWallGrabState : PlayerTouchingWallState
             // wall Grab 상태를 벗어나는 조건들
             
             // y Input이 0보다 크다면 wall Climb 상태로
-            if (yInput > 0)
+            if (inputY > 0)
             {
                 stateMachine.ChangeState(player.WallClimbState);
             }
             // y Input이 0보다 작거나 grab 버튼 키를 안눌렀을 경우
-            else if (yInput < 0 || !isGrabInputted)
+            else if (inputY < 0 || !isInputGrab)
             {
                 stateMachine.ChangeState(player.WallSlideState);
             }   
@@ -54,26 +54,6 @@ public class PlayerWallGrabState : PlayerTouchingWallState
         player.transform.position = holdPosition;
         
         // player의 x, y Velocity를 지속적으로 0으로 갱신
-        Movement?.SetVelocityZero();
-    }
-
-    public override void PhysicsUpdate()
-    {
-        base.PhysicsUpdate();
-    }
-
-    public override void DoCheck()
-    {
-        base.DoCheck();
-    }
-
-    public override void AnimationTrigger()
-    {
-        base.AnimationTrigger();
-    }
-
-    public override void AnimationFinishTrigger()
-    {
-        base.AnimationFinishTrigger();
+        Movement.SetVelocityZero();
     }
 }

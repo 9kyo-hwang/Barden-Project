@@ -10,10 +10,10 @@ public class PlayerInAirState : PlayerState
     // Input
     private int xInput;
     private int yInput;
-    private bool isJumpInputted;
-    private bool isJumpInputStopped;
-    private bool isGrabInputted;
-    private bool isDashInputted;
+    private bool isInputJumpStarted;
+    private bool isInputJumpCanceled;
+    private bool isInputGrab;
+    private bool isInputDash;
     
     // Checks
     private bool isGrounded;
@@ -69,10 +69,10 @@ public class PlayerInAirState : PlayerState
         
         xInput = player.InputHandler.InputXNormalize;
         yInput = player.InputHandler.InputYNormalize;
-        isJumpInputted = player.InputHandler.IsInputJumpStarted;
-        isJumpInputStopped = player.InputHandler.IsInputJumpCanceled;
-        isGrabInputted = player.InputHandler.IsInputGrabStarted;
-        isDashInputted = player.InputHandler.IsInputDashStarted;
+        isInputJumpStarted = player.InputHandler.IsInputJumpStarted;
+        isInputJumpCanceled = player.InputHandler.IsInputJumpCanceled;
+        isInputGrab = player.InputHandler.IsInputGrabStarted;
+        isInputDash = player.InputHandler.IsInputDashStarted;
         
         CheckJumpMultiplier();
         
@@ -86,58 +86,59 @@ public class PlayerInAirState : PlayerState
         {
             stateMachine.ChangeState(player.SecondaryAttackState);
         }
-        // 땅에 닿았다면 land 상태로
+        // 땅에 닿았다면 land
         else if (isGrounded && Movement.CurrentVelocity.y < 0.01f)
         {
             stateMachine.ChangeState(player.LandState);
         }
-        // 벽에 닿았으면서 난간과 땅에 닿지 않았을 경우 ledge Climb 상태로
-        // 낮은 턱에 플레이어가 붙은 채 점프를 하면 난간에 매달리는 모션이 취해지기 때문
-        else if (isTouchingWall && !isTouchingLedge && !isGrounded)
+        // 벽에 닿았을 때
+        else if (isTouchingWall)
         {
-            stateMachine.ChangeState(player.LedgeClimbState);
+            // 난간과 땅에 닿지 않은 상태라면 Ledge Climb
+            if (!isTouchingLedge && !isGrounded)
+            {
+                stateMachine.ChangeState(player.LedgeClimbState);
+            }
+            // 난간에 닿은 상태로 Grab 키를 눌렀다면 Wall Grab
+            // Wall Slide보다 우선됨
+            else if (isTouchingLedge && isInputGrab)
+            {
+                stateMachine.ChangeState(player.WallGrabState);
+            }
+            // 바라보는 방향으로 방향키를 눌렀으며 캐릭터가 내려가는 중이라면 Wall Slide
+            else if (xInput == Movement.FacingDir && Movement.CurrentVelocity.y <= 0f)
+            {
+                stateMachine.ChangeState(player.WallSlideState);
+            }
         }
-        // jump보다 우선되는 wall Jump
-        // 점프 버튼이 눌렸으면서 캐릭터 앞이나 뒤로 벽에 닿아있다면
-        else if (isJumpInputted && (isTouchingWall || isTouchingWallBack || isWallJumpCoyoteTime))
+        // 점프 버튼이 눌렸을 때
+        else if (isInputJumpStarted)
         {
-            // 점프 방향 결정 후 벽 점프 상태로
-            // 벽 점프 조건의 정확성을 위해 다시 한 번 LogicUpdate()에서 검사해줌
-            // PhysicsUpdate()의 DoCheck()에서 검사한 조건은 약간 이전의 조건으로 오류 발생 가능
-            // 벽점프 수행 시 벽점프 코요테 타임 중단
-            StopWallJumpCoyoteTime();
-            isTouchingWall = CollisionSenses.GetWall;
-            player.WallJumpState.DetermineWallJumpDirection(isTouchingWall);
-            stateMachine.ChangeState(player.WallJumpState);
-        }
-        // 점프 버튼이 눌렸으면서 점프 할 수 있는 상태라면 jump 상태로(공중 점프)
-        else if (isJumpInputted && player.JumpState.CanJump())
-        {
-            stateMachine.ChangeState(player.JumpState);
-        }
-        // wall Slide보다 우선되는 wall Grab
-        // 벽과 난간에 닿았으면서 그랩 버튼을 눌렀을 경우 wall Grab 상태로
-        // 낮은 턱에서 그랩 키를 누른 채 점프를 하면 난간 오르는 모션이 취해지기 때문
-        else if (isTouchingWall && isGrabInputted && isTouchingLedge)
-        {
-            stateMachine.ChangeState(player.WallGrabState);
-        }
-        // 벽에 닿았으면서 플레이어가 바라보는 방향과 x축 입력 방향이 같고
-        // 캐릭터의 y Velocity가 0 이하라면 wall Slide 상태로
-        else if (isTouchingWall && xInput == Movement?.FacingDir && Movement?.CurrentVelocity.y <= 0f)
-        {
-            stateMachine.ChangeState(player.WallSlideState);
+            // 벽에 닿았거나 벽점프 코요테 타임이라면 벽점프
+            // 일반 점프보다 우선됨
+            if (isTouchingWall || isTouchingWallBack || isWallJumpCoyoteTime)
+            {
+                StopWallJumpCoyoteTime(); // 벽점프 수행 시 벽점프 코요테 타임 중단
+                isTouchingWall = CollisionSenses.GetWall; // 벽 점프 조건의 정확성을 위해 LogicUpdate()에서 재검사(DoCheck()의 시점은 약간 이전)
+                player.WallJumpState.DetermineWallJumpDirection(isTouchingWall); // 점프 방향 결정
+                stateMachine.ChangeState(player.WallJumpState);
+            }
+            // 점프 가능한 상태라면 일반 점프
+            else if (player.JumpState.CanJump())
+            {
+                stateMachine.ChangeState(player.JumpState);
+            }
         }
         // 대시 키를 눌렀으면서 대시를 할 수 있는 상태라면 dash 상태로
-        else if (isDashInputted && player.DashState.CheckCanDash())
+        else if (isInputDash && player.DashState.CheckCanDash())
         {
             stateMachine.ChangeState(player.DashState);
         }
         // 아니라면 x Velocity 재설정(공중 이동)
         else
         {
-            Movement?.CheckFlip(xInput);
-            Movement?.SetVelocityX(playerData.moveVelocity * xInput);
+            Movement.CheckFlip(xInput);
+            Movement.SetVelocityX(playerData.moveVelocity * xInput);
             
             player.Anim.SetFloat("yVelocity", Movement.CurrentVelocity.y);
             player.Anim.SetFloat("xVelocity", Mathf.Abs(Movement.CurrentVelocity.x));
@@ -146,20 +147,19 @@ public class PlayerInAirState : PlayerState
 
     private void CheckJumpMultiplier()
     {
-        // 점프 중일 때
-        if (isJumping)
+        // 점프 중이 아니라면 작동하지 않음
+        if (!isJumping) return;
+        
+        // 점프 키 업 시 y Velocity에 가중치를 곱해서 점프 높이를 낮추고 점프 중이 아니도록 설정
+        if (isInputJumpCanceled)
         {
-            // 점프 키 업 시 y Velocity에 가중치를 곱해서 점프 높이를 낮추고 점프 중이 아니도록 설정
-            if (isJumpInputStopped)
-            {
-                Movement?.SetVelocityY(Movement.CurrentVelocity.y * playerData.variableJumpHeightMultiplier);
-                isJumping = false;
-            }
-            // 현재 y Velocity가 0보다 작으면 떨어지는 중이므로 점프 중이 아니도록 설정
-            else if(Movement?.CurrentVelocity.y <= 0f)
-            {
-                isJumping = false;
-            }
+            Movement.SetVelocityY(Movement.CurrentVelocity.y * playerData.variableJumpHeightMultiplier);
+            isJumping = false;
+        }
+        // 현재 y Velocity가 0보다 작으면 떨어지는 중이므로 점프 중이 아니도록 설정
+        else if(Movement.CurrentVelocity.y <= 0f)
+        {
+            isJumping = false;
         }
     }
 
@@ -175,14 +175,11 @@ public class PlayerInAirState : PlayerState
         // 벽에 닿아있는 지 정보 기록
         isTouchingWallBefore = isTouchingWall;
         isTouchingWallBackBefore = isTouchingWallBack;
-
-        if (CollisionSenses)
-        {
-            isGrounded = CollisionSenses.GetGround;
-            isTouchingWall = CollisionSenses.GetWall;
-            isTouchingWallBack = CollisionSenses.GetWallBack;
-            isTouchingLedge = CollisionSenses.GetLedgeHor;
-        }
+        
+        isGrounded = CollisionSenses.GetGround;
+        isTouchingWall = CollisionSenses.GetWall;
+        isTouchingWallBack = CollisionSenses.GetWallBack;
+        isTouchingLedge = CollisionSenses.GetLedgeHor;
 
         if (isTouchingWall && !isTouchingLedge)
         {
@@ -226,12 +223,12 @@ public class PlayerInAirState : PlayerState
         isJumping = true;
     }
 
-    public void StartWallJumpCoyoteTime()
+    private void StartWallJumpCoyoteTime()
     {
         isWallJumpCoyoteTime = true;
     }
 
-    public void StopWallJumpCoyoteTime()
+    private void StopWallJumpCoyoteTime()
     {
         isWallJumpCoyoteTime = false;
     }

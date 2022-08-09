@@ -6,7 +6,7 @@ public class PlayerAttackState : PlayerAbilityState
 {
     private Weapon weapon;
 
-    private int xInput;
+    private int inputX;
 
     private float velocityToSet;
     private bool setVelocity;
@@ -37,16 +37,16 @@ public class PlayerAttackState : PlayerAbilityState
     {
         base.LogicUpdate();
 
-        xInput = player.InputHandler.InputXNormalize;
+        inputX = player.InputHandler.InputXNormalize;
     
         if(shouldCheckFlip)
         {
-            Movement?.CheckFlip(xInput);
+            Movement.CheckFlip(inputX);
         }
 
         if(setVelocity)
         {
-            Movement?.SetVelocityX(velocityToSet * Movement.FacingDir);
+            Movement.SetVelocityX(velocityToSet * Movement.FacingDir);
         }
     }
 
@@ -59,7 +59,7 @@ public class PlayerAttackState : PlayerAbilityState
     // float velocity 값을 받아 공격 모션 중 플레이어의 Velocity 설정
     public void SetPlayerVelocity(float velocity)
     {
-        Movement?.SetVelocityX(velocity * Movement.FacingDir);
+        Movement.SetVelocityX(velocity * Movement.FacingDir);
 
         velocityToSet = velocity;
         setVelocity = true;

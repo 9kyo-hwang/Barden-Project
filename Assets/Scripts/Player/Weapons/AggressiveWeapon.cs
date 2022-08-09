@@ -69,18 +69,10 @@ public class AggressiveWeapon : Weapon
         Debug.Log("AddToDetected");
 
         var damageable = other.GetComponent<IDamageable>();
-
-        if(damageable != null)
-        {
-            detectedDamageables.Add(damageable);
-        }
+        detectedDamageables?.Add(damageable); // null이 아니라면 추가
 
         var knockbackable = other.GetComponent<IKnockbackable>();
-
-        if (knockbackable != null)
-        {
-            detectedKnockbackables.Add(knockbackable);
-        }
+        detectedKnockbackables?.Add(knockbackable); // null이 아니라면 추가
     }
 
     // 공격 범위에서 나간 적의 IDamageable을 리스트에서 제거
@@ -89,17 +81,9 @@ public class AggressiveWeapon : Weapon
         Debug.Log("RemoveFromDetected");
 
         var damageable = other.GetComponent<IDamageable>();
+        detectedDamageables?.Remove(damageable); // null이 아니라면 제거
 
-        if(damageable != null)
-        {
-            detectedDamageables.Remove(damageable);
-        }
-        
         var knockbackable = other.GetComponent<IKnockbackable>();
-
-        if (knockbackable != null)
-        {
-            detectedKnockbackables.Remove(knockbackable);
-        }
+        detectedKnockbackables?.Remove(knockbackable); // null이 아니라면 제거
     }
 }

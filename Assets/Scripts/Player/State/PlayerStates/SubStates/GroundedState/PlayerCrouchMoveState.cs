@@ -29,8 +29,8 @@ public class PlayerCrouchMoveState : PlayerGroundedStates
         if (!isExitingState)
         {
             // x Velocity를 crouchMove 값만큼 바라보는 방향으로 지속 갱신
-            Movement?.SetVelocityX(playerData.crouchMoveVelocity * Movement.FacingDir);
-            Movement?.CheckFlip(inputX);
+            Movement.SetVelocityX(playerData.crouchMoveVelocity * Movement.FacingDir);
+            Movement.CheckFlip(inputX);
             
             // crouch Move 상태를 벗어나는 조건들
             

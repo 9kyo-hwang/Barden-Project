@@ -24,7 +24,7 @@ public class EntityMoveState : EntityState
     {
         base.Enter();
         
-        Movement?.SetVelocityX(data.movementSpeed * Movement.FacingDir);
+        Movement.SetVelocityX(data.movementSpeed * Movement.FacingDir);
     }
 
     public override void Exit()
@@ -36,7 +36,7 @@ public class EntityMoveState : EntityState
     {
         base.LogicUpdate();
         
-        Movement?.SetVelocityX(data.movementSpeed * Movement.FacingDir);
+        Movement.SetVelocityX(data.movementSpeed * Movement.FacingDir);
     }
 
     public override void PhysicsUpdate()
@@ -53,6 +53,6 @@ public class EntityMoveState : EntityState
             isDetectingLedge = CollisionSenses.GetLedgeVer;
             isDetectingWall = CollisionSenses.GetWall;
         }
-        isDetectingPlayerInMinRange = entity.GetPlayerInMinRange;
+        isDetectingPlayerInMinRange = entity.GetPlayerInMinDetectionRange;
     }
 }

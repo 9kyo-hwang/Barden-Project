@@ -7,9 +7,9 @@ public class EntityStunState : EntityState
     #region Variables
     protected bool isStunTimeOver;
     protected bool isGrounded;
-    protected bool isMovementStopped;
-    protected bool performCloseRangeAction;
-    protected bool isDetectingPlayerInMinRange;
+    protected bool isStopMovement;
+    protected bool isEnteringPlayerInCloseActionRange;
+    protected bool isEnteringPlayerInMinDetectionRange;
     #endregion
     
     #region Core Components
@@ -28,8 +28,8 @@ public class EntityStunState : EntityState
         base.Enter();
 
         isStunTimeOver = false;
-        isMovementStopped = false;
-        Movement?.SetVelocityDirection(data.knockbackSpeed, data.knockbackAngle, entity.LastDamageDir);
+        isStopMovement = false;
+        Movement.SetVelocityDirection(data.knockbackSpeed, data.knockbackAngle, entity.LastDamageDir);
     }
 
     public override void Exit()
@@ -46,11 +46,11 @@ public class EntityStunState : EntityState
             isStunTimeOver = true;
         }
 
-        // 땅에서 넉백으로 인해 움직이는 중일 때, 넉백 시간을 초과했다면 더이상 속력 변화가 없도록
-        if (isGrounded && Time.time >= startTime + data.knockbackTime && !isMovementStopped)
+        // 땅에서 넉백 중일 때, 넉백 시간을 초과했다면 더이상 속력 변화가 없도록
+        if (isGrounded && Time.time >= startTime + data.knockbackTime && !isStopMovement)
         {
-            isMovementStopped = true;
-            Movement?.SetVelocityX(0f);
+            isStopMovement = true;
+            Movement.SetVelocityX(0f);
         }
     }
 
@@ -62,11 +62,9 @@ public class EntityStunState : EntityState
     public override void DoCheck()
     {
         base.DoCheck();
-
-        if(CollisionSenses)
-            isGrounded = CollisionSenses.GetGround;
         
-        performCloseRangeAction = entity.GetPlayerInCloseRangeAction;
-        isDetectingPlayerInMinRange = entity.GetPlayerInMinRange;
+        isGrounded = CollisionSenses.GetGround;
+        isEnteringPlayerInCloseActionRange = entity.GetPlayerInCloseActionRange;
+        isEnteringPlayerInMinDetectionRange = entity.GetPlayerInMinDetectionRange;
     }
 }

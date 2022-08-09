@@ -9,6 +9,8 @@ public class EntityMeleeAttackState : EntityAttackState
     private Movement Movement => movement ?? core.GetCoreComponentValue(ref movement);
     private Movement movement;
     #endregion
+
+    private readonly Collider2D[] cols; // OverlapCircleNonAlloc을 쓰기 위한 out용 변수
     
     public EntityMeleeAttackState(Entity entity, EntityStateMachine stateMachine, EntityData data, string animBoolName, Transform attackPosition) : base(entity, stateMachine, data, animBoolName, attackPosition)
     {
@@ -17,11 +19,10 @@ public class EntityMeleeAttackState : EntityAttackState
     public override void AttackTrigger()
     {
         base.AttackTrigger();
+        
+        var size = Physics2D.OverlapCircleNonAlloc(attackPosition.position, data.attackRadius, cols, data.whatIsPlayer);
 
-        var detectedObjs =
-            Physics2D.OverlapCircleAll(attackPosition.position, data.attackRadius, data.whatIsPlayer);
-
-        foreach (var col in detectedObjs)
+        foreach (var col in cols)
         {
             // Interface 적용
             var damageable = col.GetComponent<IDamageable>();

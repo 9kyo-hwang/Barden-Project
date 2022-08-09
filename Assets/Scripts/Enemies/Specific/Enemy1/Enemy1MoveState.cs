@@ -11,28 +11,18 @@ public class Enemy1MoveState : EntityMoveState
         this.enemy = enemy;
     }
 
-    public override void Enter()
-    {
-        base.Enter();
-    }
-
-    public override void Exit()
-    {
-        base.Exit();
-    }
-
     public override void LogicUpdate()
     {
         base.LogicUpdate();
 
         // Move State를 벗어나는 조건들
 
-        // Player가 탐지되었을 경우 PlayerDetected State로
+        // 최소 탐지 범위 내에 플레이어가 있을 경우
         if(isDetectingPlayerInMinRange)
         {
             stateMachine.ChangeState(enemy.DetectedPlayerState);
         }
-        // 벽에 닿았거나 난간에 닿은게 아니라면 Idle State로
+        // 벽에 닿았거나 난간에 닿지 않았다면(땅 끝에 도달함)
         else if(isDetectingWall || !isDetectingLedge)
         {
             enemy.IdleState.SetFlipAfterIdle(true);

@@ -28,7 +28,7 @@ public class EntityLookForPlayerState : EntityState
     {
         base.DoCheck();
 
-        isDetectingPlayerInMinRange = entity.GetPlayerInMinRange;
+        isDetectingPlayerInMinRange = entity.GetPlayerInMinDetectionRange;
     }
 
     public override void Enter()
@@ -42,7 +42,7 @@ public class EntityLookForPlayerState : EntityState
         lastTurnTime = startTime;
         currentTurnCount = 0;
 
-        Movement?.SetVelocityX(0f);
+        Movement.SetVelocityX(0f);
     }
 
     public override void Exit()
@@ -54,12 +54,12 @@ public class EntityLookForPlayerState : EntityState
     {
         base.LogicUpdate();
         
-        Movement?.SetVelocityX(0f);
+        Movement.SetVelocityX(0f);
 
         // 즉시 turn 해야하는 상황일 경우
         if(turnImmediately)
         {
-            Movement?.Flip();
+            Movement.Flip();
             lastTurnTime = Time.time;
             currentTurnCount++;
             turnImmediately = false;
@@ -67,7 +67,7 @@ public class EntityLookForPlayerState : EntityState
         // 턴 대기시간을 초과했으면서 아직 모든 턴 횟수를 다 쓴게 아니라면
         else if(Time.time >= lastTurnTime + data.timeBetweenTurn && !isAllTurnsDone)
         {
-            Movement?.Flip();
+            Movement.Flip();
             lastTurnTime = Time.time;
             currentTurnCount++;
         }

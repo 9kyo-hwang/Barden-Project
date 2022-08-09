@@ -79,28 +79,19 @@ public class Entity : MonoBehaviour
 
     #region Get Properties(Before Check Functions)
 
-    public bool GetPlayerInMinRange =>
+    public bool GetPlayerInMinDetectionRange => // 탐지 최소 거리에 들어왔는 지
         Physics2D.Raycast(playerChecker.position, transform.right, data.minDetectionDistance, data.whatIsPlayer);
 
-    public bool GetPlayerInMaxRange =>
+    public bool GetPlayerInMaxDetectionRange => // 탐지 최대 거리에 들어왔는 지
         Physics2D.Raycast(playerChecker.position, transform.right, data.maxDetectionDistance, data.whatIsPlayer);
 
-    public bool GetPlayerInCloseRangeAction => // 공격 범위 내 들어왔는 지
+    public bool GetPlayerInCloseActionRange => // 근접 공격 범위에 들어왔는 지
         Physics2D.Raycast(playerChecker.position, transform.right, data.closeRangeActionDistance,
             data.whatIsPlayer);
         
     #endregion
 
     #region Other Functions
-
-    public virtual void Knockback(float velocity)
-    {
-        if (Movement)
-        {
-            workspace.Set(Movement.Rb2d.velocity.x, velocity);
-            Movement.Rb2d.velocity = workspace;
-        }
-    }
 
     public virtual void ResetStunResistance()
     {

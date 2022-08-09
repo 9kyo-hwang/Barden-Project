@@ -24,7 +24,7 @@ public class EntityIdleState : EntityState
     {
         base.Enter();
 
-        Movement?.SetVelocityX(0f);
+        Movement.SetVelocityX(0f);
         isIdleTimeOver = false;
         SetRandomIdleTime();
     }
@@ -35,7 +35,7 @@ public class EntityIdleState : EntityState
 
         if(flipAfterIdle)
         {
-            Movement?.Flip();
+            Movement.Flip();
         }
     }
 
@@ -43,7 +43,7 @@ public class EntityIdleState : EntityState
     {
         base.LogicUpdate();
         
-        Movement?.SetVelocityX(0f);
+        Movement.SetVelocityX(0f);
 
         if(Time.time >= startTime + idleTime)
         {
@@ -60,7 +60,7 @@ public class EntityIdleState : EntityState
     {
         base.DoCheck();
 
-        isDetectingPlayerInMinRange = entity.GetPlayerInMinRange;
+        isDetectingPlayerInMinRange = entity.GetPlayerInMinDetectionRange;
     }
 
     #region Set Functions

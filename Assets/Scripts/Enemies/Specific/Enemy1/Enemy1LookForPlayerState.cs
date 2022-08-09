@@ -10,31 +10,18 @@ public class Enemy1LookForPlayerState : EntityLookForPlayerState
         this.enemy = enemy;
     }
 
-    public override void DoCheck()
-    {
-        base.DoCheck();
-    }
-
-    public override void Enter()
-    {
-        base.Enter();
-    }
-
-    public override void Exit()
-    {
-        base.Exit();
-    }
-
     public override void LogicUpdate()
     {
         base.LogicUpdate();
 
         // Look For Player State를 벗어나는 조건들
 
+        // 플레이어 최소 탐지 범위에 플레이어가 들어왔다면
         if(isDetectingPlayerInMinRange)
         {
             stateMachine.ChangeState(enemy.DetectedPlayerState);
         }
+        // 
         else if(isAllTurnsTimeDone)
         {
             stateMachine.ChangeState(enemy.MoveState);

@@ -43,7 +43,8 @@ public class PlayerLedgeClimbState : PlayerState
         base.Enter();
         
         // 상태 진입 시 x, y 벨로서티 0으로, 위치를 탐지한 위치로 설정
-        Movement?.SetVelocityZero();
+        Movement.SetVelocityZero();
+        
         player.transform.position = detectedPosition;
         cornerPosition = DetermineCornerPosition();
 
@@ -96,14 +97,14 @@ public class PlayerLedgeClimbState : PlayerState
             yInput = player.InputHandler.InputYNormalize;
             isJumpInputted = player.InputHandler.IsInputJumpStarted;
         
-            Movement?.SetVelocityZero();
+            Movement.SetVelocityZero();
             player.transform.position = startPosition;
 
             // LedgeClimb 상태를 벗어나는 조건들 
             
             // x축 입력이 플레이어가 바라보는 방향과 같으면서 매달려 있고 올라가는 중이 아니라면
             // 클라이밍 시작, 애니메이션 재생
-            if (xInput == Movement?.FacingDir && isHanging && !isClimbing)
+            if (xInput == Movement.FacingDir && isHanging && !isClimbing)
             {
                 CheckSpace(); // 올라간 위치에 천장이 있는 지 확인
                 isClimbing = true;
@@ -145,7 +146,7 @@ public class PlayerLedgeClimbState : PlayerState
     private void CheckSpace()
     {
         isTouchingCeiling =
-            Physics2D.Raycast(cornerPosition + (Vector2.up * 0.015f) + (Vector2.right * Movement.FacingDir * 0.015f),
+            Physics2D.Raycast(cornerPosition + (Vector2.up * 0.015f) + (Vector2.right * (Movement.FacingDir * 0.015f)),
                 Vector2.up, playerData.standColliderHeight, CollisionSenses.WhatIsGround);
         player.Anim.SetBool("isTouchingCeiling", isTouchingCeiling);
     }
@@ -168,6 +169,7 @@ public class PlayerLedgeClimbState : PlayerState
             ledgeCheckPos.y - wallCheckPos.y, CollisionSenses.WhatIsGround);
         var yDistance = yHit.distance + 0.015f; // 약간의 오차 허용 범위
         workspace.Set(wallCheckPos.x + (xDistance * Movement.FacingDir), ledgeCheckPos.y - yDistance);
+        
         return workspace;
     }
 }

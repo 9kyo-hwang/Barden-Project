@@ -5,11 +5,11 @@ using UnityEngine;
 public class EntityDetectedPlayerState : EntityState
 {
     #region Variables
-    protected bool isDetectingPlayerInMinRange;
-    protected bool isDetectingPlayerInMaxRange;
-    protected bool performLongRangeAction;
-    protected bool performCloseRangeAction;
-    protected bool isDetectingLedge;
+    protected bool isEnteringPlayerInMinDetectionRange;
+    protected bool isEnteringPlayerInMaxDetectionRange;
+    protected bool isEnteringPlayerInLongActionRange;
+    protected bool isEnteringPlayerInCloseActionRange;
+    protected bool isTouchingLedge;
     #endregion
     
     #region Core Components
@@ -28,8 +28,8 @@ public class EntityDetectedPlayerState : EntityState
     {
         base.Enter();
 
-        performLongRangeAction = false;
-        Movement?.SetVelocityX(0f);
+        isEnteringPlayerInLongActionRange = false;
+        Movement.SetVelocityX(0f);
     }
 
     public override void Exit()
@@ -41,11 +41,11 @@ public class EntityDetectedPlayerState : EntityState
     {
         base.LogicUpdate();
         
-        Movement?.SetVelocityX(0f);
+        Movement.SetVelocityX(0f);
 
         if(Time.time >= startTime + data.longRangeActionTime)
         {
-            performLongRangeAction = true;
+            isEnteringPlayerInLongActionRange = true;
         }
     }
 
@@ -57,12 +57,10 @@ public class EntityDetectedPlayerState : EntityState
     public override void DoCheck()
     {
         base.DoCheck();
-
-        if(CollisionSenses)
-            isDetectingLedge = CollisionSenses.GetLedgeVer;
         
-        isDetectingPlayerInMinRange = entity.GetPlayerInMinRange;
-        isDetectingPlayerInMaxRange = entity.GetPlayerInMaxRange;
-        performCloseRangeAction = entity.GetPlayerInCloseRangeAction;
+        isTouchingLedge = CollisionSenses.GetLedgeVer;
+        isEnteringPlayerInMinDetectionRange = entity.GetPlayerInMinDetectionRange;
+        isEnteringPlayerInMaxDetectionRange = entity.GetPlayerInMaxDetectionRange;
+        isEnteringPlayerInCloseActionRange = entity.GetPlayerInCloseActionRange;
     }
 }

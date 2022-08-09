@@ -5,11 +5,11 @@ using UnityEngine;
 public class EntityChargeState : EntityState
 {
     #region Variables
-    protected bool isDetectingPlayerInMinRange;
-    protected bool isDetectingLedge;
-    protected bool isDetectingWall;
+    protected bool isEnteringPlayerInMinDetectionRange;
+    protected bool isTouchingLedge;
+    protected bool isTouchingWall;
     protected bool isChargeTimeOver;
-    protected bool performCloseRangeAction;
+    protected bool isEnteringPlayerInCloseActionRange;
     #endregion
     
     #region Core Components
@@ -19,21 +19,19 @@ public class EntityChargeState : EntityState
     private CollisionSenses collisionSenses;
     #endregion
     
-    public EntityChargeState(Entity entity, EntityStateMachine stateMachine, EntityData data, string animBoolName) : base(entity, stateMachine, data, animBoolName)
+    public EntityChargeState(Entity entity, EntityStateMachine stateMachine, EntityData data, string animBoolName) 
+        : base(entity, stateMachine, data, animBoolName)
     {
     }
 
     public override void DoCheck()
     {
         base.DoCheck();
-
-        if (CollisionSenses)
-        {
-            isDetectingLedge = CollisionSenses.GetLedgeVer;
-            isDetectingWall = CollisionSenses.GetWall;
-        }
-        isDetectingPlayerInMinRange = entity.GetPlayerInMinRange;
-        performCloseRangeAction = entity.GetPlayerInCloseRangeAction;
+        
+        isTouchingLedge = CollisionSenses.GetLedgeVer;
+        isTouchingWall = CollisionSenses.GetWall;
+        isEnteringPlayerInMinDetectionRange = entity.GetPlayerInMinDetectionRange;
+        isEnteringPlayerInCloseActionRange = entity.GetPlayerInCloseActionRange;
     }
 
     public override void Enter()
@@ -41,7 +39,7 @@ public class EntityChargeState : EntityState
         base.Enter();
 
         isChargeTimeOver = false;
-        Movement?.SetVelocityX(data.chargeSpeed * Movement.FacingDir);
+        Movement.SetVelocityX(data.chargeSpeed * Movement.FacingDir);
     }
 
     public override void Exit()
@@ -53,7 +51,7 @@ public class EntityChargeState : EntityState
     {
         base.LogicUpdate();
         
-        Movement?.SetVelocityX(data.chargeSpeed * Movement.FacingDir);
+        Movement.SetVelocityX(data.chargeSpeed * Movement.FacingDir);
 
         if(Time.time >= startTime + data.chargeTime)
         {

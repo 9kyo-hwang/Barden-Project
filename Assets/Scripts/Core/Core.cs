@@ -1,7 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq; // Query 기능
+using System.Linq;
+using JetBrains.Annotations; // Query 기능
 using UnityEngine;
 
 // 코어 컴포넌트들을 총괄하는 스크립트
@@ -12,7 +13,8 @@ public class Core : MonoBehaviour
 
     private readonly List<CoreComponent> coreComponents = new List<CoreComponent>();
 
-    // Core Awake에서 하위에 있는 CoreComponents들을 먼저 리스트에 추가
+    // Core Awake에서 하위에 있는 CoreComponents들을 리스트에 추가
+    // LifeTime 도중 계속 수행되지 않고 Awake 때 한 번만 수행하여 캐싱 -> 성능 향상
     private void Awake()
     {
         var components = GetComponentsInChildren<CoreComponent>();
@@ -37,7 +39,7 @@ public class Core : MonoBehaviour
         }
     }
     
-    // Core Component를 리스트에 저장하는 함수
+    // Core Component 단에서 해당 함수를 호출해 자기자신을 리스트에 추가시킴
     public void AddComponent(CoreComponent component)
     {
         // List에 해당 컴포넌트가 있지 않다면 List에 추가
@@ -50,7 +52,7 @@ public class Core : MonoBehaviour
     // Core Component 타입 오브젝트를 받아오는 Generic 함수
     public T GetCoreComponent<T>() where T : CoreComponent
     {
-        // T 타입 오브젝트만 필터링해 반환
+        // T 타입 오브젝트만 필터링
         // 그 중 (특정 조건에 맞는) 첫 번째 요소 내지 기본값 반환
         var component = coreComponents.OfType<T>().FirstOrDefault();
 

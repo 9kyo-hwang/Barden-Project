@@ -33,11 +33,11 @@ public class Death : CoreComponent
 
     private void OnEnable()
     {
-        Stats.HealthZero += Die; // 활성화 시 이벤트 구독
+        //Stats.HealthZero += Die; // 활성화 시 이벤트 구독
     }
 
     private void OnDisable()
     {
-        Stats.HealthZero -= Die; // 비활성화 시 이벤트 구독 취소
+        //Stats.HealthZero -= Die; // 비활성화 시 이벤트 구독 취소
     }
 }

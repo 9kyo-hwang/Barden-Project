@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class EntityDeadState : EntityState
 {
-    public EntityDeadState(Entity entity, EntityStateMachine stateMachine, EntityData data, string animBoolName) : base(entity, stateMachine, data, animBoolName)
+    public EntityDeadState(Entity entity, EntityStateMachine stateMachine, EntityData data, string animBoolName) 
+        : base(entity, stateMachine, data, animBoolName)
     {
         
     }
@@ -13,9 +14,10 @@ public class EntityDeadState : EntityState
     {
         base.Enter();
 
-        GameObject.Instantiate(data.deathBloodParticle, entity.transform.position,
+        var position = entity.transform.position;
+        Object.Instantiate(data.deathBloodParticle, position,
             data.deathBloodParticle.transform.rotation);
-        GameObject.Instantiate(data.deathChunkParticle, entity.transform.position,
+        Object.Instantiate(data.deathChunkParticle, position,
             data.deathChunkParticle.transform.rotation);
         
         entity.gameObject.SetActive(false);

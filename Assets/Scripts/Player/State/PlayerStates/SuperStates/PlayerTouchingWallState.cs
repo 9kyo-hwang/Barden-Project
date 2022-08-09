@@ -15,10 +15,12 @@ public class PlayerTouchingWallState : PlayerState
     protected bool isGrounded;
     protected bool isTouchingWall;
     protected bool isTouchingLedge;
-    protected bool isGrabInputted;
-    protected bool isJumpInputted;
-    protected int xInput;
-    protected int yInput;
+    
+    protected bool isInputGrab;
+    protected bool isInputJump;
+    
+    protected int inputX;
+    protected int inputY;
     #endregion
 
     public PlayerTouchingWallState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animBoolName) : base(player, stateMachine, playerData, animBoolName)
@@ -39,28 +41,28 @@ public class PlayerTouchingWallState : PlayerState
     {
         base.LogicUpdate();
 
-        xInput = player.InputHandler.InputXNormalize;
-        yInput = player.InputHandler.InputYNormalize;
-        isGrabInputted = player.InputHandler.IsInputGrabStarted;
-        isJumpInputted = player.InputHandler.IsInputJumpStarted;
+        inputX = player.InputHandler.InputXNormalize;
+        inputY = player.InputHandler.InputYNormalize;
+        isInputGrab = player.InputHandler.IsInputGrabStarted;
+        isInputJump = player.InputHandler.IsInputJumpStarted;
 
         // touching Wall 상태에서 벗어나는 조건들
 
         // TouchingWall 상태에 속하는 모든 sub state 상태에서
         // wall jump가 수행될 수 있음
-        if (isJumpInputted)
+        if (isInputJump)
         {
             player.WallJumpState.DetermineWallJumpDirection(isTouchingWall);
             stateMachine.ChangeState(player.WallJumpState);
         }
         // 땅에 닿았으면서 !grab input인 경우 idle 상태로
-        else if (isGrounded && !isGrabInputted)
+        else if (isGrounded && !isInputGrab)
         {
             stateMachine.ChangeState(player.IdleState);
         }
         // 벽에서 떨어졌거나, x축 입력이 바라보는 방향과 다르거나 없는 경우
         // 또는 !grabInput이면서 땅에 닿지 않았으면 inAir 상태로
-        else if (!isTouchingWall || (xInput != Movement?.FacingDir && !isGrabInputted))
+        else if (!isTouchingWall || (inputX != Movement.FacingDir && !isInputGrab))
         {
             stateMachine.ChangeState(player.InAirState);
         }
@@ -79,13 +81,10 @@ public class PlayerTouchingWallState : PlayerState
     public override void DoCheck()
     {
         base.DoCheck();
-
-        if (CollisionSenses)
-        {
-            isGrounded = CollisionSenses.GetGround;
-            isTouchingWall = CollisionSenses.GetWall;
-            isTouchingLedge = CollisionSenses.GetLedgeHor;
-        }
+        
+        isGrounded = CollisionSenses.GetGround;
+        isTouchingWall = CollisionSenses.GetWall;
+        isTouchingLedge = CollisionSenses.GetLedgeHor;
 
         if (isTouchingWall && !isTouchingLedge)
         {

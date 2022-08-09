@@ -29,7 +29,7 @@ public class Player : MonoBehaviour
     [SerializeField]
     private PlayerData playerData;
     #endregion
-    
+
     #region Components
     // property이므로 대문자
     public Core Core { get; private set; }
@@ -38,7 +38,7 @@ public class Player : MonoBehaviour
     public Rigidbody2D Rb2d { get; private set; }
     public Transform DashDirIndicator { get; private set; }
     public BoxCollider2D BoxCol2d { get; private set; }
-    public PlayerInventory Inventory {get; private set;}
+    public PlayerInventory Inventory { get; private set; }
     #endregion
 
     #region Other Variables
@@ -88,12 +88,12 @@ public class Player : MonoBehaviour
     private void Update()
     {
         Core.LogicUpdate();
-        StateMachine.CurrentState.LogicUpdate(); // 현재 상태에 대한 FrameUpdate() 수행
+        StateMachine.CurrentState.LogicUpdate();
     }
 
     private void FixedUpdate()
     {
-        StateMachine.CurrentState.PhysicsUpdate(); // 현재 상태에 대한 TimeUpdate() 수행
+        StateMachine.CurrentState.PhysicsUpdate();
     }
     #endregion
 

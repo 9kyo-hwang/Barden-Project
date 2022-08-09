@@ -31,6 +31,7 @@ public class EntityState
     {
         DoCheck();
         entity.Anim.SetBool(animBoolName, true);
+        Debug.Log("Entity State: " + animBoolName);
         startTime = Time.time;
     }
 

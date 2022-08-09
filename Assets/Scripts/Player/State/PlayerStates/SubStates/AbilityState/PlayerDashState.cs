@@ -6,12 +6,12 @@ public class PlayerDashState : PlayerAbilityState
 {
     public bool CanDash { get; private set; }
     private bool isHolding; // Time scale holding boolean variable
-    private bool isDashInputStopped;
+    private bool isInputDashCanceled;
 
     private float lastDashTime;
 
     private Vector2 dashDirection;
-    private Vector2 dashDirectionInput;
+    private Vector2 inputDashDir;
     
     public PlayerDashState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animBoolName) 
         : base(player, stateMachine, playerData, animBoolName)
@@ -41,9 +41,9 @@ public class PlayerDashState : PlayerAbilityState
         base.Exit();
 
         // dash 상태 탈출 때 과도한 y축 상승을 막기 위해 가중치 할당
-        if (Movement?.CurrentVelocity.y > 0)
+        if (Movement.CurrentVelocity.y > 0)
         {
-            Movement?.SetVelocityY(Movement.CurrentVelocity.y * playerData.dashEndYMultiplier);
+            Movement.SetVelocityY(Movement.CurrentVelocity.y * playerData.dashEndYMultiplier);
         }
     }
 
@@ -57,13 +57,13 @@ public class PlayerDashState : PlayerAbilityState
             player.Anim.SetFloat("xVelocity", Mathf.Abs(Movement.CurrentVelocity.x));
             if (isHolding)
             {
-                dashDirectionInput = player.InputHandler.InputDashDirectionInt;
-                isDashInputStopped = player.InputHandler.IsInputDashCanceled;
+                inputDashDir = player.InputHandler.InputDashDirectionInt;
+                isInputDashCanceled = player.InputHandler.IsInputDashCanceled;
                 
                 // 아무 방향키도 안 누른 게 아닐 경우 방향 설정
-                if (dashDirectionInput != Vector2.zero)
+                if (inputDashDir != Vector2.zero)
                 {
-                    dashDirection = dashDirectionInput;
+                    dashDirection = inputDashDir;
                     dashDirection.Normalize();
                 }
 
@@ -72,14 +72,14 @@ public class PlayerDashState : PlayerAbilityState
                 player.DashDirIndicator.rotation = Quaternion.Euler(0f, 0f, angle - 45f);
 
                 // dash 키 업 또는 최대 hold 시간 초과 시 holding stop
-                if (isDashInputStopped || Time.unscaledTime >= startTime + playerData.maxHoldTime)
+                if (isInputDashCanceled || Time.unscaledTime >= startTime + playerData.maxHoldTime)
                 {
                     isHolding = false;
                     Time.timeScale = 1f;
                     startTime = Time.time;
-                    Movement?.CheckFlip(Mathf.RoundToInt(dashDirection.x));
+                    Movement.CheckFlip(Mathf.RoundToInt(dashDirection.x));
                     player.Rb2d.drag = playerData.dashDrag; // 일시적으로 drag 증가
-                    Movement?.SetVelocityAngle(playerData.dashVelocity, dashDirection);
+                    Movement.SetVelocityAngle(playerData.dashVelocity, dashDirection);
                     player.DashDirIndicator.gameObject.SetActive(false); // 대시 발동 시 인디케이서 비활성화
                 }
             }
@@ -87,7 +87,7 @@ public class PlayerDashState : PlayerAbilityState
             else
             {
                 // 속력 설정
-                Movement?.SetVelocityAngle(playerData.dashVelocity, dashDirection);
+                Movement.SetVelocityAngle(playerData.dashVelocity, dashDirection);
 
                 // 대시 후 일정 시간 지났을 시
                 if (Time.time >= startTime + playerData.dashTime)

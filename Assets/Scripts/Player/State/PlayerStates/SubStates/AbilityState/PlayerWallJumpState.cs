@@ -16,8 +16,8 @@ public class PlayerWallJumpState : PlayerAbilityState
         // 점프 횟수 초기화, 방향 및 속력 설정, 벽점프 방향 받아서 Flip, 남은 점프 횟수 -1
         player.InputHandler.UsedJumpInput();
         player.JumpState.ResetJumpCount();
-        Movement?.SetVelocityDirection(playerData.wallJumpVelocity, playerData.wallJumpAngle, wallJumpDirection);
-        Movement?.CheckFlip(wallJumpDirection);
+        Movement.SetVelocityDirection(playerData.wallJumpVelocity, playerData.wallJumpAngle, wallJumpDirection);
+        Movement.CheckFlip(wallJumpDirection);
         player.JumpState.DecreaseLeftJumpCount();
     }
 

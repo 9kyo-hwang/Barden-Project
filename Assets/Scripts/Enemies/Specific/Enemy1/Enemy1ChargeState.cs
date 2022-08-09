@@ -11,36 +11,24 @@ public class Enemy1ChargeState : EntityChargeState
         this.enemy = enemy;
     }
 
-    public override void DoCheck()
-    {
-        base.DoCheck();
-    }
-
-    public override void Enter()
-    {
-        base.Enter();
-    }
-
-    public override void Exit()
-    {
-        base.Exit();
-    }
-
     public override void LogicUpdate()
     {
         base.LogicUpdate();
 
         // Charge State를 벗어나는 조건들
 
-        if(performCloseRangeAction)
+        // 근접 공격 범위에 들어왔다면
+        if(isEnteringPlayerInCloseActionRange)
         {
             stateMachine.ChangeState(enemy.MeleeAttackState);
         }
-        else if(isChargeTimeOver && isDetectingPlayerInMinRange)
+        // 차징 시간이 끝났으면서 최소 플레이어 탐지 범위 내에 플레이어가 있다면
+        else if(isChargeTimeOver && isEnteringPlayerInMinDetectionRange)
         {
             stateMachine.ChangeState(enemy.DetectedPlayerState);
         }
-        else if(isChargeTimeOver || !isDetectingLedge || isDetectingWall)
+        // 차징 시간이 끝났거나 난간에 닿지 않았거나 벽에 닿았다면
+        else if(isChargeTimeOver || !isTouchingLedge || isTouchingWall)
         {
             stateMachine.ChangeState(enemy.LookForPlayerState);
         }
