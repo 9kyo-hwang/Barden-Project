@@ -13806,7 +13806,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.7294939, y: 1}
+    m_SensorSize: {x: 1.8880126, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -45127,7 +45127,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afd0c2c5aefc58747bf0ec559c306f7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealthPoint: 20
+  maxHealthPoint: 50
 --- !u!1 &1779431583
 GameObject:
   m_ObjectHideFlags: 0
