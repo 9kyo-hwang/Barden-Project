@@ -41,13 +41,13 @@ public class EntityStunState : EntityState
     {
         base.LogicUpdate();
 
-        if (Time.time >= startTime + data.stunTime)
+        if (Time.time >= StartTime + data.stunTime)
         {
             isStunTimeOver = true;
         }
 
         // 땅에서 넉백 중일 때, 넉백 시간을 초과했다면 더이상 속력 변화가 없도록
-        if (isGrounded && Time.time >= startTime + data.stunKnockbackTime && !isStopMovement)
+        if (isGrounded && Time.time >= StartTime + data.stunKnockbackTime && !isStopMovement)
         {
             isStopMovement = true;
             Movement.SetVelocityX(0f);

@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy1MeleeAttackState : EntityMeleeAttackState
+public class Enemy2MeleeAttackState : EntityMeleeAttackState
 {
-    private Enemy1 enemy;
-    
-    public Enemy1MeleeAttackState(Entity entity, EntityStateMachine stateMachine, EntityData data, string animBoolName, Transform attackPosition, Enemy1 enemy) : base(entity, stateMachine, data, animBoolName, attackPosition)
+    private Enemy2 enemy;
+    public Enemy2MeleeAttackState(Entity entity, EntityStateMachine stateMachine, EntityData data, string animBoolName, Transform attackPosition, Enemy2 enemy) 
+        : base(entity, stateMachine, data, animBoolName, attackPosition)
     {
         this.enemy = enemy;
     }
@@ -15,7 +15,7 @@ public class Enemy1MeleeAttackState : EntityMeleeAttackState
     {
         base.LogicUpdate();
         
-        // Melee Attack을 벗어나는 조건들
+        // Melee Attack 상태를 벗어나는 조건들
         
         // 공격 애니메이션이 끝났다면
         if (isAnimationFinished)

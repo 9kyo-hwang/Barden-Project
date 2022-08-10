@@ -18,9 +18,9 @@ public class Enemy1IdleState : EntityIdleState
         // Idle State를 벗어나는 조건들
 
         // 플레이어 최소 탐지 범위에 플레이어가 있다면
-        if(isDetectingPlayerInMinRange)
+        if(isEnteringPlayerInMinDetectionRange)
         {
-            stateMachine.ChangeState(enemy.DetectedPlayerState);
+            stateMachine.ChangeState(enemy.DetectPlayerState);
         }
         // 아이들 시간이 끝났다면
         else if(isIdleTimeOver)

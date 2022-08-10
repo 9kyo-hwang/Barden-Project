@@ -41,7 +41,6 @@ public class EntityData : ScriptableObject
     [Header("Attack State")] 
     public float attackRadius = 0.5f;
     public float attackDamage = 10f;
-    public GameObject hitParticle;
 
     [Header("Melee Attack State")] 
     public float closeRangeActionDistance = 1f;
@@ -56,7 +55,15 @@ public class EntityData : ScriptableObject
     public float stunResistance = 3f;
     public float stunRecoveryTime = 2f;
 
-    [Header("Dead State")] 
-    public GameObject deathChunkParticle;
-    public GameObject deathBloodParticle;
+    [Header("Dodge State")] 
+    public float dodgeSpeed = 10f; // 회피 속도
+    public float dodgeTime = 0.2f; // 회피 지속 시간
+    public float dodgeCooldown = 2f; // 회피 쿨타임
+    public Vector2 dodgeAngle;
+
+    [Header("Ranged Attack State")] 
+    public GameObject projectile;
+    public float projectileDamage = 10f;
+    public float projectileSpeed = 12f;
+    public float projectileReach; // 발사체 사정 거리
 }

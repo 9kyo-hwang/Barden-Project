@@ -6,7 +6,7 @@ public class EntityLookForPlayerState : EntityState
 {
     #region Variables
     protected bool turnImmediately;
-    protected bool isDetectingPlayerInMinRange;
+    protected bool isEnteringPlayerInMinDetectionRange;
     protected bool isAllTurnsDone;
     protected bool isAllTurnsTimeDone;
 
@@ -28,7 +28,7 @@ public class EntityLookForPlayerState : EntityState
     {
         base.DoCheck();
 
-        isDetectingPlayerInMinRange = entity.GetPlayerInMinDetectionRange;
+        isEnteringPlayerInMinDetectionRange = entity.GetPlayerInMinDetectionRange;
     }
 
     public override void Enter()
@@ -39,7 +39,7 @@ public class EntityLookForPlayerState : EntityState
         isAllTurnsDone = false;
         isAllTurnsTimeDone = false;
 
-        lastTurnTime = startTime;
+        lastTurnTime = StartTime;
         currentTurnCount = 0;
 
         Movement.SetVelocityX(0f);

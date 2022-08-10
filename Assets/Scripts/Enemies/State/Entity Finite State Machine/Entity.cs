@@ -16,7 +16,7 @@ public class Entity : MonoBehaviour
     public AnimationToStatemachine AnimToStateMachine { get; private set; }
     public Core Core { get; private set; }
     
-    private Movement Movement => movement ?? Core.GetCoreComponentValue(ref movement);
+    protected Movement Movement => movement ?? Core.GetCoreComponentValue(ref movement);
     private Movement movement;
     #endregion
 
@@ -59,12 +59,10 @@ public class Entity : MonoBehaviour
         currentStunResistance = data.stunResistance;
     }
 
-    private void Update()
+    public virtual void Update()
     {
         Core.LogicUpdate();
         StateMachine.CurrentState.LogicUpdate();
-        
-        //Anim.SetFloat("yVelocity", Core.Movement.Rb2d.velocity.y);
 
         if (Time.time >= lastDamagedTime + data.stunRecoveryTime)
         {

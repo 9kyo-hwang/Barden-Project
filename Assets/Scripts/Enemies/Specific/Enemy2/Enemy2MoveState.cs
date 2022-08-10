@@ -18,13 +18,16 @@ public class Enemy2MoveState : EntityMoveState
         
         // Move State를 벗어나는 조건들
 
-        if (isDetectingWall)
+        // 최소 탐지 범위 내에 플레이어가 있을 경우
+        if(isDetectingPlayerInMinRange)
         {
-            
+            stateMachine.ChangeState(enemy.DetectPlayerState);
         }
-        else if (isDetectingWall || isDetectingLedge)
+        // 벽에 닿았거나 난간에 닿지 않았다면(땅 끝에 도달함)
+        else if (isDetectingWall || !isDetectingLedge)
         {
-            
+            enemy.IdleState.SetFlipAfterIdle(true);
+            stateMachine.ChangeState(enemy.IdleState);
         }
     }
 }

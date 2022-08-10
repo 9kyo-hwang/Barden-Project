@@ -14,6 +14,7 @@ public class EntityDeadState : EntityState
     {
         base.Enter();
         
+        /*
         var position = entity.transform.position;
         Object.Instantiate(data.deathBloodParticle, position,
             data.deathBloodParticle.transform.rotation);
@@ -21,5 +22,6 @@ public class EntityDeadState : EntityState
             data.deathChunkParticle.transform.rotation);
         
         entity.gameObject.SetActive(false);
+        */
     }
 }

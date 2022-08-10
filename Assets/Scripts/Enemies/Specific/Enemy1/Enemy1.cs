@@ -8,7 +8,7 @@ public class Enemy1 : Entity
 {
     public Enemy1IdleState IdleState { get; private set; }
     public Enemy1MoveState MoveState { get; private set; }
-    public Enemy1DetectedPlayerState DetectedPlayerState { get; private set; }
+    public Enemy1DetectPlayerState DetectPlayerState { get; private set; }
     public Enemy1ChargeState ChargeState { get; private set; }
     public Enemy1LookForPlayerState LookForPlayerState { get; private set; }
     public Enemy1MeleeAttackState MeleeAttackState { get; private set; }
@@ -23,7 +23,7 @@ public class Enemy1 : Entity
 
         IdleState = new Enemy1IdleState(this, StateMachine, data, "idle", this);
         MoveState = new Enemy1MoveState(this, StateMachine, data, "move", this);
-        DetectedPlayerState = new Enemy1DetectedPlayerState(this, StateMachine, data, "playerDetected", this);
+        DetectPlayerState = new Enemy1DetectPlayerState(this, StateMachine, data, "detect", this);
         ChargeState = new Enemy1ChargeState(this, StateMachine, data, "charge", this);
         LookForPlayerState = new Enemy1LookForPlayerState(this, StateMachine, data, "lookForPlayer", this);
         MeleeAttackState = new Enemy1MeleeAttackState(this, StateMachine, data, "meleeAttack", meleeAttackPosition, this);

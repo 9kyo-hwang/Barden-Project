@@ -6,7 +6,7 @@ public class EntityIdleState : EntityState
 {
     protected bool flipAfterIdle;
     protected bool isIdleTimeOver;
-    protected bool isDetectingPlayerInMinRange;
+    protected bool isEnteringPlayerInMinDetectionRange;
 
     protected float idleTime;
 
@@ -45,7 +45,7 @@ public class EntityIdleState : EntityState
         
         Movement.SetVelocityX(0f);
 
-        if(Time.time >= startTime + idleTime)
+        if(Time.time >= StartTime + idleTime)
         {
             isIdleTimeOver = true;
         }
@@ -60,7 +60,7 @@ public class EntityIdleState : EntityState
     {
         base.DoCheck();
 
-        isDetectingPlayerInMinRange = entity.GetPlayerInMinDetectionRange;
+        isEnteringPlayerInMinDetectionRange = entity.GetPlayerInMinDetectionRange;
     }
 
     #region Set Functions

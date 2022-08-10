@@ -17,11 +17,11 @@ public class Enemy1LookForPlayerState : EntityLookForPlayerState
         // Look For Player State를 벗어나는 조건들
 
         // 플레이어 최소 탐지 범위에 플레이어가 들어왔다면
-        if(isDetectingPlayerInMinRange)
+        if(isEnteringPlayerInMinDetectionRange)
         {
-            stateMachine.ChangeState(enemy.DetectedPlayerState);
+            stateMachine.ChangeState(enemy.DetectPlayerState);
         }
-        // 
+        // 돌아보는 횟수를 모두 소모한 경우
         else if(isAllTurnsTimeDone)
         {
             stateMachine.ChangeState(enemy.MoveState);

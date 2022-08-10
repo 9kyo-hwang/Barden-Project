@@ -10,7 +10,7 @@ public class EntityState
     protected EntityData data;
     protected Core core;
 
-    protected float startTime; // 상태 진입 시작 시간. 항상 참조됨
+    public float StartTime { get; protected set; } // 상태 진입 시작 시간. 항상 참조됨
 
     protected string animBoolName; // 어떤 애니메이션을 실행시켜야 하는 지 판단하는 스트링 변수
     
@@ -32,7 +32,7 @@ public class EntityState
         DoCheck();
         entity.Anim.SetBool(animBoolName, true);
         Debug.Log("Entity State: " + animBoolName);
-        startTime = Time.time;
+        StartTime = Time.time;
     }
 
     // 특정 상태에서 탈출했을 때 호출

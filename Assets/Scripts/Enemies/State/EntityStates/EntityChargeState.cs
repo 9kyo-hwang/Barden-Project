@@ -53,7 +53,7 @@ public class EntityChargeState : EntityState
         
         Movement.SetVelocityX(data.chargeSpeed * Movement.FacingDir);
 
-        if(Time.time >= startTime + data.chargeTime)
+        if(Time.time >= StartTime + data.chargeTime)
         {
             isChargeTimeOver = true;
         }

@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy1DetectedPlayerState : EntityDetectedPlayerState
+public class Enemy1DetectPlayerState : EntityDetectPlayerState
 {
     private Enemy1 enemy;
 
-    public Enemy1DetectedPlayerState(Entity entity, EntityStateMachine stateMachine, EntityData data, string animBoolName, Enemy1 enemy) : base(entity, stateMachine, data, animBoolName)
+    public Enemy1DetectPlayerState(Entity entity, EntityStateMachine stateMachine, EntityData data, string animBoolName, Enemy1 enemy) : base(entity, stateMachine, data, animBoolName)
     {
         this.enemy = enemy;
     }
@@ -15,7 +15,7 @@ public class Enemy1DetectedPlayerState : EntityDetectedPlayerState
     {
         base.LogicUpdate();
 
-        // Detected Player State를 벗어나는 조건들
+        // Detect Player State를 벗어나는 조건들
 
         // 근접한 공격 범위에 플레이어가 들어왔다면
         if (isEnteringPlayerInCloseActionRange)

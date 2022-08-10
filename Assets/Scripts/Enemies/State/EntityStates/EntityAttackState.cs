@@ -7,7 +7,7 @@ public class EntityAttackState : EntityState
     protected Transform attackPosition; // 공격점
 
     protected bool isAnimationFinished;
-    protected bool isDetectingPlayerInMinRange;
+    protected bool isEnteringPlayerInMinDetectionRange;
 
     private Movement Movement => movement ?? core.GetCoreComponentValue(ref movement);
     private Movement movement;
@@ -47,7 +47,7 @@ public class EntityAttackState : EntityState
     {
         base.DoCheck();
 
-        isDetectingPlayerInMinRange = entity.GetPlayerInMinDetectionRange;
+        isEnteringPlayerInMinDetectionRange = entity.GetPlayerInMinDetectionRange;
     }
 
     public virtual void AnimationTrigger()

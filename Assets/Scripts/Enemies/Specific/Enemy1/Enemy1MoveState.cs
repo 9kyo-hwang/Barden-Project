@@ -20,7 +20,7 @@ public class Enemy1MoveState : EntityMoveState
         // 최소 탐지 범위 내에 플레이어가 있을 경우
         if(isDetectingPlayerInMinRange)
         {
-            stateMachine.ChangeState(enemy.DetectedPlayerState);
+            stateMachine.ChangeState(enemy.DetectPlayerState);
         }
         // 벽에 닿았거나 난간에 닿지 않았다면(땅 끝에 도달함)
         else if(isDetectingWall || !isDetectingLedge)
