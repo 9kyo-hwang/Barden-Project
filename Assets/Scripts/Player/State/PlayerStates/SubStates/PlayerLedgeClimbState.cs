@@ -14,7 +14,7 @@ public class PlayerLedgeClimbState : PlayerState
 
     private bool isHanging;
     private bool isClimbing;
-    private bool isJumpInputted;
+    private bool isInputJump;
     private bool isTouchingCeiling;
 
     private int xInput;
@@ -95,7 +95,7 @@ public class PlayerLedgeClimbState : PlayerState
         {
             xInput = player.InputHandler.InputXNormalize;
             yInput = player.InputHandler.InputYNormalize;
-            isJumpInputted = player.InputHandler.IsInputJumpStarted;
+            isInputJump = player.InputHandler.IsInputJumpStarted;
         
             Movement.SetVelocityZero();
             player.transform.position = startPosition;
@@ -117,7 +117,7 @@ public class PlayerLedgeClimbState : PlayerState
                 stateMachine.ChangeState(player.InAirState);
             }
             // 매달린 상태에서(오르는 중이 아님) 점프키를 누르면 wallJump 상태로
-            else if (isJumpInputted && !isClimbing)
+            else if (isInputJump && !isClimbing)
             {
                 player.WallJumpState.DetermineWallJumpDirection(true); // 매달려 있음 -> 벽에 붙어있는 상태
                 stateMachine.ChangeState(player.WallJumpState);

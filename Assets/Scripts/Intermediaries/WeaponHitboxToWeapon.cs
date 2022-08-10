@@ -15,7 +15,7 @@ public class WeaponHitboxToWeapon : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other) 
     {
         Debug.Log("OnTriggerEnter2D");
-        weapon.AddToDetected(other);    
+        weapon.AddToDetected(other);
     }
 
     private void OnTriggerExit2D(Collider2D other)

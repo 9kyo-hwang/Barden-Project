@@ -102,7 +102,7 @@ public class Player : MonoBehaviour
     // 콜라이더 크기 및 중심점 재설정 함수
     public void SetColliderHeight(float height)
     {
-        Vector2 center = BoxCol2d.offset;
+        var center = BoxCol2d.offset;
         workspace.Set(BoxCol2d.size.x, height);
 
         center.y += (height - BoxCol2d.size.y) / 2;

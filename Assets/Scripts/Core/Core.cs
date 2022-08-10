@@ -24,7 +24,8 @@ public class Core : MonoBehaviour
             AddComponent(component);
         }
 
-        // 리스트에 있는 코어 컴포넌트들을 현재 코어에 맞게 세팅
+        // core component에서 core를 찾지 않고
+        // 리스트에 있는 코어 컴포넌트들에게 이 코어를 참조하도록 설정
         foreach (var component in coreComponents)
         {
             component.Init(this);

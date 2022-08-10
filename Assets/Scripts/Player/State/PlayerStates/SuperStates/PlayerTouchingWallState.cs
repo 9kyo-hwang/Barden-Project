@@ -27,16 +27,6 @@ public class PlayerTouchingWallState : PlayerState
     {
     }
 
-    public override void Enter()
-    {
-        base.Enter();
-    }
-
-    public override void Exit()
-    {
-        base.Exit();
-    }
-
     public override void LogicUpdate()
     {
         base.LogicUpdate();
@@ -90,15 +80,5 @@ public class PlayerTouchingWallState : PlayerState
         {
             player.LedgeClimbState.SetDetectedPosition(player.transform.position);
         }
-    }
-
-    public override void AnimationTrigger()
-    {
-        base.AnimationTrigger();
-    }
-
-    public override void AnimationFinishTrigger()
-    {
-        base.AnimationFinishTrigger();
     }
 }

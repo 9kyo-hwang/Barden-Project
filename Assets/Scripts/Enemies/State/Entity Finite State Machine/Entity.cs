@@ -27,8 +27,9 @@ public class Entity : MonoBehaviour
     protected bool isDead;
     
     private Vector2 workspace;
-    private float curHp;
-    private float curStunResistance;
+
+    private float currentHealthPoint;
+    private float currentStunResistance;
     private float lastDamagedTime;
     #endregion
 
@@ -47,15 +48,15 @@ public class Entity : MonoBehaviour
         Core = GetComponentInChildren<Core>();
         
         StateMachine = new EntityStateMachine();
-        
-        Anim = GetComponent<Animator>();
-        AnimToStateMachine = GetComponent<AnimationToStatemachine>();
     }
 
     public virtual void Start()
     {
-        curHp = data.maxHp;
-        curStunResistance = data.stunResistance;
+        Anim = GetComponent<Animator>();
+        AnimToStateMachine = GetComponent<AnimationToStatemachine>();
+        
+        currentHealthPoint = data.maxHealthPoint;
+        currentStunResistance = data.stunResistance;
     }
 
     private void Update()
@@ -96,7 +97,7 @@ public class Entity : MonoBehaviour
     public virtual void ResetStunResistance()
     {
         isStunned = false;
-        curStunResistance = data.stunResistance;
+        currentStunResistance = data.stunResistance;
     }
 
     public virtual void OnDrawGizmos()

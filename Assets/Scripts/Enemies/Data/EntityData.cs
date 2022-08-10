@@ -16,8 +16,8 @@ public class EntityData : ScriptableObject
     public float groundCheckRadius = 0.3f;
 
     [Header("Status")] 
-    public float maxHp = 30f;
-
+    public float maxHealthPoint = 30f;
+    
     [Header("Move State")]
     public float movementSpeed = 3f;
 
@@ -39,23 +39,24 @@ public class EntityData : ScriptableObject
     public float timeBetweenTurn = 0.75f;
 
     [Header("Attack State")] 
-    public float closeRangeActionDistance = 1f;
-
-    [Header("Melee Attack State")] 
     public float attackRadius = 0.5f;
     public float attackDamage = 10f;
+    public GameObject hitParticle;
+
+    [Header("Melee Attack State")] 
+    public float closeRangeActionDistance = 1f;
     public Vector2 knockbackAngle = Vector2.one;
     public float knockbackStrength = 10f;
 
     [Header("Stun State")] 
     public float stunTime = 3f;
-    public float knockbackTime = 0.2f;
-    public float knockbackSpeed = 20f;
+    [FormerlySerializedAs("knockbackTime")] public float stunKnockbackTime = 0.2f;
+    [FormerlySerializedAs("knockbackSpeed")] public float stunKnockbackSpeed = 20f;
+    public Vector2 stunKnockbackAngle;
     public float stunResistance = 3f;
     public float stunRecoveryTime = 2f;
 
     [Header("Dead State")] 
     public GameObject deathChunkParticle;
     public GameObject deathBloodParticle;
-    public GameObject hitParticle;
 }

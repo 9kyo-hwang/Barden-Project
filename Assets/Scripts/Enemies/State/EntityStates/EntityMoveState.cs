@@ -47,12 +47,9 @@ public class EntityMoveState : EntityState
     public override void DoCheck()
     {
         base.DoCheck();
-
-        if (CollisionSenses)
-        {
-            isDetectingLedge = CollisionSenses.GetLedgeVer;
-            isDetectingWall = CollisionSenses.GetWall;
-        }
+        
+        isDetectingLedge = CollisionSenses.GetLedgeVer;
+        isDetectingWall = CollisionSenses.GetWall;
         isDetectingPlayerInMinRange = entity.GetPlayerInMinDetectionRange;
     }
 }

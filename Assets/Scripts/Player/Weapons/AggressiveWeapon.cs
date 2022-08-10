@@ -53,13 +53,13 @@ public class AggressiveWeapon : Weapon
         // 이 때 발생하는 Error를 막기 위해, .ToList()를 사용해 리스트 사본에 접근하게 함. System.Linq 포함 필요
         foreach (var item in detectedDamageables.ToList())
         {
-            item.Damage(details.damageAmount); // details의 데미지만큼 IDamageable 오브젝트들의 Damage 수행
+            item?.Damage(details.damageAmount); // details의 데미지만큼 IDamageable 오브젝트들의 Damage 수행
         }
         
         // detectedKnockbackable에 담긴 IDamageable 모든 원소 받아옴
         foreach (var item in detectedKnockbackables.ToList())
         {
-            item.Knockback(details.knockbackStrength, details.knockbackAngle, Movement.FacingDir); // details의 데미지만큼 IDamageable 오브젝트들의 Damage 수행
+            item?.Knockback(details.knockbackStrength, details.knockbackAngle, Movement.FacingDir); // details의 데미지만큼 IDamageable 오브젝트들의 Damage 수행
         }
     }
 

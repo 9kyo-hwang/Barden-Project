@@ -13,7 +13,7 @@ public class EntityDeadState : EntityState
     public override void Enter()
     {
         base.Enter();
-
+        
         var position = entity.transform.position;
         Object.Instantiate(data.deathBloodParticle, position,
             data.deathBloodParticle.transform.rotation);

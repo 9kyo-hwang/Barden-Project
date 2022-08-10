@@ -57,10 +57,7 @@ public class PlayerAbilityState : PlayerState
     public override void DoCheck()
     {
         base.DoCheck();
-
-        if (CollisionSenses)
-        {
-            isGrounded = CollisionSenses.GetGround;
-        }
+        
+        isGrounded = CollisionSenses.GetGround;
     }
 }

@@ -18,6 +18,8 @@ public class PlayerWallGrabState : PlayerTouchingWallState
 
         // 상태 진입 시점의 캐릭터 포지션 저장
         holdPosition = player.transform.position;
+        
+        HoldPosition();
     }
 
     public override void Exit()

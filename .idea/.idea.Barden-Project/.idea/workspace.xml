@@ -20,6 +20,7 @@
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Enemies/Specific/Enemy1/Enemy1DeadState.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Enemies/Specific/Enemy1/Enemy1MeleeAttackState.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Enemies/Specific/Enemy1/Enemy1StunState.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Enemies/Specific/Enemy2/Enemy2MoveState.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Enemies/State/EntityStates/EntityAttackState.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Enemies/State/EntityStates/EntityDeadState.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Enemies/State/EntityStates/EntityMeleeAttackState.cs" root0="FORCE_HIGHLIGHTING" />
@@ -116,6 +117,9 @@
       <workItem from="1659865927536" duration="2364000" />
       <workItem from="1659939373129" duration="18334000" />
       <workItem from="1660028067124" duration="10355000" />
+      <workItem from="1660052041056" duration="301000" />
+      <workItem from="1660116374102" duration="3929000" />
+      <workItem from="1660121590249" duration="3866000" />
     </task>
     <servers />
   </component>

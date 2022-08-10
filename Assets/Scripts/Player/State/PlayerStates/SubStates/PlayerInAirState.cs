@@ -9,7 +9,6 @@ public class PlayerInAirState : PlayerState
     #region Variables
     // Input
     private int xInput;
-    private int yInput;
     private bool isInputJumpStarted;
     private bool isInputJumpCanceled;
     private bool isInputGrab;
@@ -68,7 +67,6 @@ public class PlayerInAirState : PlayerState
         CheckWallJumpCoyoteTime();
         
         xInput = player.InputHandler.InputXNormalize;
-        yInput = player.InputHandler.InputYNormalize;
         isInputJumpStarted = player.InputHandler.IsInputJumpStarted;
         isInputJumpCanceled = player.InputHandler.IsInputJumpCanceled;
         isInputGrab = player.InputHandler.IsInputGrabStarted;
@@ -215,7 +213,6 @@ public class PlayerInAirState : PlayerState
     public void StartCoyoteTime()
     {
         isCoyoteTime = true;
-        startWallJumpCoyoteTime = Time.time;
     }
 
     public void SetIsJumping()
@@ -226,6 +223,7 @@ public class PlayerInAirState : PlayerState
     private void StartWallJumpCoyoteTime()
     {
         isWallJumpCoyoteTime = true;
+        startWallJumpCoyoteTime = Time.time;
     }
 
     private void StopWallJumpCoyoteTime()

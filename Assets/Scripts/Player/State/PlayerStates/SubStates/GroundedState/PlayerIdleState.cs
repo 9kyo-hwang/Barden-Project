@@ -39,14 +39,4 @@ public class PlayerIdleState : PlayerGroundedStates
             }
         }
     }
-
-    public override void PhysicsUpdate()
-    {
-        base.PhysicsUpdate();
-    }
-
-    public override void DoCheck()
-    {
-        base.DoCheck();
-    }
 }

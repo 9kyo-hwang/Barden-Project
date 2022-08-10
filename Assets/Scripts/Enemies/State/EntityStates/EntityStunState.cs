@@ -29,7 +29,7 @@ public class EntityStunState : EntityState
 
         isStunTimeOver = false;
         isStopMovement = false;
-        Movement.SetVelocityDirection(data.knockbackSpeed, data.knockbackAngle, entity.LastDamageDir);
+        Movement.SetVelocityDirection(data.stunKnockbackSpeed, data.knockbackAngle, entity.LastDamageDir);
     }
 
     public override void Exit()
@@ -47,7 +47,7 @@ public class EntityStunState : EntityState
         }
 
         // 땅에서 넉백 중일 때, 넉백 시간을 초과했다면 더이상 속력 변화가 없도록
-        if (isGrounded && Time.time >= startTime + data.knockbackTime && !isStopMovement)
+        if (isGrounded && Time.time >= startTime + data.stunKnockbackTime && !isStopMovement)
         {
             isStopMovement = true;
             Movement.SetVelocityX(0f);
