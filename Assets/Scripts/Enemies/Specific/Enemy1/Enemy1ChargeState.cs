@@ -25,7 +25,6 @@ public class Enemy1ChargeState : EntityChargeState
         // 차징 시간이 끝났으면서 최소 플레이어 탐지 범위 내에 플레이어가 있다면
         else if(isChargeTimeOver && isEnteringPlayerInMinDetectionRange)
         {
-            stateMachine.ChangeState(enemy.DetectPlayerState);
         }
         // 차징 시간이 끝났거나 난간에 닿지 않았거나 벽에 닿았다면
         else if(isChargeTimeOver || !isTouchingLedge || isTouchingWall)

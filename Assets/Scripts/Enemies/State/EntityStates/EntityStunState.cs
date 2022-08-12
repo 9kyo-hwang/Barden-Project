@@ -35,6 +35,7 @@ public class EntityStunState : EntityState
     public override void Exit()
     {
         base.Exit();
+        entity.ResetStunResistance();
     }
 
     public override void LogicUpdate()

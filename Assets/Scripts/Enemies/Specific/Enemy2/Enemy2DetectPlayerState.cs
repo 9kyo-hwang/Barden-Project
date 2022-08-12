@@ -30,16 +30,15 @@ public class Enemy2DetectPlayerState : EntityDetectPlayerState
                 stateMachine.ChangeState(enemy.MeleeAttackState);
             }
         }
+        // 플레이어가 원거리 공격 범위에 있다면
+        else if (isEnteringPlayerInLongActionRange)
+        {
+            stateMachine.ChangeState(enemy.RangedAttackState);
+        }
         // 플레이어 최대 탐지 범위 밖으로 나가지 않았다면
         else if(!isEnteringPlayerInMaxDetectionRange)
         {
             stateMachine.ChangeState(enemy.LookForPlayerState);
-        }
-        // 난간에 닿지 않았다면(발 끝에 달려있는 난간 탐지용 ray에 정보가 없다면 난간에 도달했다는 의미)
-        else if (!isTouchingLedge)
-        {
-            Movement.Flip();
-            stateMachine.ChangeState(enemy.MoveState);
         }
     }
 }

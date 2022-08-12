@@ -28,6 +28,10 @@ public class Enemy2DodgeState : EntityDodgeState
                 {
                     stateMachine.ChangeState(enemy.MeleeAttackState);
                 }
+                else
+                {
+                    stateMachine.ChangeState(enemy.RangedAttackState);
+                }
             }
             else // 최대 탐지 범위 밖에 있다면
             {

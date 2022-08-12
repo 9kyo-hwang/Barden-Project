@@ -21,13 +21,13 @@ MonoBehaviour:
   wallCheckDistance: 0.2
   ledgeCheckDistance: 0.4
   groundCheckRadius: 0.3
-  maxHealthPoint: 30
+  maxHealthPoint: 50
   movementSpeed: 3
   minIdleTime: 1
   maxIdleTime: 2
-  longRangeActionTime: 1.5
-  minDetectionDistance: 3
-  maxDetectionDistance: 4
+  longRangeActionTime: 1
+  minDetectionDistance: 7.5
+  maxDetectionDistance: 8.5
   chargeSpeed: 6
   chargeTime: 2
   maxTurnCount: 2
@@ -47,7 +47,7 @@ MonoBehaviour:
   dodgeTime: 0.2
   dodgeCooldown: 2
   dodgeAngle: {x: 1, y: 2}
-  projectile: {fileID: 0}
+  projectile: {fileID: 2156060486303923597, guid: 71621e9420422634fbdb7681498a8831, type: 3}
   projectileDamage: 10
   projectileSpeed: 12
-  projectileReach: 0
+  projectileReach: 8

@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class EntityMoveState : EntityState
 {
-    protected bool isDetectingWall;
-    protected bool isDetectingLedge;
-    protected bool isDetectingPlayerInMinRange;
+    protected bool isTouchingWall;
+    protected bool isTouchingLedge;
+    protected bool isEnteringPlayerInMinDetectionRange;
     
     #region Core Components
     private Movement Movement => movement ?? core.GetCoreComponentValue(ref movement);
@@ -48,8 +48,8 @@ public class EntityMoveState : EntityState
     {
         base.DoCheck();
         
-        isDetectingLedge = CollisionSenses.GetLedgeVer;
-        isDetectingWall = CollisionSenses.GetWall;
-        isDetectingPlayerInMinRange = entity.GetPlayerInMinDetectionRange;
+        isTouchingLedge = CollisionSenses.GetLedgeVer;
+        isTouchingWall = CollisionSenses.GetWall;
+        isEnteringPlayerInMinDetectionRange = entity.GetPlayerInMinDetectionRange;
     }
 }
